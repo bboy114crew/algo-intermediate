@@ -108,7 +108,7 @@ def array(n, k, a):
   array_l_to_r = []
 
   # Nếu có 5 số 1 liên tiếp ví dụ 1111151 thì l sẽ là 4
-  while (l < count_appear[a[0]]):
+  while (l < count_appear[a[0]] and n > 1):
     if (a[0] == a[l + 1]):
       l += 1
     else:
