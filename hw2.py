@@ -92,7 +92,7 @@
 # Array
 def array(n, k, a):
   if k == 1:
-    print("1 1")
+    print(1, 1)
     return
   l = 0
   r = 0
@@ -105,6 +105,7 @@ def array(n, k, a):
       count_appear[number] = 1
 
   distinct_numbers = set()
+  
   array_l_to_r = []
 
   # Nếu có 5 số 1 liên tiếp ví dụ 1111151 thì l sẽ là 4
@@ -134,20 +135,20 @@ def array(n, k, a):
           if (len(set(array_l_to_r)) == k):
             l += 1
           else:
-            print(str(l + 1) + " " + str(r))
+            print(l + 1, r)
             return
         # Ngược lại thì return luôn về kết quả
         else:
-          print(str(l + 1) + " " + str(r))
+          print(l + 1, r)
           return
             
-  print("-1 -1")   
+  print(-1, -1)    
 
    
 # Input
 nk = list(map(int, input().split()))
-n = nk[0] # the number of positive number
-k = nk[1] # the number of distinct number
+n = nk[0] # the number of positive numbers
+k = nk[1] # the number of distinct numbers
 #  [x, y]
 a = list(map(int, input().split())) # the positive numbers
 

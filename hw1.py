@@ -164,84 +164,30 @@
 
 # Vitaly and Strings
 
-# def vitaly_and_string(s1, s2):
-#   chars_s1 = list(s1)
-#   chars_s2 = list(s2)
-#   len_s1 = len(chars_s1)
-#   len_s2 = len(chars_s2)
-#   if (
-#     len_s1 != len_s2 or
-#     s1 == s2 or
-#     any(char1.isupper() for char1 in s1) or
-#     any(char2.isupper() for char2 in s2)
-#   ):
-#     print("No such string")
-#     return
-#   current_index = 0
-#   potential_have = False
-#   for index in range(len_s1):
-#     ascii_char_s1 = ord(chars_s1[current_index])
-#     ascii_char_s2 = ord(chars_s2[current_index])
-#     if (abs(ascii_char_s2 - ascii_char_s1) == 1):
-#       current_index = index + 1
-#       if (potential_have == False):
-#         potential_have = True
-#       else:
-#         print(s1[:current_index] + chr(ascii_char_s1 + 1) + s1[current_index + 1:])
-#         return
-#     elif ((ascii_char_s2 - ascii_char_s1) > 1):
-#       print(s1[:current_index] + chr(ascii_char_s1 + 1) + s1[current_index + 1:])
-#       return
-#     else:
-#       if (potential_have):
-#         if (ascii_char_s1 < 122):
-#           print(s1[:current_index] + chr(ascii_char_s1 + 1) + s1[current_index + 1:])
-#           return
-#         else:
-#           if (ascii_char_s1 > 97):
-#             if (ascii_char_s1 < ascii_char_s2):
-#               print(s2[:current_index] + chr(ascii_char_s1 - 1) + s2[current_index + 1:])
-#               return
-#             else:
-#               if (ascii_char_s2 > 97):
-#                 print(s2[:current_index] + chr(ascii_char_s2 - 1) + s2[current_index + 1:])
-#                 return
-#       current_index = index + 1
+def vitaly_and_string(s1, s2):
+  chars_s1 = list(s1)
+  chars_s2 = list(s2)
+  for i in range(len(s1) - 1, -1, -1):
+    if s1[i] == 'z':
+        s2[i] = 'a'
+    else:
+        s1[i] = chr(ord(s1[i]) + 1)
+        break
+ 
+  print(s1 if s1 != s2 else "No such string")   
 
+# Input
+s1 = str(input())
+s2 = str(input())
 
-#   print("No such string")
-
-# # Input
-# s1 = str(input())
-# s2 = str(input())
-
-# # Run and get output
-# vitaly_and_string(s1, s2)
+# Run and get output
+vitaly_and_string(s1, s2)
 
 # def arrays(s1_len, s2_len, sub_s1, sub_s2, s1, s2):
-#   try:
-#     if (s2[s2_len - sub_s2] and s1[s1_len - sub_s2]):
-#       min_sub_s2 = s2[s2_len - sub_s2]
-#       max_s1_index_less_than_min_sub_2 = 0
-#       for index in range(s1_len):
-#         if (s1[index] < min_sub_s2):
-#           max_s1_index_less_than_min_sub_2 = index
-#       if (max_s1_index_less_than_min_sub_2 > 0):
-#         if (max_s1_index_less_than_min_sub_2 + 1 >= sub_s1):
-#           print("YES")
-#           return
-#       else:
-#         if (
-#           s1[max_s1_index_less_than_min_sub_2] < min_sub_s2 and
-#           max_s1_index_less_than_min_sub_2 + 1 >= sub_s1
-#         ):
-#             print("YES")
-#             return
-#   except:
+#   if (s1[sub_s1 - 1] < s2[s2_len - sub_s2]):
+#     print("YES")
+#   else:
 #     print("NO")
-#     return
-
-#   print("NO")
 
 # # Input
 # ss_len = list(map(int, input().split()))
@@ -283,30 +229,30 @@
 # # Run and get output
 # big_segment(list_segment)
 
-def big_segment(list_segment):
-  if (len(list_segment) <= 1):
-    print(1)
-    return
-  min = list_segment[0][0]
-  max = list_segment[0][1]
-  for segment in list_segment:
-    if (segment[0] < min):
-      min = segment[0]
-    if (segment[1] > max):
-      max = segment[1]
-  for index in range(len(list_segment)):
-    if ((list_segment[index][0] == min) and (list_segment[index][1] == max)):
-      print(index + 1)
-      return
-  print(-1)
+# def big_segment(list_segment):
+#   if (len(list_segment) <= 1):
+#     print(1)
+#     return
+#   min = list_segment[0][0]
+#   max = list_segment[0][1]
+#   for segment in list_segment:
+#     if (segment[0] < min):
+#       min = segment[0]
+#     if (segment[1] > max):
+#       max = segment[1]
+#   for index in range(len(list_segment)):
+#     if ((list_segment[index][0] == min) and (list_segment[index][1] == max)):
+#       print(index + 1)
+#       return
+#   print(-1)
 
-# Input
-list_segment = []
-num_segment = int(input())
-for index in range(num_segment):
-  segment = list(map(int, input().split()))
-  list_segment.append(segment)
+# # Input
+# list_segment = []
+# num_segment = int(input())
+# for index in range(num_segment):
+#   segment = list(map(int, input().split()))
+#   list_segment.append(segment)
 
-# Run and get output
-big_segment(list_segment)
+# # Run and get output
+# big_segment(list_segment)
 
