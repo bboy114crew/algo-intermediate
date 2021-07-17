@@ -155,35 +155,68 @@
 # # Run and get output
 # array(n, k, a)
 
-# Sereja and Dima
-def sereja_and_Dima(n, a):
-  r = len(a) - 1
+# # Sereja and Dima
+# def sereja_and_Dima(n, a):
+#   r = len(a) - 1
+#   l = 0
+
+#   sereja_score = 0
+#   dima_score = 0
+
+#   for i in range(len(a)):
+#     if (i % 2 == 0):
+#       if (a[l] > a[r]):
+#         sereja_score += a[l]
+#         l += 1
+#       else:
+#         sereja_score += a[r]
+#         r -= 1
+#     else:
+#       if (a[l] > a[r]):
+#         dima_score += a[l]
+#         l += 1
+#       else:
+#         dima_score += a[r]
+#         r -= 1
+
+#   print(sereja_score, dima_score)
+
+# # Input
+# n = int(input())
+# a = list(map(int, input().split()))
+
+# # Run and get output
+# sereja_and_Dima(n, a)
+
+# Approximating a Constant Range
+def approximating_a_constant_range(n, a):
   l = 0
+  r = 0
 
-  sereja_score = 0
-  dima_score = 0
+  max_range = r - l + 1
+  distinct_number = set()
+  distinct_number.add(a[l])
 
-  for i in range(len(a)):
-    if (i % 2 == 0):
-      if (a[l] > a[r]):
-        sereja_score += a[l]
-        l += 1
-      else:
-        sereja_score += a[r]
-        r -= 1
+  while (l < n and r < n - 1):
+    r += 1
+    distinct_number.add(a[r])
+    if (len(distinct_number) <= 2):
+      max_range = max(max_range, r - l + 1)
     else:
-      if (a[l] > a[r]):
-        dima_score += a[l]
-        l += 1
-      else:
-        dima_score += a[r]
-        r -= 1
+      k = r - 2
+      while (k < r and k >= l):
+        if (a[k] != a[r - 1]):
+          l = k + 1
+          distinct_number.remove(a[k])
+          break
+        else:
+          k = k - 1
 
-  print(sereja_score, dima_score)
+  print(max_range)
 
 # Input
 n = int(input())
 a = list(map(int, input().split()))
 
 # Run and get output
-sereja_and_Dima(n, a)
+approximating_a_constant_range(n, a)
