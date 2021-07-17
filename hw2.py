@@ -90,67 +90,100 @@
 # dressem_in_vests(n, m, x, y, a, b)
 
 # Array
-def array(n, k, a):
-  if k == 1:
-    print(1, 1)
-    return
-  l = 0
-  r = 0
+# def array(n, k, a):
+#   if k == 1:
+#     print(1, 1)
+#     return
+#   l = 0
+#   r = 0
 
-  count_appear = {}
-  for number in a:
-    if number in count_appear:
-      count_appear[number] += 1
-    else:
-      count_appear[number] = 1
+#   count_appear = {}
+#   for number in a:
+#     if number in count_appear:
+#       count_appear[number] += 1
+#     else:
+#       count_appear[number] = 1
 
-  distinct_numbers = set()
+#   distinct_numbers = set()
   
-  array_l_to_r = []
+#   array_l_to_r = []
 
-  # Nếu có 5 số 1 liên tiếp ví dụ 1111151 thì l sẽ là 4
-  while (l < count_appear[a[0]] and n > 1):
-    if (a[0] == a[l + 1]):
-      l += 1
-    else:
-      break
+#   # Nếu có 5 số 1 liên tiếp ví dụ 1111151 thì l sẽ là 4
+#   while (l < count_appear[a[0]] and n > 1):
+#     if (a[0] == a[l + 1]):
+#       l += 1
+#     else:
+#       break
   
-  while (l < n and r < n):
-    distinct_numbers.add(a[r])
+#   while (l < n and r < n):
+#     distinct_numbers.add(a[r])
 
-    # Dãy số trong đoạn [l, r]
-    if (r >= l):
-      array_l_to_r.append(a[r])
+#     # Dãy số trong đoạn [l, r]
+#     if (r >= l):
+#       array_l_to_r.append(a[r])
 
-    r += 1
+#     r += 1
 
-    # Cho đến khi có đủ k số riêng biệt trong đoạn [l, r]
-    if (len(distinct_numbers) == k):
-      while (l < r):
-        copy_array = [*array_l_to_r]
-        copy_array.remove(a[l])
-        # Nếu sau khi remove a[l] khỏi array trong đoạn [l, r] mà vẫn còn phần tử có giá trị = a[l] trong array thì remove a[l] và tăng l lên 1
-        if (a[l] in copy_array):
-          array_l_to_r.remove(a[l])
-          if (len(set(array_l_to_r)) == k):
-            l += 1
-          else:
-            print(l + 1, r)
-            return
-        # Ngược lại thì return luôn về kết quả
-        else:
-          print(l + 1, r)
-          return
+#     # Cho đến khi có đủ k số riêng biệt trong đoạn [l, r]
+#     if (len(distinct_numbers) == k):
+#       while (l < r):
+#         copy_array = [*array_l_to_r]
+#         copy_array.remove(a[l])
+#         # Nếu sau khi remove a[l] khỏi array trong đoạn [l, r] mà vẫn còn phần tử có giá trị = a[l] trong array thì remove a[l] và tăng l lên 1
+#         if (a[l] in copy_array):
+#           array_l_to_r.remove(a[l])
+#           if (len(set(array_l_to_r)) == k):
+#             l += 1
+#           else:
+#             print(l + 1, r)
+#             return
+#         # Ngược lại thì return luôn về kết quả
+#         else:
+#           print(l + 1, r)
+#           return
             
-  print(-1, -1)    
+#   print(-1, -1)    
 
    
+# # Input
+# nk = list(map(int, input().split()))
+# n = nk[0] # the number of positive numbers
+# k = nk[1] # the number of distinct numbers
+# #  [x, y]
+# a = list(map(int, input().split())) # the positive numbers
+
+# # Run and get output
+# array(n, k, a)
+
+# Sereja and Dima
+def sereja_and_Dima(n, a):
+  r = len(a) - 1
+  l = 0
+
+  sereja_score = 0
+  dima_score = 0
+
+  for i in range(len(a)):
+    if (i % 2 == 0):
+      if (a[l] > a[r]):
+        sereja_score += a[l]
+        l += 1
+      else:
+        sereja_score += a[r]
+        r -= 1
+    else:
+      if (a[l] > a[r]):
+        dima_score += a[l]
+        l += 1
+      else:
+        dima_score += a[r]
+        r -= 1
+
+  print(sereja_score, dima_score)
+
 # Input
-nk = list(map(int, input().split()))
-n = nk[0] # the number of positive numbers
-k = nk[1] # the number of distinct numbers
-#  [x, y]
-a = list(map(int, input().split())) # the positive numbers
+n = int(input())
+a = list(map(int, input().split()))
 
 # Run and get output
-array(n, k, a)
+sereja_and_Dima(n, a)

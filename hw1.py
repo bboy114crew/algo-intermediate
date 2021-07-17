@@ -167,9 +167,9 @@
 def vitaly_and_string(s1, s2):
   chars_s1 = list(s1)
   chars_s2 = list(s2)
-  for i in range(len(s1) - 1, -1, -1):
+  for i in range(len(chars_s1) - 1, -1, -1):
     if s1[i] == 'z':
-        s2[i] = 'a'
+        s1[i] = 'a'
     else:
         s1[i] = chr(ord(s1[i]) + 1)
         break
