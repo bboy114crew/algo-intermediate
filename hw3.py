@@ -17,7 +17,7 @@
 # # Run and get output
 # devu_the_dumb_guy(n, x, c)
 
-# chores
+# Chores
 def chores(n, a, b, h):
   h.sort()
 
