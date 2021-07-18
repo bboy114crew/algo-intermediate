@@ -189,34 +189,105 @@
 # sereja_and_Dima(n, a)
 
 # Approximating a Constant Range
-def approximating_a_constant_range(n, a):
-  l = 0
-  r = 0
+# def approximating_a_constant_range(n, a):
+#   l = 0
+#   r = 0
 
-  max_range = r - l + 1
-  distinct_number = set()
-  distinct_number.add(a[l])
+#   max_range = r - l + 1
+#   distinct_number = set()
+#   distinct_number.add(a[l])
 
-  while (l < n and r < n - 1):
-    r += 1
-    distinct_number.add(a[r])
-    if (len(distinct_number) <= 2):
-      max_range = max(max_range, r - l + 1)
+#   while (l < n and r < n - 1):
+#     r += 1
+#     distinct_number.add(a[r])
+#     if (len(distinct_number) <= 2):
+#       max_range = max(max_range, r - l + 1)
+#     else:
+#       k = r - 2
+#       while (k < r and k >= l):
+#         if (a[k] != a[r - 1]):
+#           l = k + 1
+#           distinct_number.remove(a[k])
+#           break
+#         else:
+#           k = k - 1
+
+#   print(max_range)
+
+# # Input
+# n = int(input())
+# a = list(map(int, input().split()))
+
+# # Run and get output
+# approximating_a_constant_range(n, a)
+
+# Wrath
+def wrath(n, a):
+  l = len(a) - 2
+  r = len(a) - 1
+  people_still_live = n
+  while (r >= 0 and l >= 0):
+    if (r - a[r] <= l):
+      people_still_live -= 1
+      l -= 1
     else:
-      k = r - 2
-      while (k < r and k >= l):
-        if (a[k] != a[r - 1]):
-          l = k + 1
-          distinct_number.remove(a[k])
-          break
-        else:
-          k = k - 1
-
-  print(max_range)
+      if (r - l <= 1):
+        r = l
+        l = r - 1
+      else:
+        r = l + 1
+        l = r - 1
+  print(people_still_live)
 
 # Input
 n = int(input())
 a = list(map(int, input().split()))
 
 # Run and get output
-approximating_a_constant_range(n, a)
+wrath(n, a)
+
+# Alice Bob and Chocolate
+# def alice_bob_and_chocolate(n, a):
+#   l = -1
+#   r = len(a)
+  
+#   alice_total = 0
+#   bob_total = 0
+
+#   if (n == 2):
+#     print(1, 1)
+#     return
+
+#   while (l != r):
+#     if (r - l == 2):
+#       if (alice_total < bob_total):
+#         l += 1
+#         alice_total += a[l]
+#       elif (alice_total > bob_total):
+#         r -= 1
+#         bob_total += a[r]
+#       else:
+#         l += 1
+#         alice_total += a[l]
+#       break
+#     else:
+#       if (alice_total < bob_total):
+#         l += 1
+#         alice_total += a[l]
+#       elif (alice_total > bob_total):
+#         r -= 1
+#         bob_total += a[r]
+#       else:
+#         l += 1
+#         alice_total += a[l]
+#         r -= 1
+#         bob_total += a[r]
+    
+#   print(l + 1, n - 1 - r + 1)
+
+# # Input
+# n = int(input())
+# a = list(map(int, input().split()))
+
+# # Run and get output
+# alice_bob_and_chocolate(n, a)
