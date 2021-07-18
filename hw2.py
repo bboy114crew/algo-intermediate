@@ -223,21 +223,18 @@
 
 # Wrath
 def wrath(n, a):
-  l = len(a) - 2
-  r = len(a) - 1
-  people_still_live = n
-  while (r >= 0 and l >= 0):
-    if (r - a[r] <= l):
-      people_still_live -= 1
-      l -= 1
-    else:
-      if (r - l <= 1):
-        r = l
-        l = r - 1
-      else:
-        r = l + 1
-        l = r - 1
-  print(people_still_live)
+  j = n - 1
+  people_was_killed = 0
+
+  for i in range(n - 1, -1, -1):
+    j = min(j, i)
+    pivot = max(0, i - a[i])
+
+    if j > pivot:
+        people_was_killed += (j - pivot)
+        j = pivot
+
+  print(n - people_was_killed)
 
 # Input
 n = int(input())
