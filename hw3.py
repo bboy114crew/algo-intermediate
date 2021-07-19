@@ -142,14 +142,52 @@
 # # Run and get output
 # pasha_and_tea(n, w, a)
 
-# Towers
-def towers(n, l):
+# # Towers
+# def towers(n, l):
+#   l.sort()
+  
+#   max_l = 1
+#   count = 1
+#   distinct_l = 1
+#   for i in range(n - 1):
+#     if (l[i] == l[i + 1]):
+#       count += 1
+#       max_l = max(max_l, count)
+#     else:
+#       distinct_l += 1
+#       count = 1
+
+#   print(max_l, distinct_l)
+
+  
+# # Input
+# n = int(input())
+# l = list(map(int, input().split()))
+
+# # Run and get output
+# towers(n, l)
+
+# Business Trip
+def business_trip(n, l):
   l.sort()
   
+  max_l = 1
+  count = 1
+  distinct_l = 1
+  for i in range(n - 1):
+    if (l[i] == l[i + 1]):
+      count += 1
+      max_l = max(max_l, count)
+    else:
+      distinct_l += 1
+      count = 1
+
+  print(max_l, distinct_l)
+
   
 # Input
 n = int(input())
 l = list(map(int, input().split()))
 
 # Run and get output
-towers(n, l)
+business_trip(n, l)
