@@ -102,7 +102,15 @@
 
 # GukiZ and Contest
 def gukiz_and_contest(n, a):
-  a.sort()
+  result = []
+  for i in range(n):
+    count = 1
+    for j in range(n):
+      if (a[i] < a[j]):
+        count += 1
+    result.append(count)
+
+  print(*result)
 
 # Input
 n = int(input())
