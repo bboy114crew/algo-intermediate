@@ -198,12 +198,48 @@
 # business_trip(n, l)
 
 # Eight Point Sets
-def eight_point_sets(n, l):
-  l.sort(reverse=True)
+def eight_point_sets(points):
+  fre_x = [False] * (10 ** 6 + 5)
+  fre_y = [False] * (10 ** 6 + 5)
+  distinct_x = []
+  distinct_y = []
+
+  for point in points:
+    x, y = point
+    if not fre_x[x]:
+      fre_x[x] = True
+      distinct_x.append(x)
+    
+    if not fre_y[y]:
+      fre_y[y] = True
+      distinct_y.append(y)
+
+  if len(distinct_x) != 3 or len(distinct_y) != 3:
+    print('ugly')
+    return
+
+  distinct_x.sort()
+  distinct_y.sort()
+  points.sort()
+  index = 0
+
+  for i in range(3):
+    for j in range(3):
+      if i == j == 1:
+        continue
+      if distinct_x[i] == points[index][0] and distinct_y[j] == points[index][1]:
+        index += 1
+      else:
+        print('ugly')
+        return
+
+  print('respectable')
 
 # Input
-n = int(input())
-l = list(map(int, input().split()))
+points = []
+for _ in range(8):
+  x, y = map(int, input().split())
+  points.append((x, y))
 
 # Run and get output
-eight_point_sets(n, l)
+eight_point_sets(points)
