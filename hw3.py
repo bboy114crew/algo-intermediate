@@ -167,27 +167,43 @@
 # # Run and get output
 # towers(n, l)
 
-# Business Trip
-def business_trip(n, l):
-  l.sort()
-  
-  max_l = 1
-  count = 1
-  distinct_l = 1
-  for i in range(n - 1):
-    if (l[i] == l[i + 1]):
-      count += 1
-      max_l = max(max_l, count)
-    else:
-      distinct_l += 1
-      count = 1
+# # Business Trip
+# def business_trip(n, l):
+#   if (n == 0):
+#     print(0)
+#     return
 
-  print(max_l, distinct_l)
+#   l.sort(reverse=True)
 
+#   min_month = 0
+#   total = 0
+
+#   for i in range(len(l)):
+#     total += l[i]
+#     if (total < n):
+#       min_month += 1
+#     else:
+#       break
   
+#   if (min_month + 1 > len(l)):
+#     print(-1)
+#   else:
+#     print(min_month + 1)
+
+# # Input
+# n = int(input())
+# l = list(map(int, input().split()))
+
+# # Run and get output
+# business_trip(n, l)
+
+# Eight Point Sets
+def eight_point_sets(n, l):
+  l.sort(reverse=True)
+
 # Input
 n = int(input())
 l = list(map(int, input().split()))
 
 # Run and get output
-business_trip(n, l)
+eight_point_sets(n, l)
