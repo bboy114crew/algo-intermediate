@@ -100,21 +100,56 @@
 # # Run and get output
 # sort_the_array(n, a)
 
-# GukiZ and Contest
-def gukiz_and_contest(n, a):
-  result = []
-  for i in range(n):
-    count = 1
-    for j in range(n):
-      if (a[i] < a[j]):
-        count += 1
-    result.append(count)
+# # GukiZ and Contest
+# def gukiz_and_contest(n, a):
+#   result = []
+#   for i in range(n):
+#     count = 1
+#     for j in range(n):
+#       if (a[i] < a[j]):
+#         count += 1
+#     result.append(count)
 
-  print(*result)
+#   print(*result)
 
+# # Input
+# n = int(input())
+# a= list(map(int, input().split()))
+
+# # Run and get output
+# gukiz_and_contest(n, a)
+
+# # Pasha and Tea
+# def pasha_and_tea(n, w, a):
+#   a.sort()
+  
+#   x_max_with_w = w / (3*n)
+#   x_max_with_min_w = a[0]
+#   x_max_with_min_m = a[n] / 2
+
+#   result = min(min(x_max_with_w, x_max_with_min_w), x_max_with_min_m) * n * 3
+
+#   print(x_max_with_w, x_max_with_min_w, x_max_with_min_m)
+#   print(result)
+
+
+# # Input
+# nw = list(map(int, input().split()))
+# n = nw[0]
+# w = nw[1]
+# a = list(map(int, input().split()))
+
+# # Run and get output
+# pasha_and_tea(n, w, a)
+
+# Towers
+def towers(n, l):
+  l.sort()
+  
+  
 # Input
 n = int(input())
-a= list(map(int, input().split()))
+l = list(map(int, input().split()))
 
 # Run and get output
-gukiz_and_contest(n, a)
+towers(n, l)
