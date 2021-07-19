@@ -75,19 +75,15 @@ def sort_the_array(n, a):
       if (a[i] < a[i - 1]):
         r = i
         break
-    # print(l, r)
 
     first = []
     first = a[0:l:1]
-    # print('first:', first)
 
     reversed = a[l:r+1:1]
     reversed = reversed[::-1]
-    # print('reversed:', reversed)
 
     last = []
     last = a[r + 1:n:1]
-    # print('last', last)
 
     final = [*first, *reversed, *last]
 
