@@ -41,13 +41,19 @@ def street_parade(cases):
     car_sorted_index = 0
     for i in range(n):
       if (a[i] == n_sorted[car_sorted_index]):
-        sorted_stack.append(a[i])
-
-        if (a[i] + 1 == stack[-1]):
-          car_sorted_index = len(stack)
-          for sub in range(len(stack)):
-            sorted_stack.append(stack.pop())
+        if (len(stack) == 0):
+          sorted_stack.append(a[i])
+          car_sorted_index += 1
         else:
+          sorted_stack.append(a[i])
+          len_stack = len(stack)
+          while (len_stack > 0):
+            if (stack[len_stack - 1] == n_sorted[car_sorted_index] + 1):
+              sorted_stack.append(stack.pop())
+              car_sorted_index += 1
+              len_stack -= 1
+            else:
+              break
           car_sorted_index += 1
       else:
         stack.append(a[i])
