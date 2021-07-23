@@ -122,49 +122,64 @@ import queue
 # # Run and get output
 # throwing_cards_away_i(cases)
 
-# That is Your Queue
-def that_is_your_queue(formula):
-  mass_of_molecules = {
-    'H': 1,
-    'C': 12,
-    'O': 16
-  }
+# # That is Your Queue
+# def that_is_your_queue(formula):
+#   mass_of_molecules = {
+#     'H': 1,
+#     'C': 12,
+#     'O': 16
+#   }
 
-  result = 0
-  current_result = 0
+#   result = 0
+#   current_result = 0
 
-  my_queue = queue.Queue()
+#   my_queue = queue.Queue()
 
-  for i in range(len(formula)):
-    current = formula[i]
-    if (current.isalpha()):
-      if (my_queue.qsize() == 0):
-        result += mass_of_molecules[current]
-        current_result = 0
-      else:
-        current_result += mass_of_molecules[current]
-    elif (current == '('):
-      if (my_queue.qsize() == 0):
-        result += current_result
-        current_result = 0
-      my_queue.put(current)
-      continue
-    elif (current == ')'):
-      my_queue.get()
-      if (my_queue.qsize() == 0 and i == len(formula) - 1):
-        result += current_result
-    else:
-      if (my_queue.qsize() == 0):
-        result += current_result * int(current)
-      else:
-        if (formula[i - 1].isalpha()):
-          current_result += mass_of_molecules[formula[i - 1]] * (int(current) - 1)
-        else:
-          current_result = current_result * int(current)
-  print(result)
+#   for i in range(len(formula)):
+#     current = formula[i]
+#     if (current.isalpha()):
+#       if (my_queue.qsize() == 0):
+#         result += mass_of_molecules[current]
+#         current_result = 0
+#       else:
+#         current_result += mass_of_molecules[current]
+#     elif (current == '('):
+#       if (my_queue.qsize() == 0):
+#         result += current_result
+#         current_result = 0
+#       my_queue.put(current)
+#       continue
+#     elif (current == ')'):
+#       my_queue.get()
+#       if (my_queue.qsize() == 0 and i == len(formula) - 1):
+#         result += current_result
+#     else:
+#       if (my_queue.qsize() == 0):
+#         result += current_result * int(current)
+#       else:
+#         if (formula[i - 1].isalpha()):
+#           current_result += mass_of_molecules[formula[i - 1]] * (int(current) - 1)
+#         else:
+#           current_result = current_result * int(current)
+#   print(result)
+
+# # Input
+# formula = str(input())
+
+# # Run and get output
+# that_is_your_queue(formula)
+
+# Compilers and Parsers
+def compilers_and_parsers(n, cases):
+  for case in cases:
+    print(case)
 
 # Input
-formula = str(input())
+n = int(input())
+cases = []
+for i in range(n):
+  case = str(input())
+  cases.append(case)
 
 # Run and get output
-that_is_your_queue(formula)
+compilers_and_parsers(n, cases)
