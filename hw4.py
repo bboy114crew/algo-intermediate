@@ -171,8 +171,30 @@ import queue
 
 # Compilers and Parsers
 def compilers_and_parsers(n, cases):
+  my_queue = queue.Queue()
+  max_result = 0
   for case in cases:
-    print(case)
+    current_result = 0
+    for index in range(len(case)):
+      if (index == 0 and case[index] == '>'):
+        break
+      if (case[index] == '<'):
+        my_queue.put(case[index])
+      else:
+        if (my_queue.qsize() != 0):
+          my_queue.get()
+          current_result += 2
+          max_result = max(max_result, current_result)
+        else:
+          continue
+    if (my_queue.qsize() != 0):
+      max_result = 0
+      print(max_result)
+      my_queue = queue.Queue()
+      continue
+    print(max_result)
+    max_result = 0
+    my_queue = queue.Queue()
 
 # Input
 n = int(input())
