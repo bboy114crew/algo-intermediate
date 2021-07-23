@@ -95,20 +95,20 @@ import queue
 #     discarded = []
 #     for i in range(n - 1, -1, -1):
 #       stack.append(i)
-    
+
 #     while (len(stack) > 1):
 #       top = stack.pop()
 #       nextTop =  stack.pop()
 #       discarded.append(top + 1)
 #       stack.insert(0, nextTop)
-    
+
 #     remaining = stack[0] + 1
 #     if (len(discarded) == 0):
 #       print('Discarded cards:')
 #     else:
 #       print('Discarded cards:', ', '.join(str(dis) for dis in discarded))
 #     print('Remaining card:', remaining)
-    
+
 # # Input
 # cases = []
 # n = 1
@@ -121,3 +121,50 @@ import queue
 
 # # Run and get output
 # throwing_cards_away_i(cases)
+
+# That is Your Queue
+def that_is_your_queue(formula):
+  mass_of_molecules = {
+    'H': 1,
+    'C': 12,
+    'O': 16
+  }
+
+  result = 0
+  current_result = 0
+
+  my_queue = queue.Queue()
+
+  for i in range(len(formula)):
+    current = formula[i]
+    if (current.isalpha()):
+      if (my_queue.qsize() == 0):
+        result += mass_of_molecules[current]
+        current_result = 0
+      else:
+        current_result += mass_of_molecules[current]
+    elif (current == '('):
+      if (my_queue.qsize() == 0):
+        result += current_result
+        current_result = 0
+      my_queue.put(current)
+      continue
+    elif (current == ')'):
+      my_queue.get()
+      if (my_queue.qsize() == 0 and i == len(formula) - 1):
+        result += current_result
+    else:
+      if (my_queue.qsize() == 0):
+        result += current_result * int(current)
+      else:
+        if (formula[i - 1].isalpha()):
+          current_result += mass_of_molecules[formula[i - 1]] * (int(current) - 1)
+        else:
+          current_result = current_result * int(current)
+  print(result)
+
+# Input
+formula = str(input())
+
+# Run and get output
+that_is_your_queue(formula)
