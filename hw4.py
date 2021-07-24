@@ -123,51 +123,55 @@ import queue
 # throwing_cards_away_i(cases)
 
 # # That is Your Queue
-# def that_is_your_queue(formula):
-#   mass_of_molecules = {
-#     'H': 1,
-#     'C': 12,
-#     'O': 16
-#   }
+# def that_is_your_queue(cases):
+#   t = 0
+#   p = 1
+#   c = 1
 
-#   result = 0
-#   current_result = 0
-
-#   my_queue = queue.Queue()
-
-#   for i in range(len(formula)):
-#     current = formula[i]
-#     if (current.isalpha()):
-#       if (my_queue.qsize() == 0):
-#         result += mass_of_molecules[current]
-#         current_result = 0
+#   for index in range(len(cases)):
+#     p = cases[index]["p"]
+#     c = cases[index]["c"]
+#     n = cases[index]["n"]
+#     case_title = 'Case ' + str(index + 1) + ':'
+#     print(case_title)
+#     my_queue = []
+#     for i in range(min(int(p), int(c))):
+#       my_queue.append(str(i + 1))
+#     for command in n:
+#       if (command == "N"):
+#         current = my_queue[0]
+#         print(current)
+#         my_queue.pop(0)
+#         my_queue.append(current)
 #       else:
-#         current_result += mass_of_molecules[current]
-#     elif (current == '('):
-#       if (my_queue.qsize() == 0):
-#         result += current_result
-#         current_result = 0
-#       my_queue.put(current)
-#       continue
-#     elif (current == ')'):
-#       my_queue.get()
-#       if (my_queue.qsize() == 0 and i == len(formula) - 1):
-#         result += current_result
-#     else:
-#       if (my_queue.qsize() == 0):
-#         result += current_result * int(current)
-#       else:
-#         if (formula[i - 1].isalpha()):
-#           current_result += mass_of_molecules[formula[i - 1]] * (int(current) - 1)
-#         else:
-#           current_result = current_result * int(current)
-#   print(result)
+#         current = command.split()[1]
+#         if (current in my_queue):
+#           my_queue.remove(current)
+#         my_queue.insert(0, current)
 
 # # Input
-# formula = str(input())
+# cases = []
+
+# while True:
+#   pc = str(input()).split()
+#   p = pc[0]
+#   c = pc[1]
+  
+#   if (p == '0' and c == '0'):
+#     break
+#   else:
+#     case = {}
+#     case["p"] = p
+#     case["c"] = c
+#     commands = []
+#     for i in range(int(c)):
+#       command = input()
+#       commands.append(command)
+#     case["n"] = commands
+#     cases.append(case)
 
 # # Run and get output
-# that_is_your_queue(formula)
+# that_is_your_queue(cases)
 
 # # Compilers and Parsers
 # def compilers_and_parsers(n, cases):
