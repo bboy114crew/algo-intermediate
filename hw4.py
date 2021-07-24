@@ -169,39 +169,54 @@ import queue
 # # Run and get output
 # that_is_your_queue(formula)
 
-# Compilers and Parsers
-def compilers_and_parsers(n, cases):
-  my_queue = queue.Queue()
-  max_result = 0
-  for case in cases:
-    current_result = 0
-    for index in range(len(case)):
-      if (index == 0 and case[index] == '>'):
-        break
-      if (case[index] == '<'):
-        my_queue.put(case[index])
-      else:
-        if (my_queue.qsize() != 0):
-          my_queue.get()
-          current_result += 2
-          max_result = max(max_result, current_result)
-        else:
-          continue
-    if (my_queue.qsize() != 0):
-      max_result = 0
-      print(max_result)
-      my_queue = queue.Queue()
-      continue
-    print(max_result)
-    max_result = 0
-    my_queue = queue.Queue()
+# # Compilers and Parsers
+# def compilers_and_parsers(n, cases):
+#   for case in cases:
+#     n = len(case)
 
-# Input
-n = int(input())
-cases = []
-for i in range(n):
-  case = str(input())
-  cases.append(case)
+#     '''
+#     key points:
+#       - every '<' inside a VALID prefix MUST be paired with a '>' which is (i) inside THIS prefix and (ii) on the right of this '<'. 
+#         => "<<>" is not a valid prefix, however "<<>>" or "<><>" is.
+#         => from this definition, we can know that a prefix is not valid whenever we encounter a '>' and cannot pair this '>' with any '<' on the left.
+#         => we will use a stack to store every '<' we encounter, if this stack is pushed with some '<' and later is empty, we know that at that point, the current prefix is still valid.
 
-# Run and get output
-compilers_and_parsers(n, cases)
+#     some test cases:
+#     <<>> => 4
+#     <><> => 4
+#     <<<> => 0
+#     <<><<>> => 0
+#     '''
+#     openings = []
+
+#     longest_length = 0
+#     paired = 0
+#     i = 0
+#     while i < n:
+#       if case[i] == '<':
+#         openings.append('<')
+#       else:
+#         if len(openings) == 0: # cannot find any '<' on the left to pair with this '>' -> this prefix is INVALID no matter what's behind.
+#           break
+#         else:
+#           # pair the latest '<' with this '>'.
+#           openings.pop()
+#           paired += 1
+
+#           # when all '<' is paired -> the stack is empty -> we know the current prefix is VALID -> the longest VALID prefix should at least contain this current prefix.
+#           if len(openings) == 0:
+#             longest_length += paired * 2
+#             paired = 0 # reset this counter to 0 to start finding the next potential substring, which might not exist, of the longest VALID prefix.
+#       i += 1
+      
+#     print(longest_length)
+
+# # Input
+# n = int(input())
+# cases = []
+# for i in range(n):
+#   case = str(input())
+#   cases.append(case)
+
+# # Run and get output
+# compilers_and_parsers(n, cases)
