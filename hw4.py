@@ -156,7 +156,7 @@ import queue
 #   pc = str(input()).split()
 #   p = pc[0]
 #   c = pc[1]
-  
+
 #   if (p == '0' and c == '0'):
 #     break
 #   else:
@@ -180,7 +180,7 @@ import queue
 
 #     '''
 #     key points:
-#       - every '<' inside a VALID prefix MUST be paired with a '>' which is (i) inside THIS prefix and (ii) on the right of this '<'. 
+#       - every '<' inside a VALID prefix MUST be paired with a '>' which is (i) inside THIS prefix and (ii) on the right of this '<'.
 #         => "<<>" is not a valid prefix, however "<<>>" or "<><>" is.
 #         => from this definition, we can know that a prefix is not valid whenever we encounter a '>' and cannot pair this '>' with any '<' on the left.
 #         => we will use a stack to store every '<' we encounter, if this stack is pushed with some '<' and later is empty, we know that at that point, the current prefix is still valid.
@@ -212,7 +212,7 @@ import queue
 #             longest_length += paired * 2
 #             paired = 0 # reset this counter to 0 to start finding the next potential substring, which might not exist, of the longest VALID prefix.
 #       i += 1
-      
+
 #     print(longest_length)
 
 # # Input
@@ -224,3 +224,36 @@ import queue
 
 # # Run and get output
 # compilers_and_parsers(n, cases)
+
+# Processing Queries
+def processing_queries(n, b, tds):
+  q = queue.Queue()
+  processing = 0
+
+  for i in range(n):
+      td = tds[i].split()
+
+      t = int(td[0])
+      d = int(td[1])
+
+      while q.qsize() != 0 and t >= q.queue[0]:
+          q.get()
+
+      if q.qsize() <= b:
+          processing = max(t, processing) + d
+          q.put(processing)
+          print(processing)
+      else:
+          print(-1)
+
+# Input
+nb = list(map(int, input().split()))
+n = nb[0]
+b = nb[1]
+tds = []
+for i in range(n):
+  td = str(input())
+  tds.append(td)
+
+# Run and get output
+processing_queries(n, b, tds)
