@@ -190,25 +190,26 @@ import queue
 #     <><> => 4
 #     <<<> => 0
 #     <<><<>> => 0
+#     Because all item in stack is '<' so instead of store all '<' in stack we just increase number of 'v'
 #     '''
-#     openings = []
+#     openings = 0
 
 #     longest_length = 0
 #     paired = 0
 #     i = 0
 #     while i < n:
 #       if case[i] == '<':
-#         openings.append('<')
+#         openings += 1
 #       else:
-#         if len(openings) == 0: # cannot find any '<' on the left to pair with this '>' -> this prefix is INVALID no matter what's behind.
+#         if openings == 0: # cannot find any '<' on the left to pair with this '>' -> this prefix is INVALID no matter what's behind.
 #           break
 #         else:
 #           # pair the latest '<' with this '>'.
-#           openings.pop()
+#           openings -= 1
 #           paired += 1
 
 #           # when all '<' is paired -> the stack is empty -> we know the current prefix is VALID -> the longest VALID prefix should at least contain this current prefix.
-#           if len(openings) == 0:
+#           if openings == 0:
 #             longest_length += paired * 2
 #             paired = 0 # reset this counter to 0 to start finding the next potential substring, which might not exist, of the longest VALID prefix.
 #       i += 1
@@ -226,51 +227,135 @@ import queue
 # compilers_and_parsers(n, cases)
 
 # Processing Queries
-def processing_queries(n, b, tds):
-  q = queue.Queue()
-  processing = 0
+# def processing_queries(n, b, tds):
+#   q = queue.Queue()
+#   processing = 0
 
-  '''
-  queue processing
-  if t the moment of time when the query appears >= front of queue => dequeue this
-  repeat above action till queue processing empty
+#   '''
+#   queue processing
+#   if t the moment of time when the query appears >= front of queue => dequeue this
+#   repeat above action till queue processing empty
 
-  if can dequeue any processing and queue size <= max queue capacity
-  print time excute of query
+#   if can dequeue any processing and queue size <= max queue capacity
+#   print time excute of query
 
-  processing = processing + d
+#   processing = processing + d
 
-  and enqueue this processing
+#   and enqueue this processing
 
-  if queue full i can't dequeue any processing => print -1
+#   if queue full i can't dequeue any processing => print -1
 
-  '''
+#   '''
 
-  for i in range(n):
-    td = tds[i].split()
+#   for i in range(n):
+#     td = tds[i].split()
 
-    t = int(td[0])
-    d = int(td[1])
+#     t = int(td[0])
+#     d = int(td[1])
 
-    while (q.qsize() != 0 and t >= q.queue[0]):
-      q.get()
+#     while (q.qsize() != 0 and t >= q.queue[0]):
+#       q.get()
 
-    if (q.qsize <= b):
-      processing = max(t, processing) + d
-      q.put(processing)
-      print(processing)
-    else:
-      print(-1)
+#     if (q.qsize <= b):
+#       processing = max(t, processing) + d
+#       q.put(processing)
+#       print(processing)
+#     else:
+#       print(-1)
 
 
+# # Input
+# nb = list(map(int, input().split()))
+# n = nb[0]
+# b = nb[1]
+# tds = []
+# for i in range(n):
+#   td = str(input())
+#   tds.append(td)
+
+# # Run and get output
+# processing_queries(n, b, tds)
+
+# Ferry Loading III
+class Car:
+  def __init__(self, _id, _arrival_time):
+    self.id = _id
+    self.arrival_time = _arrival_time
+
+def ferry_loading_iii(c, cases):
+  for j in range(c):
+    n = cases[j]['n']
+    t = cases[j]['t']
+    m = cases[j]['m']
+    cars_arrival_time = cases[j]['cars']
+
+    car_side = [[] , []]
+    car_side[0] = queue.Queue()
+    car_side[1] = queue.Queue()
+
+    res = [0] * 10005
+
+    for i in range(m):
+      arrived, at_bank = cars_arrival_time[i]
+        
+      if at_bank == "left":
+        car_side[0].put(Car(i, int(arrived)))
+      else:
+        car_side[1].put(Car(i, int(arrived)))
+     
+    cur_time, cur_side = 0, 0
+    waiting = (not car_side[0].empty()) + (not car_side[1].empty())
+     
+    while waiting:
+      if waiting == 1:
+        nextTime = car_side[1].queue[0].arrival_time if car_side[0].empty() else car_side[0].queue[0].arrival_time
+      else:
+        nextTime = min(car_side[0].queue[0].arrival_time, car_side[1].queue[0].arrival_time)
+        
+      cur_time = max(cur_time, nextTime)
+      
+      carried = 0
+        
+      while not car_side[cur_side].empty():
+        car = car_side[cur_side].queue[0]
+        if car.arrival_time <= cur_time and carried < n:
+          res[car.id] = cur_time + t
+          carried += 1
+          car_side[cur_side].get()
+        else:
+          break
+        
+      cur_time += t
+      cur_side = 1 - cur_side
+      waiting = (not car_side[0].empty()) + (not car_side[1].empty())
+     
+    for i in range(m):
+      print(res[i])
+    
+    if j < c - 1:
+        print()
+      
 # Input
-nb = list(map(int, input().split()))
-n = nb[0]
-b = nb[1]
-tds = []
-for i in range(n):
-  td = str(input())
-  tds.append(td)
+c = int(input())
+
+cases = []
+
+for _ in range(c):
+  case = {}
+  ntm = input().split()
+  n = int(ntm[0])
+  t = int(ntm[1])
+  m = int(ntm[2])
+  case['n'] = n
+  case['t'] = t
+  case['m'] = m
+  cars = []
+  for j in range(m):
+    car_input = input().split()
+    car = (int(car_input[0]), car_input[1])
+    cars.append(car)
+  case['cars'] = cars
+  cases.append(case)
 
 # Run and get output
-processing_queries(n, b, tds)
+ferry_loading_iii(c, cases)
