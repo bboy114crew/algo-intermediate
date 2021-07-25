@@ -230,21 +230,38 @@ def processing_queries(n, b, tds):
   q = queue.Queue()
   processing = 0
 
+  '''
+  queue processing
+  if t the moment of time when the query appears >= front of queue => dequeue this
+  repeat above action till queue processing empty
+
+  if can dequeue any processing and queue size <= max queue capacity
+  print time excute of query
+
+  processing = processing + d
+
+  and enqueue this processing
+
+  if queue full i can't dequeue any processing => print -1
+
+  '''
+
   for i in range(n):
-      td = tds[i].split()
+    td = tds[i].split()
 
-      t = int(td[0])
-      d = int(td[1])
+    t = int(td[0])
+    d = int(td[1])
 
-      while q.qsize() != 0 and t >= q.queue[0]:
-          q.get()
+    while (q.qsize() != 0 and t >= q.queue[0]):
+      q.get()
 
-      if q.qsize() <= b:
-          processing = max(t, processing) + d
-          q.put(processing)
-          print(processing)
-      else:
-          print(-1)
+    if (q.qsize <= b):
+      processing = max(t, processing) + d
+      q.put(processing)
+      print(processing)
+    else:
+      print(-1)
+
 
 # Input
 nb = list(map(int, input().split()))
