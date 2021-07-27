@@ -80,87 +80,125 @@ import queue
 
 # bfs_shortest_reach(q)
 
-# Validate The Maze
-def validate_the_maze(m, n, case, matrix):
-  len_case = len(case)
+# # Validate The Maze
+# def validate_the_maze(m, n, case, matrix):
+#   len_case = len(case)
 
-  sx, sy = 0, 0  # first maze gate
-  ex, ey = 0, 0  # second maze gate
+#   sx, sy = 0, 0  # first maze gate
+#   ex, ey = 0, 0  # second maze gate
 
-  max_openings = 0 # it must equal 2
-  
-  # get two gate 
-  for i in range(len_case):
-    p1, p2 = case[i]
-    if (p1 == 0 or p2 == 0 or p1 == m - 1 or p2 == n - 1):
-      max_openings += 1
-      if (max_openings > 2):
-        print("invalid")
-        return
-      else:
-        if (sx == 0 and sy == 0):
-          sx = p1
-          sy = p2
-        else:
-          ex = p1
-          ey = p2
+#   max_openings = 0 # it must equal 2
 
-  if (max_openings < 2):
-    print("invalid")
-    return
-  
-  # # visited point
-  vis = [[False for j in range(n)] for i in range(m)]
-  vis[sx][sy] = True
+#   # get two gate
+#   for i in range(len_case):
+#     p1, p2 = case[i]
+#     if (p1 == 0 or p2 == 0 or p1 == m - 1 or p2 == n - 1):
+#       max_openings += 1
+#       if (max_openings > 2):
+#         print("invalid")
+#         return
+#       else:
+#         if (sx == 0 and sy == 0):
+#           sx = p1
+#           sy = p2
+#         else:
+#           ex = p1
+#           ey = p2
 
-  # queue for store current point
+#   if (max_openings < 2):
+#     print("invalid")
+#     return
+
+#   # # visited point
+#   vis = [[False for j in range(n)] for i in range(m)]
+#   vis[sx][sy] = True
+
+#   # queue for store current point
+#   q = queue.Queue()
+#   q.put((sx, sy))
+
+#   while not q.empty():
+#     x, y = q.get()
+
+#     # points right arround current point
+#     arrounds = []
+#     arrounds.append((x + 1, y))
+#     arrounds.append((x, y + 1))
+#     arrounds.append((x - 1, y))
+#     arrounds.append((x, y - 1))
+
+#     for arround in arrounds:
+#       a_x, a_y = arround
+#       # check if point inside matrix
+#       if (a_x >= 0 and a_y >= 0 and a_x < m and a_y < n):
+#         # check if point not visited and is posible move
+#         if ((not vis[a_x][a_y]) and matrix[a_x][a_y] == '.'):
+#           vis[a_x][a_y] = True
+#           q.put(arround)
+
+#   if (vis[ex][ey]):
+#     print('valid')
+#   else:
+#     print('invalid')
+
+# # Input
+# t = int(input())
+
+# cases = []
+# matrixs = []
+# for i in range(t):
+#   mn = list(map(int, input().split()))
+#   m = mn[0]
+#   n = mn[1]
+#   case = []
+#   matrix = [[] for index in range(m)]
+#   for j in range(m):
+#     row = input()
+#     row = [x for x in row]
+#     matrix[j] = row
+#     for k in range(len(row)):
+#       if (row[k] == '.'):
+#         case.append((j, k))
+#   cases.append(case)
+#   matrixs.append(matrix)
+
+#   # Run and output
+#   validate_the_maze(m, n, cases[i], matrixs[i])
+
+# Dhoom 4
+
+def dhoom_4(s_key, b_secret_key, num_b_keys, b_keys):
+  MAX = 100000 + 1
+  dist = [-1] * MAX
+
   q = queue.Queue()
-  q.put((sx, sy))
+
+  q.put(s_key)
+  dist[s_key] = 0
 
   while not q.empty():
-    x, y = q.get()
+    for key in b_keys:
+      new_key = (u * key) % 100000
+      if dist[new_key] == -1:
+        dist[new_key] = dist[u] + 1
+        q.put(new_key)
 
-    # points right arround current point
-    arrounds = []
-    arrounds.append((x + 1, y))
-    arrounds.append((x, y + 1))
-    arrounds.append((x - 1, y))
-    arrounds.append((x, y - 1))
+        if (new_key == b_secret_key):
+          print(dist[b_secret_key])
+          return
 
-    for arround in arrounds:
-      a_x, a_y = arround
-      # check if point inside matrix
-      if (a_x >= 0 and a_y >= 0 and a_x < m and a_y < n):
-        # check if point not visited and is posible move
-        if ((not vis[a_x][a_y]) and matrix[a_x][a_y] == '.'):
-          vis[a_x][a_y] = True
-          q.put(arround)
-
-  if (vis[ex][ey]):
-    print('valid')
-  else:
-    print('invalid')
+  print(dist[b_secret_key])
 
 # Input
-t = int(input())
+ab = list(map(int, input().split()))
+s_key = ab[0]
+b_secret_key = ab[1]
 
-cases = []
-matrixs = []
-for i in range(t):
-  mn = list(map(int, input().split()))
-  m = mn[0]
-  n = mn[1]
-  case = []
-  matrix = [[] for index in range(m)]
-  for j in range(m):
-    row = input()
-    row = [x for x in row]
-    matrix[j] = row
-    for k in range(len(row)):
-      if (row[k] == '.'):
-        case.append((j, k))
-  cases.append(case)
-  matrixs.append(matrix)
+num_b_keys = int(input())
 
-  # Run and output
-  validate_the_maze(m, n, cases[i], matrixs[i])
+b_keys = list(map(int, input().split()))
+
+# Run and output
+dhoom_4(s_key, b_secret_key, num_b_keys, b_keys)
+
+
