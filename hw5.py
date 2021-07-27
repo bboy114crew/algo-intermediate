@@ -165,40 +165,98 @@ import queue
 #   # Run and output
 #   validate_the_maze(m, n, cases[i], matrixs[i])
 
-# Dhoom 4
+# # Dhoom 4
+# def dhoom_4(s_key, b_secret_key, num_b_keys, b_keys):
+#   MAX = 100000 + 1
+#   dist = [-1] * MAX
 
-def dhoom_4(s_key, b_secret_key, num_b_keys, b_keys):
-  MAX = 100000 + 1
-  dist = [-1] * MAX
+#   q = queue.Queue()
 
+#   q.put(s_key)
+#   dist[s_key] = 0
+
+#   while not q.empty():
+#     u = q.get()
+#     for key in b_keys:
+#       new_key = (u * key) % 100000
+#       if dist[new_key] == -1:
+#         dist[new_key] = dist[u] + 1
+#         q.put(new_key)
+
+#         if (new_key == b_secret_key):
+#           print(dist[b_secret_key])
+#           return
+
+#   print(dist[b_secret_key])
+
+# # Input
+# ab = list(map(int, input().split()))
+# s_key = ab[0]
+# b_secret_key = ab[1]
+
+# num_b_keys = int(input())
+
+# b_keys = list(map(int, input().split()))
+
+# # Run and output
+# dhoom_4(s_key, b_secret_key, num_b_keys, b_keys)
+
+# Guilty Prince
+def guilty_prince(m, n, start, matrixs, index):
+  # m is number of row
+  # n is number of column
+  sx, sy = start  # first maze gate
+
+  # # visited point
+  vis = [[False for j in range(n)] for i in range(m)]
+  vis[sx][sy] = True
+
+  # queue for store current point
   q = queue.Queue()
-
-  q.put(s_key)
-  dist[s_key] = 0
-
+  q.put((sx, sy))
+  result = 1
   while not q.empty():
-    for key in b_keys:
-      new_key = (u * key) % 100000
-      if dist[new_key] == -1:
-        dist[new_key] = dist[u] + 1
-        q.put(new_key)
+    x, y = q.get()
 
-        if (new_key == b_secret_key):
-          print(dist[b_secret_key])
-          return
+    # points right arround current point
+    arrounds = []
+    arrounds.append((x + 1, y))
+    arrounds.append((x, y + 1))
+    arrounds.append((x - 1, y))
+    arrounds.append((x, y - 1))
 
-  print(dist[b_secret_key])
+    for arround in arrounds:
+      a_x, a_y = arround
+      # check if point inside matrix
+      if (a_x >= 0 and a_y >= 0 and a_x < m and a_y < n):
+        # check if point not visited and is posible move
+        if ((not vis[a_x][a_y]) and matrix[a_x][a_y] == '.'):
+          vis[a_x][a_y] = True
+          result += 1
+          q.put(arround)
+  result = 'Case ' + str(index) + ': ' + str(result)
+  print(result)
 
 # Input
-ab = list(map(int, input().split()))
-s_key = ab[0]
-b_secret_key = ab[1]
+t = int(input())
 
-num_b_keys = int(input())
+matrixs = []
+starts = []
 
-b_keys = list(map(int, input().split()))
+for i in range(t):
+  mn = list(map(int, input().split()))
+  m = mn[1]
+  n = mn[0]
+  matrix = [[] for index in range(m)]
+  for j in range(m):
+    row = input()
+    row = [x for x in row]
+    matrix[j] = row
+    for k in range(len(row)):
+      if (row[k] == '@'):
+        starts.append((j, k))
+        break
+  matrixs.append(matrix)
 
-# Run and output
-dhoom_4(s_key, b_secret_key, num_b_keys, b_keys)
-
-
+  # Run and output
+  guilty_prince(m, n, starts[i], matrixs[i], i + 1)
