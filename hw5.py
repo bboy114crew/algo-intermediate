@@ -261,53 +261,130 @@ import queue
 #   # Run and output
 #   guilty_prince(m, n, starts[i], matrixs[i], i + 1)
 
-# Kefa and Park
-def kefa_and_park(n, m, a, edges):
-  MAX = 100000 + 5
-  cat = [0] * MAX
-  visited = [False] * MAX
-  graph = [[] for _ in range(MAX)]
+# # Kefa and Park
+# def kefa_and_park(n, m, a, edges):
+#   MAX = 100000 + 5
+#   cat = [0] * MAX
+#   visited = [False] * MAX
+#   graph = [[] for _ in range(MAX)]
 
-  for edge in edges:
-    u, v = edge
-    graph[u - 1].append(v - 1)
-    graph[v - 1].append(u - 1)
+#   for edge in edges:
+#     u, v = edge
+#     graph[u - 1].append(v - 1)
+#     graph[v - 1].append(u - 1)
 
-  restaurants = 0
-  q = queue.Queue()
-  visited[0] = True
-  q.put(0)
+#   restaurants = 0
+#   q = queue.Queue()
+#   visited[0] = True
+#   q.put(0)
 
-  cat[0] = (1 if a[0] == 1 else 0)
+#   cat[0] = (1 if a[0] == 1 else 0)
 
-  while not q.empty():
-    u = q.get()
-    for v in graph[u]:
-      if not visited[v]:
-        visited[v] = True
-        if a[v] == 1:
-          cat[v] = cat[u] + 1
-        # Number of cat <= max
-        if cat[v] <= m:
-          # Check if v is a leaf aka vertex has no children
-          if len(graph[v]) == 1:
-            restaurants += 1
-          # Go down to the leaf of v
-          else:
-            q.put(v)
-  print(restaurants)
+#   while not q.empty():
+#     u = q.get()
+#     for v in graph[u]:
+#       if not visited[v]:
+#         visited[v] = True
+#         if a[v] == 1:
+#           cat[v] = cat[u] + 1
+#         # Number of cat <= max
+#         if cat[v] <= m:
+#           # Check if v is a leaf aka vertex has no children
+#           if len(graph[v]) == 1:
+#             restaurants += 1
+#           # Go down to the leaf of v
+#           else:
+#             q.put(v)
+#   print(restaurants)
+
+# # Input
+# nm = list(map(int, input().split()))
+# n = nm[0] # the number of vertices of the tree
+# m = nm[1] # the maximum number of consecutive vertices with cats that is still ok for Kefa.
+
+# a = list(map(int, input().split()))
+# edges = []
+
+# for i in range(n - 1):
+#   edge = list(map(int, input().split()))
+#   edge = (edge[0], edge[1])
+#   edges.append(edge)
+# # Run and output
+# kefa_and_park(n, m, a, edges)
+
+# # Slick
+# def slick(n, m, a, edges):
+#   MAX = 100000 + 5
+#   cat = [0] * MAX
+#   visited = [False] * MAX
+#   graph = [[] for _ in range(MAX)]
+
+#   for edge in edges:
+#     u, v = edge
+#     graph[u - 1].append(v - 1)
+#     graph[v - 1].append(u - 1)
+
+#   restaurants = 0
+#   q = queue.Queue()
+#   visited[0] = True
+#   q.put(0)
+
+#   cat[0] = (1 if a[0] == 1 else 0)
+
+#   while not q.empty():
+#     u = q.get()
+#     for v in graph[u]:
+#       if not visited[v]:
+#         visited[v] = True
+#         if a[v] == 1:
+#           cat[v] = cat[u] + 1
+#         # Number of cat <= max
+#         if cat[v] <= m:
+#           # Check if v is a leaf aka vertex has no children
+#           if len(graph[v]) == 1:
+#             restaurants += 1
+#           # Go down to the leaf of v
+#           else:
+#             q.put(v)
+#   print(restaurants)
+
+# # Input
+# nm = list(map(int, input().split()))
+# n = nm[0] # the number of vertices of the tree
+# m = nm[1] # the maximum number of consecutive vertices with cats that is still ok for Kefa.
+
+# a = list(map(int, input().split()))
+# edges = []
+
+# for i in range(n - 1):
+#   edge = list(map(int, input().split()))
+#   edge = (edge[0], edge[1])
+#   edges.append(edge)
+# # Run and output
+# slick(n, m, a, edges)
+
+# Ice Cave
+def ice_cave(m, n, s, e, matrix):
+  print(matrix)
 
 # Input
-nm = list(map(int, input().split()))
-n = nm[0] # the number of vertices of the tree
-m = nm[1] # the maximum number of consecutive vertices with cats that is still ok for Kefa.
+t = int(input())
 
-a = list(map(int, input().split()))
-edges = []
+matrixs = []
 
-for i in range(n - 1):
-  edge = list(map(int, input().split()))
-  edge = (edge[0], edge[1])
-  edges.append(edge)
+mn = list(map(int, input().split()))
+m = mn[0]
+n = mn[1]
+matrix = [[] for index in range(m)]
+for j in range(m):
+  row = input()
+  row = [x for x in row]
+  matrix[j] = row
+
+s_input = list(map(int, input().split()))
+s = (s_input[0], s_input[1])
+e_input = list(map(int, input().split()))
+e = (e_input[0], e_input[1])
+
 # Run and output
-kefa_and_park(n, m, a, edges)
+ice_cave(m, n, s, e, matrix)
