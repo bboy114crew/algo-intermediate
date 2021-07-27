@@ -201,62 +201,113 @@ import queue
 # # Run and output
 # dhoom_4(s_key, b_secret_key, num_b_keys, b_keys)
 
-# Guilty Prince
-def guilty_prince(m, n, start, matrixs, index):
-  # m is number of row
-  # n is number of column
-  sx, sy = start  # first maze gate
+# # Guilty Prince
+# def guilty_prince(m, n, start, matrixs, index):
+#   # m is number of row
+#   # n is number of column
+#   sx, sy = start  # first maze gate
 
-  # # visited point
-  vis = [[False for j in range(n)] for i in range(m)]
-  vis[sx][sy] = True
+#   # # visited point
+#   vis = [[False for j in range(n)] for i in range(m)]
+#   vis[sx][sy] = True
 
-  # queue for store current point
+#   # queue for store current point
+#   q = queue.Queue()
+#   q.put((sx, sy))
+#   result = 1
+#   while not q.empty():
+#     x, y = q.get()
+
+#     # points right arround current point
+#     arrounds = []
+#     arrounds.append((x + 1, y))
+#     arrounds.append((x, y + 1))
+#     arrounds.append((x - 1, y))
+#     arrounds.append((x, y - 1))
+
+#     for arround in arrounds:
+#       a_x, a_y = arround
+#       # check if point inside matrix
+#       if (a_x >= 0 and a_y >= 0 and a_x < m and a_y < n):
+#         # check if point not visited and is posible move
+#         if ((not vis[a_x][a_y]) and matrix[a_x][a_y] == '.'):
+#           vis[a_x][a_y] = True
+#           result += 1
+#           q.put(arround)
+#   result = 'Case ' + str(index) + ': ' + str(result)
+#   print(result)
+
+# # Input
+# t = int(input())
+
+# matrixs = []
+# starts = []
+
+# for i in range(t):
+#   mn = list(map(int, input().split()))
+#   m = mn[1]
+#   n = mn[0]
+#   matrix = [[] for index in range(m)]
+#   for j in range(m):
+#     row = input()
+#     row = [x for x in row]
+#     matrix[j] = row
+#     for k in range(len(row)):
+#       if (row[k] == '@'):
+#         starts.append((j, k))
+#         break
+#   matrixs.append(matrix)
+
+#   # Run and output
+#   guilty_prince(m, n, starts[i], matrixs[i], i + 1)
+
+# Kefa and Park
+def kefa_and_park(n, m, a, edges):
+  MAX = 100000 + 5
+  cat = [0] * MAX
+  visited = [False] * MAX
+  graph = [[] for _ in range(MAX)]
+
+  for edge in edges:
+    u, v = edge
+    graph[u - 1].append(v - 1)
+    graph[v - 1].append(u - 1)
+
+  restaurants = 0
   q = queue.Queue()
-  q.put((sx, sy))
-  result = 1
+  visited[0] = True
+  q.put(0)
+
+  cat[0] = (1 if a[0] == 1 else 0)
+
   while not q.empty():
-    x, y = q.get()
-
-    # points right arround current point
-    arrounds = []
-    arrounds.append((x + 1, y))
-    arrounds.append((x, y + 1))
-    arrounds.append((x - 1, y))
-    arrounds.append((x, y - 1))
-
-    for arround in arrounds:
-      a_x, a_y = arround
-      # check if point inside matrix
-      if (a_x >= 0 and a_y >= 0 and a_x < m and a_y < n):
-        # check if point not visited and is posible move
-        if ((not vis[a_x][a_y]) and matrix[a_x][a_y] == '.'):
-          vis[a_x][a_y] = True
-          result += 1
-          q.put(arround)
-  result = 'Case ' + str(index) + ': ' + str(result)
-  print(result)
+    u = q.get()
+    for v in graph[u]:
+      if not visited[v]:
+        visited[v] = True
+        if a[v] == 1:
+          cat[v] = cat[u] + 1
+        # Number of cat <= max
+        if cat[v] <= m:
+          # Check if v is a leaf aka vertex has no children
+          if len(graph[v]) == 1:
+            restaurants += 1
+          # Go down to the leaf of v
+          else:
+            q.put(v)
+  print(restaurants)
 
 # Input
-t = int(input())
+nm = list(map(int, input().split()))
+n = nm[0] # the number of vertices of the tree
+m = nm[1] # the maximum number of consecutive vertices with cats that is still ok for Kefa.
 
-matrixs = []
-starts = []
+a = list(map(int, input().split()))
+edges = []
 
-for i in range(t):
-  mn = list(map(int, input().split()))
-  m = mn[1]
-  n = mn[0]
-  matrix = [[] for index in range(m)]
-  for j in range(m):
-    row = input()
-    row = [x for x in row]
-    matrix[j] = row
-    for k in range(len(row)):
-      if (row[k] == '@'):
-        starts.append((j, k))
-        break
-  matrixs.append(matrix)
-
-  # Run and output
-  guilty_prince(m, n, starts[i], matrixs[i], i + 1)
+for i in range(n - 1):
+  edge = list(map(int, input().split()))
+  edge = (edge[0], edge[1])
+  edges.append(edge)
+# Run and output
+kefa_and_park(n, m, a, edges)
