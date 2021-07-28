@@ -418,15 +418,23 @@ import queue
 def is_valid_point (ax, ay, n, m):
   return ax >= 0 and ay >= 0 and ax < n and ay < m
 
-def sheep(n, m, s, e, matrix):
+def sheep(n, m, sx, sy, matrix):
+  global survived_sheep, survived_wolf
+
   q = queue.Queue()
-  q.put(s)
-  sx, sy = s
-  ex, ey = e
-  matrix[sx][sy] = 'X'
+  q.put((sx, sy))
+
+  current_sheep = (1 if matrix[sx][sy] == 'k' else 0)
+  current_wolf = (1 if matrix[sx][sy] == 'v' else 0)
+
+  connected_outside = False
+  matrix[sx][sy] = '#'
 
   while not q.empty():
     x, y = q.get()
+
+    if (x == 0 or x == n - 1 or y == 0 or y == m - 1):
+      connected_outside = True
 
     # points right arround current point
     arrounds = []
@@ -437,30 +445,43 @@ def sheep(n, m, s, e, matrix):
 
     for arround in arrounds:
       ax, ay = arround
-      if (ax == ex and ay == ey and matrix[ax][ay] == 'X'):
-        print('YES')
-        return
-      if (is_valid_point(ax, ay, n, m) and matrix[ax][ay] == '.'):
-        matrix[ax][ay] = 'X'
+      if not is_valid_point(ax, ay, n, m):
+        connected_outside = True
+        continue
+      if (matrix[ax][ay] != '#'):
+        current_sheep += (1 if matrix[ax][ay] == 'k' else 0)
+        current_wolf += (1 if matrix[ax][ay] == 'v' else 0)
+        matrix[ax][ay] = '#'
         q.put(arround)
-  print('NO')
+
+  if connected_outside:
+    survived_sheep += current_sheep
+    survived_wolf += current_wolf
+  else:
+    if current_sheep > current_wolf:
+      survived_sheep += current_sheep
+    else:
+      survived_wolf += current_wolf
 
 # Input
-matrixs = []
-
 nm = list(map(int, input().split()))
 n = nm[0] # row
 m = nm[1] # column
+
 matrix = [[] for index in range(n)]
+
 for j in range(n):
   row = input()
   row = [x for x in row]
   matrix[j] = row
 
-s_input = list(map(int, input().split()))
-s = (s_input[0] - 1, s_input[1] - 1)
-e_input = list(map(int, input().split()))
-e = (e_input[0] - 1, e_input[1] - 1)
+survived_sheep = 0
+survived_wolf = 0
+
+for i in range(n):
+  for j in range(m):
+    if (matrix[i][j] != '#'):
+      sheep(n, m, i, j, matrix)
 
 # Run and output
-sheep(n, m, s, e, matrix)
+print(survived_sheep, survived_wolf)
