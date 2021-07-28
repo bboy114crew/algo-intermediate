@@ -312,56 +312,73 @@ import queue
 # # Run and output
 # kefa_and_park(n, m, a, edges)
 
-# # Slick
-# def slick(n, m, a, edges):
-#   MAX = 100000 + 5
-#   cat = [0] * MAX
-#   visited = [False] * MAX
-#   graph = [[] for _ in range(MAX)]
+# Slick
+def is_valid_point (ax, ay, n, m):
+  return ax >= 0 and ay >= 0 and ax < n and ay < m
 
-#   for edge in edges:
-#     u, v = edge
-#     graph[u - 1].append(v - 1)
-#     graph[v - 1].append(u - 1)
+def slick(n, m, i, j, matrix, result):
+  q = queue.Queue()
+  q.put((i, j))
 
-#   restaurants = 0
-#   q = queue.Queue()
-#   visited[0] = True
-#   q.put(0)
+  spilled_oil = 0
+  if matrix[i][j] == 1:
+    spilled_oil += 1
+    matrix[i][j] = 0
 
-#   cat[0] = (1 if a[0] == 1 else 0)
+  while not q.empty():
+    x, y = q.get()
 
-#   while not q.empty():
-#     u = q.get()
-#     for v in graph[u]:
-#       if not visited[v]:
-#         visited[v] = True
-#         if a[v] == 1:
-#           cat[v] = cat[u] + 1
-#         # Number of cat <= max
-#         if cat[v] <= m:
-#           # Check if v is a leaf aka vertex has no children
-#           if len(graph[v]) == 1:
-#             restaurants += 1
-#           # Go down to the leaf of v
-#           else:
-#             q.put(v)
-#   print(restaurants)
+    arrounds = []
+    arrounds.append((x + 1, y))
+    arrounds.append((x, y + 1))
+    arrounds.append((x - 1, y))
+    arrounds.append((x, y - 1))
+    for arround in arrounds:
+      ax, ay = arround
+      if (not is_valid_point(ax, ay, n, m)):
+        continue
+      if matrix[ax][ay] == 1:
+        q.put((ax, ay))
+        spilled_oil += 1
+        matrix[ax][ay] = 0
 
-# # Input
-# nm = list(map(int, input().split()))
-# n = nm[0] # the number of vertices of the tree
-# m = nm[1] # the maximum number of consecutive vertices with cats that is still ok for Kefa.
+  if spilled_oil != 0:
+    if spilled_oil in results:
+      results[spilled_oil] += 1
+    else:
+      results[spilled_oil] = 1
 
-# a = list(map(int, input().split()))
-# edges = []
 
-# for i in range(n - 1):
-#   edge = list(map(int, input().split()))
-#   edge = (edge[0], edge[1])
-#   edges.append(edge)
-# # Run and output
-# slick(n, m, a, edges)
+# Input
+while True:
+  n, m = map(int, input().split())
+
+  if (n == 0 and m == 0):
+    break
+
+  results = {}
+
+  matrix = [[] for index in range(n)]
+
+  for i in range(n):
+    row = list(map(int, input().split()))
+    matrix[i] = row
+
+  for i in range(n):
+    for j in range(m):
+      if (matrix[i][j] != 0):
+        slick(n, m, i, j, matrix, results)
+
+  # Output
+  number_of_slicks = 0
+  values = results.values()
+  number_of_slicks = sum(values)
+  print(number_of_slicks)
+
+  if number_of_slicks > 0:
+    results = {size:num for size, num in sorted(results.items())}
+    for size, num in results.items():
+      print(size, num)
 
 # # Ice Cave
 # def is_valid_point (ax, ay, n, m):
@@ -414,74 +431,74 @@ import queue
 # # Run and output
 # ice_cave(n, m, s, e, matrix)
 
-# Sheep
-def is_valid_point (ax, ay, n, m):
-  return ax >= 0 and ay >= 0 and ax < n and ay < m
+# # Sheep
+# def is_valid_point (ax, ay, n, m):
+#   return ax >= 0 and ay >= 0 and ax < n and ay < m
 
-def sheep(n, m, sx, sy, matrix):
-  global survived_sheep, survived_wolf
+# def sheep(n, m, sx, sy, matrix):
+#   global survived_sheep, survived_wolf
 
-  q = queue.Queue()
-  q.put((sx, sy))
+#   q = queue.Queue()
+#   q.put((sx, sy))
 
-  current_sheep = (1 if matrix[sx][sy] == 'k' else 0)
-  current_wolf = (1 if matrix[sx][sy] == 'v' else 0)
+#   current_sheep = (1 if matrix[sx][sy] == 'k' else 0)
+#   current_wolf = (1 if matrix[sx][sy] == 'v' else 0)
 
-  connected_outside = False
-  matrix[sx][sy] = '#'
+#   connected_outside = False
+#   matrix[sx][sy] = '#'
 
-  while not q.empty():
-    x, y = q.get()
+#   while not q.empty():
+#     x, y = q.get()
 
-    if (x == 0 or x == n - 1 or y == 0 or y == m - 1):
-      connected_outside = True
+#     if (x == 0 or x == n - 1 or y == 0 or y == m - 1):
+#       connected_outside = True
 
-    # points right arround current point
-    arrounds = []
-    arrounds.append((x + 1, y))
-    arrounds.append((x, y + 1))
-    arrounds.append((x - 1, y))
-    arrounds.append((x, y - 1))
+#     # points right arround current point
+#     arrounds = []
+#     arrounds.append((x + 1, y))
+#     arrounds.append((x, y + 1))
+#     arrounds.append((x - 1, y))
+#     arrounds.append((x, y - 1))
 
-    for arround in arrounds:
-      ax, ay = arround
-      if not is_valid_point(ax, ay, n, m):
-        connected_outside = True
-        continue
-      if (matrix[ax][ay] != '#'):
-        current_sheep += (1 if matrix[ax][ay] == 'k' else 0)
-        current_wolf += (1 if matrix[ax][ay] == 'v' else 0)
-        matrix[ax][ay] = '#'
-        q.put(arround)
+#     for arround in arrounds:
+#       ax, ay = arround
+#       if not is_valid_point(ax, ay, n, m):
+#         connected_outside = True
+#         continue
+#       if (matrix[ax][ay] != '#'):
+#         current_sheep += (1 if matrix[ax][ay] == 'k' else 0)
+#         current_wolf += (1 if matrix[ax][ay] == 'v' else 0)
+#         matrix[ax][ay] = '#'
+#         q.put(arround)
 
-  if connected_outside:
-    survived_sheep += current_sheep
-    survived_wolf += current_wolf
-  else:
-    if current_sheep > current_wolf:
-      survived_sheep += current_sheep
-    else:
-      survived_wolf += current_wolf
+#   if connected_outside:
+#     survived_sheep += current_sheep
+#     survived_wolf += current_wolf
+#   else:
+#     if current_sheep > current_wolf:
+#       survived_sheep += current_sheep
+#     else:
+#       survived_wolf += current_wolf
 
-# Input
-nm = list(map(int, input().split()))
-n = nm[0] # row
-m = nm[1] # column
+# # Input
+# nm = list(map(int, input().split()))
+# n = nm[0] # row
+# m = nm[1] # column
 
-matrix = [[] for index in range(n)]
+# matrix = [[] for index in range(n)]
 
-for j in range(n):
-  row = input()
-  row = [x for x in row]
-  matrix[j] = row
+# for j in range(n):
+#   row = input()
+#   row = [x for x in row]
+#   matrix[j] = row
 
-survived_sheep = 0
-survived_wolf = 0
+# survived_sheep = 0
+# survived_wolf = 0
 
-for i in range(n):
-  for j in range(m):
-    if (matrix[i][j] != '#'):
-      sheep(n, m, i, j, matrix)
+# for i in range(n):
+#   for j in range(m):
+#     if (matrix[i][j] != '#'):
+#       sheep(n, m, i, j, matrix)
 
-# Run and output
-print(survived_sheep, survived_wolf)
+# # Run and output
+# print(survived_sheep, survived_wolf)
