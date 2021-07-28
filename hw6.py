@@ -17,9 +17,7 @@ n = int(input())
 dist = [-1 for index in range(n + 1)]
 dist[1] = 0
 
-min_distance = n + 1
-min_id = n
-
+# Make adjacency list
 graph = [[] for index in range(n + 1)]
 for _ in range(n - 1):
   u, v = list(map(int, input().split()))
@@ -28,8 +26,9 @@ for _ in range(n - 1):
 
 q = int(input())
 visited = [False for index in range(n + 1)]
-city_of_girl = []
 
+# Make list location where the girls live
+city_of_girl = []
 for _ in range(q):
   city = int(input())
   city_of_girl.append(city)
@@ -37,9 +36,11 @@ for _ in range(q):
 # Run and output
 bishu_and_his_girlfriend(1, visited, dist, graph)
 
+min_distance = n + 1
+min_id = n
 for i in range(len(city_of_girl)):
   if (
-    dist[city_of_girl[i]] < min_distance or 
+    dist[city_of_girl[i]] < min_distance or
     ((dist[city_of_girl[i]] == min_distance) and (min_id > city_of_girl[i]))):
     min_distance = dist[city_of_girl[i]]
     min_id = city_of_girl[i]
