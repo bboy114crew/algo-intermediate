@@ -363,28 +363,104 @@ import queue
 # # Run and output
 # slick(n, m, a, edges)
 
-# Ice Cave
-def ice_cave(m, n, s, e, matrix):
-  print(matrix)
+# # Ice Cave
+# def is_valid_point (ax, ay, n, m):
+#   return ax >= 0 and ay >= 0 and ax < n and ay < m
+
+# def ice_cave(n, m, s, e, matrix):
+#   q = queue.Queue()
+#   q.put(s)
+#   sx, sy = s
+#   ex, ey = e
+#   matrix[sx][sy] = 'X'
+
+#   while not q.empty():
+#     x, y = q.get()
+
+#     # points right arround current point
+#     arrounds = []
+#     arrounds.append((x + 1, y))
+#     arrounds.append((x, y + 1))
+#     arrounds.append((x - 1, y))
+#     arrounds.append((x, y - 1))
+
+#     for arround in arrounds:
+#       ax, ay = arround
+#       if (ax == ex and ay == ey and matrix[ax][ay] == 'X'):
+#         print('YES')
+#         return
+#       if (is_valid_point(ax, ay, n, m) and matrix[ax][ay] == '.'):
+#         matrix[ax][ay] = 'X'
+#         q.put(arround)
+#   print('NO')
+
+# # Input
+# matrixs = []
+
+# nm = list(map(int, input().split()))
+# n = nm[0] # row
+# m = nm[1] # column
+# matrix = [[] for index in range(n)]
+# for j in range(n):
+#   row = input()
+#   row = [x for x in row]
+#   matrix[j] = row
+
+# s_input = list(map(int, input().split()))
+# s = (s_input[0] - 1, s_input[1] - 1)
+# e_input = list(map(int, input().split()))
+# e = (e_input[0] - 1, e_input[1] - 1)
+
+# # Run and output
+# ice_cave(n, m, s, e, matrix)
+
+# Sheep
+def is_valid_point (ax, ay, n, m):
+  return ax >= 0 and ay >= 0 and ax < n and ay < m
+
+def sheep(n, m, s, e, matrix):
+  q = queue.Queue()
+  q.put(s)
+  sx, sy = s
+  ex, ey = e
+  matrix[sx][sy] = 'X'
+
+  while not q.empty():
+    x, y = q.get()
+
+    # points right arround current point
+    arrounds = []
+    arrounds.append((x + 1, y))
+    arrounds.append((x, y + 1))
+    arrounds.append((x - 1, y))
+    arrounds.append((x, y - 1))
+
+    for arround in arrounds:
+      ax, ay = arround
+      if (ax == ex and ay == ey and matrix[ax][ay] == 'X'):
+        print('YES')
+        return
+      if (is_valid_point(ax, ay, n, m) and matrix[ax][ay] == '.'):
+        matrix[ax][ay] = 'X'
+        q.put(arround)
+  print('NO')
 
 # Input
-t = int(input())
-
 matrixs = []
 
-mn = list(map(int, input().split()))
-m = mn[0]
-n = mn[1]
-matrix = [[] for index in range(m)]
-for j in range(m):
+nm = list(map(int, input().split()))
+n = nm[0] # row
+m = nm[1] # column
+matrix = [[] for index in range(n)]
+for j in range(n):
   row = input()
   row = [x for x in row]
   matrix[j] = row
 
 s_input = list(map(int, input().split()))
-s = (s_input[0], s_input[1])
+s = (s_input[0] - 1, s_input[1] - 1)
 e_input = list(map(int, input().split()))
-e = (e_input[0], e_input[1])
+e = (e_input[0] - 1, e_input[1] - 1)
 
 # Run and output
-ice_cave(m, n, s, e, matrix)
+sheep(n, m, s, e, matrix)
