@@ -431,74 +431,74 @@ while True:
 # # Run and output
 # ice_cave(n, m, s, e, matrix)
 
-# # Sheep
-# def is_valid_point (ax, ay, n, m):
-#   return ax >= 0 and ay >= 0 and ax < n and ay < m
+# Sheep
+def is_valid_point (ax, ay, n, m):
+  return ax >= 0 and ay >= 0 and ax < n and ay < m
 
-# def sheep(n, m, sx, sy, matrix):
-#   global survived_sheep, survived_wolf
+def sheep(n, m, sx, sy, matrix):
+  global survived_sheep, survived_wolf
 
-#   q = queue.Queue()
-#   q.put((sx, sy))
+  q = queue.Queue()
+  q.put((sx, sy))
 
-#   current_sheep = (1 if matrix[sx][sy] == 'k' else 0)
-#   current_wolf = (1 if matrix[sx][sy] == 'v' else 0)
+  current_sheep = (1 if matrix[sx][sy] == 'k' else 0)
+  current_wolf = (1 if matrix[sx][sy] == 'v' else 0)
 
-#   connected_outside = False
-#   matrix[sx][sy] = '#'
+  connected_outside = False
+  matrix[sx][sy] = '#'
 
-#   while not q.empty():
-#     x, y = q.get()
+  while not q.empty():
+    x, y = q.get()
 
-#     if (x == 0 or x == n - 1 or y == 0 or y == m - 1):
-#       connected_outside = True
+    if (x == 0 or x == n - 1 or y == 0 or y == m - 1):
+      connected_outside = True
 
-#     # points right arround current point
-#     arrounds = []
-#     arrounds.append((x + 1, y))
-#     arrounds.append((x, y + 1))
-#     arrounds.append((x - 1, y))
-#     arrounds.append((x, y - 1))
+    # points right arround current point
+    arrounds = []
+    arrounds.append((x + 1, y))
+    arrounds.append((x, y + 1))
+    arrounds.append((x - 1, y))
+    arrounds.append((x, y - 1))
 
-#     for arround in arrounds:
-#       ax, ay = arround
-#       if not is_valid_point(ax, ay, n, m):
-#         connected_outside = True
-#         continue
-#       if (matrix[ax][ay] != '#'):
-#         current_sheep += (1 if matrix[ax][ay] == 'k' else 0)
-#         current_wolf += (1 if matrix[ax][ay] == 'v' else 0)
-#         matrix[ax][ay] = '#'
-#         q.put(arround)
+    for arround in arrounds:
+      ax, ay = arround
+      if not is_valid_point(ax, ay, n, m):
+        connected_outside = True
+        continue
+      if (matrix[ax][ay] != '#'):
+        current_sheep += (1 if matrix[ax][ay] == 'k' else 0)
+        current_wolf += (1 if matrix[ax][ay] == 'v' else 0)
+        matrix[ax][ay] = '#'
+        q.put(arround)
 
-#   if connected_outside:
-#     survived_sheep += current_sheep
-#     survived_wolf += current_wolf
-#   else:
-#     if current_sheep > current_wolf:
-#       survived_sheep += current_sheep
-#     else:
-#       survived_wolf += current_wolf
+  if connected_outside:
+    survived_sheep += current_sheep
+    survived_wolf += current_wolf
+  else:
+    if current_sheep > current_wolf:
+      survived_sheep += current_sheep
+    else:
+      survived_wolf += current_wolf
 
-# # Input
-# nm = list(map(int, input().split()))
-# n = nm[0] # row
-# m = nm[1] # column
+# Input
+nm = list(map(int, input().split()))
+n = nm[0] # row
+m = nm[1] # column
 
-# matrix = [[] for index in range(n)]
+matrix = [[] for index in range(n)]
 
-# for j in range(n):
-#   row = input()
-#   row = [x for x in row]
-#   matrix[j] = row
+for j in range(n):
+  row = input()
+  row = [x for x in row]
+  matrix[j] = row
 
-# survived_sheep = 0
-# survived_wolf = 0
+survived_sheep = 0
+survived_wolf = 0
 
-# for i in range(n):
-#   for j in range(m):
-#     if (matrix[i][j] != '#'):
-#       sheep(n, m, i, j, matrix)
+for i in range(n):
+  for j in range(m):
+    if (matrix[i][j] != '#'):
+      sheep(n, m, i, j, matrix)
 
-# # Run and output
-# print(survived_sheep, survived_wolf)
+# Run and output
+print(survived_sheep, survived_wolf)
