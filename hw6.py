@@ -94,16 +94,21 @@
 def is_valid_point (ax, ay, n, m):
   return ax >= 0 and ay >= 0 and ax < n and ay < m
 
-def lakes_in_berland(n, m, i, j, matrix, results):
+def lakes_in_berland(n, m, i, j, matrix, results, vis):
+  vis[i][j] = True
   stack = []
   stack.append((i, j))
+  connected_with_ocean = False
   # Check if cell connected with the ocean
   if (i == 0 or i == n - 1 or j == 0 or j == m - 1):
+      connected_with_ocean = True
+  lake = 0
+  cells = []
+  if (matrix[i][j] == '.'):
+    lake = 1
+    cells.append((i, j))
+  else:
     return
-  matrix[i][j] = '*'
-
-  lake = 1
-  cells = [(i, j)]
 
   while (len(stack) != 0):
     x, y = stack.pop()
@@ -120,22 +125,22 @@ def lakes_in_berland(n, m, i, j, matrix, results):
       if (not is_valid_point(ax, ay, n, m)):
         continue
       if matrix[ax][ay] == '.':
-        # Check if cell connected with the ocean
+         # Check if cell connected with the ocean
         if (ax == 0 or ax == n - 1 or ay == 0 or ay == m - 1):
-          return
-        
-        matrix[ax][ay] = '*'
-        stack.append((ax, ay))
-        
-        lake += 1
-        cells.append((ax, ay))
+          connected_with_ocean = True
+        if not vis[ax][ay]:
+          vis[ax][ay] = True
+          stack.append((ax, ay))
+          lake += 1
+          cells.append((ax, ay))
   # Store list cells and total cell of current lake
-  current_lake_cell = {
-    'lake': lake,
-    'cells': cells
-  }
-  # Add current lake to list lake in map
-  results.append(current_lake_cell)
+  if (lake != 0 and (not connected_with_ocean)):
+    current_lake_cell = {
+      'lake': lake,
+      'cells': cells
+    }
+    # Add current lake to list lake in map
+    results.append(current_lake_cell)
 # Input
 n, m, k = map(int, input().split())
 
@@ -152,15 +157,16 @@ for i in range(n):
 # List of lake
 results = []
 
+vis = [[False for j in range(m)] for i in range(n)]
+
 # Check if cell is water cell
 for i in range(n):
   for j in range(m):
-    if (matrix[i][j] != '*'):
-      lakes_in_berland(n, m, i, j, matrix, results)
-
+    if not vis[i][j]:
+      lakes_in_berland(n, m, i, j, matrix, results, vis)
 
 # Sort lake by number of cells in lake
-results =  sorted(results, key=lambda k: k['lake']) 
+results =  sorted(results, key=lambda k: k['lake'])
 
 total_lake = len(results)
 minimum_num_cells = 0
@@ -168,7 +174,7 @@ minimum_num_cells = 0
 for result in results:
   if (total_lake > k):
     total_lake -= 1
-    minimum_num_cells += 1
+    minimum_num_cells += result['lake']
     # Fill up water cell
     for cell in result['cells']:
       x, y = cell
@@ -185,3 +191,5 @@ else:
   print(minimum_num_cells)
   for i in range(n):
     print("".join(str(x) for x in matrix_final[i]))
+
+# Dudu Service Maker
