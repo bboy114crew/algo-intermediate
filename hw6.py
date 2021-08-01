@@ -90,106 +90,227 @@
 #       prayatna(i, visited, dist, graph)
 #   print(result)
 
-# Lakes in Berland
-def is_valid_point (ax, ay, n, m):
-  return ax >= 0 and ay >= 0 and ax < n and ay < m
+# # Lakes in Berland
+# def is_valid_point (ax, ay, n, m):
+#   return ax >= 0 and ay >= 0 and ax < n and ay < m
 
-def lakes_in_berland(n, m, i, j, matrix, results, vis):
-  vis[i][j] = True
-  stack = []
-  stack.append((i, j))
-  connected_with_ocean = False
-  # Check if cell connected with the ocean
-  if (i == 0 or i == n - 1 or j == 0 or j == m - 1):
-      connected_with_ocean = True
-  lake = 0
-  cells = []
-  if (matrix[i][j] == '.'):
-    lake = 1
-    cells.append((i, j))
-  else:
-    return
+# def lakes_in_berland(n, m, i, j, matrix, results, vis):
+#   vis[i][j] = True
+#   stack = []
+#   stack.append((i, j))
+#   connected_with_ocean = False
+#   # Check if cell connected with the ocean
+#   if (i == 0 or i == n - 1 or j == 0 or j == m - 1):
+#       connected_with_ocean = True
+#   lake = 0
+#   cells = []
+#   if (matrix[i][j] == '.'):
+#     lake = 1
+#     cells.append((i, j))
+#   else:
+#     return
 
-  while (len(stack) != 0):
-    x, y = stack.pop()
+#   while (len(stack) != 0):
+#     x, y = stack.pop()
 
-    arrounds = []
-    arrounds.append((x + 1, y))
-    arrounds.append((x, y + 1))
-    arrounds.append((x - 1, y))
-    arrounds.append((x, y - 1))
+#     arrounds = []
+#     arrounds.append((x + 1, y))
+#     arrounds.append((x, y + 1))
+#     arrounds.append((x - 1, y))
+#     arrounds.append((x, y - 1))
 
-    for arround in arrounds:
-      ax, ay = arround
-      # Check if cell in map
-      if (not is_valid_point(ax, ay, n, m)):
-        continue
-      if matrix[ax][ay] == '.':
-         # Check if cell connected with the ocean
-        if (ax == 0 or ax == n - 1 or ay == 0 or ay == m - 1):
-          connected_with_ocean = True
-        if not vis[ax][ay]:
-          vis[ax][ay] = True
-          stack.append((ax, ay))
-          lake += 1
-          cells.append((ax, ay))
-  # Store list cells and total cell of current lake
-  if (lake != 0 and (not connected_with_ocean)):
-    current_lake_cell = {
-      'lake': lake,
-      'cells': cells
-    }
-    # Add current lake to list lake in map
-    results.append(current_lake_cell)
-# Input
-n, m, k = map(int, input().split())
+#     for arround in arrounds:
+#       ax, ay = arround
+#       # Check if cell in map
+#       if (not is_valid_point(ax, ay, n, m)):
+#         continue
+#       if matrix[ax][ay] == '.':
+#          # Check if cell connected with the ocean
+#         if (ax == 0 or ax == n - 1 or ay == 0 or ay == m - 1):
+#           connected_with_ocean = True
+#         if not vis[ax][ay]:
+#           vis[ax][ay] = True
+#           stack.append((ax, ay))
+#           lake += 1
+#           cells.append((ax, ay))
+#   # Store list cells and total cell of current lake
+#   if (lake != 0 and (not connected_with_ocean)):
+#     current_lake_cell = {
+#       'lake': lake,
+#       'cells': cells
+#     }
+#     # Add current lake to list lake in map
+#     results.append(current_lake_cell)
+# # Input
+# n, m, k = map(int, input().split())
 
-# Initial matrix
-matrix = [[] for index in range(n)]
-# Result matrix
-matrix_final = [[] for index in range(n)]
-# Input matrix
-for i in range(n):
-  row = input()
-  matrix[i] = [char for char in row]
-  matrix_final[i] = [char for char in row]
+# # Initial matrix
+# matrix = [[] for index in range(n)]
+# # Result matrix
+# matrix_final = [[] for index in range(n)]
+# # Input matrix
+# for i in range(n):
+#   row = input()
+#   matrix[i] = [char for char in row]
+#   matrix_final[i] = [char for char in row]
 
-# List of lake
-results = []
+# # List of lake
+# results = []
 
-vis = [[False for j in range(m)] for i in range(n)]
+# vis = [[False for j in range(m)] for i in range(n)]
 
-# Check if cell is water cell
-for i in range(n):
-  for j in range(m):
-    if not vis[i][j]:
-      lakes_in_berland(n, m, i, j, matrix, results, vis)
+# # Check if cell is water cell
+# for i in range(n):
+#   for j in range(m):
+#     if not vis[i][j]:
+#       lakes_in_berland(n, m, i, j, matrix, results, vis)
 
-# Sort lake by number of cells in lake
-results =  sorted(results, key=lambda k: k['lake'])
+# # Sort lake by number of cells in lake
+# results =  sorted(results, key=lambda k: k['lake'])
 
-total_lake = len(results)
-minimum_num_cells = 0
-# Find minimum number of water cells
-for result in results:
-  if (total_lake > k):
-    total_lake -= 1
-    minimum_num_cells += result['lake']
-    # Fill up water cell
-    for cell in result['cells']:
-      x, y = cell
-      matrix_final[x][y] = '*'
-  else:
-    break
+# total_lake = len(results)
+# minimum_num_cells = 0
+# # Find minimum number of water cells
+# for result in results:
+#   if (total_lake > k):
+#     total_lake -= 1
+#     minimum_num_cells += result['lake']
+#     # Fill up water cell
+#     for cell in result['cells']:
+#       x, y = cell
+#       matrix_final[x][y] = '*'
+#   else:
+#     break
 
-# Output
-if k == len(results):
-  print(0)
-  for i in range(n):
-    print("".join(str(x) for x in matrix_final[i]))
-else:
-  print(minimum_num_cells)
-  for i in range(n):
-    print("".join(str(x) for x in matrix_final[i]))
+# # Output
+# if k == len(results):
+#   print(0)
+#   for i in range(n):
+#     print("".join(str(x) for x in matrix_final[i]))
+# else:
+#   print(minimum_num_cells)
+#   for i in range(n):
+#     print("".join(str(x) for x in matrix_final[i]))
 
 # Dudu Service Maker
+# import sys
+# sys.setrecursionlimit(10005)
+# def dudu_service_maker(node, n, m, graph, visited, in_circle):
+#   global res
+#   visited[node] = True
+#   in_circle[node] = True
+#   for i in range(len(graph[node])):
+#     if in_circle[graph[node][i]]:
+#       res = True
+#       return
+#     if not visited[graph[node][i]]:
+#       dudu_service_maker(graph[node][i], n, m, graph, visited, in_circle)
+#   in_circle[node] = False
+  
+# # Input
+# t = int(input())
+
+# for _ in range(t):
+#   n, m = map(int, input().split())
+#   list_dependencies = []
+#   for i in range(m):
+#     a, b = map(int, input().split())
+#     list_dependencies.append((a,b))
+#   graph = [[] for i in range(n)]
+#   visited = [False for i in range(n)]
+#   in_circle = [False for i in range(n)]
+#   for dependency in list_dependencies:
+#     a, b = dependency
+#     graph[a - 1].append(b - 1)
+#   res = False
+#   for i in range(n):
+#     if not visited[i]:
+#       dudu_service_maker(i, n, m, graph, visited, in_circle)
+
+#   if res:
+#     print('YES')
+#   else:
+#     print('NO')
+# Cách 2
+# import sys
+# visited = [False] * 10005
+# graph = [[] for _ in range(10005)]
+ 
+# sys.setrecursionlimit(10005)
+# def DFS(u):
+#     visited[u] = 1
+ 
+#     for v in graph[u]:
+#         if visited[v] == 1:
+#             return True
+#         elif visited[v] == 0:
+#             if DFS(v):
+#                 return True
+     
+#     visited[u] = 2
+#     return False
+ 
+# T = int(input())
+ 
+# for _ in range(T):
+#     N, M = map(int, input().split())
+ 
+#     for i in range(N + 1):
+#         graph[i].clear()
+#         visited[i] = 0
+     
+#     for i in range(M):
+#         u, v = map(int, input().split())
+#         graph[u].append(v)
+     
+#     isCyclic = False
+ 
+#     for i in range(1, N + 1):
+#         if visited[i] == 0:
+#             isCyclic = DFS(i)
+#             if isCyclic:
+#                 break
+     
+#     print("YES" if isCyclic else "NO")
+
+# THE LAST SHOT
+def the_last_shot(start, graph, n):
+  visited = [False for i in range(n + 1)]
+  stack = []
+  stack.append(start)
+  visited[start] = True
+  bombs = 0
+
+  while len(stack) != 0:
+    u = stack.pop()
+    bombs += 1
+
+    for v in graph[u]:
+      if not visited[v]:
+        visited[v] = True
+        stack.append(v)
+
+  return bombs
+
+
+# Input
+n, m = map(int, input().split())
+list_dependencies = []
+for i in range(m):
+  a, b = map(int, input().split())
+  list_dependencies.append((a,b))
+graph = [[] for i in range(n + 1)]
+
+for dependency in list_dependencies:
+  a, b = dependency
+  graph[a].append(b)
+
+max_bom = 0
+
+# Run
+for i in range(1, n + 1):
+  max_bom = max(max_bom, the_last_shot(i, graph, n))
+
+# Output
+print(max_bom)
+
