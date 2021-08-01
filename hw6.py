@@ -367,36 +367,114 @@
 #     print('NO')
 #   input()
 
-# The Benefactor
-def the_benefactor(src):
-  global leaf, max_length, graph
-  dist = [-1 for index in range(n + 1)]
-  stack = []
-  stack.append(src)
-  dist[src] = 0
-  while len(stack):
-    u = stack.pop()
-    for (b, l) in graph[u]:
-      if dist[b] == -1:
-        dist[b] = dist[u] + l
-        max_length = max(max_length, dist[b])
-        stack.append(b)
-  leaf = dist.index(max(dist))
-# Input
-t = int(input())
+# ABC Path
+# import sys
+# sys.setrecursionlimit(10000000)
+# arround = [(0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1)]
 
-for _ in range(t):
-  n = int(input())
-  e = n - 1
-  graph = [[] for index in range(n + 1)]
+# # Input
+# case = 0
+# while True:
+#   case += 1
+#   h, w = map(int, input().split())
+
+#   if h == 0 and w == 0:
+#     break
+
+#   matrix = [[] for index in range(h)]
+#   for i in range(h):
+#     row = input()
+#     row = [x for x in row]
+#     matrix[i] = row
+#   dist = [[0] * w for i in range(h)]
   
-  for i in range(e):
-    a, b, l = list(map(int, input().split()))
-    graph[a].append((b, l))
-    graph[b].append((a, l))
-# Run and output
-  max_length = 0
-  leaf = 0
-  the_benefactor(1)
-  the_benefactor(leaf)
-  print(max_length)
+#   def abc_path(u, v):
+#     if dist[u][v]:
+#       return dist[u][v]
+#     max_path = 0
+#     for dx, dy in arround:
+#       n_u, n_v = u + dx, v + dy
+#       # Check if is valid arround
+#       if n_u >= 0 or n_u < h or n_v >= 0 or n_v < w:
+#         # Check if this next alpha of (u, v)
+#         if ord(matrix[n_u][n_v]) == ord(matrix[u][v]) + 1:
+
+#           max_path = max(max_path, abc_path(n_u, n_v))
+
+#     dist[u][v] = max_path + 1
+#     return dist[u][v]
+# # Run and output
+#   res = 0
+#   for i in range(h):
+#     for j in range(w):
+#       if matrix[i][j] == 'A':
+#         res = max(res, abc_path(i, j))
+#   print('Case {}: {}'.format(case, res))
+import sys
+sys.setrecursionlimit(10000000)
+
+arround = [(0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1)]
+
+case = 0
+while True:
+  case += 1
+  h, w = map(int, input().split())
+  if h == 0 and w == 0:
+    break
+  a = []
+  for i in range(h):
+    a.append(input())
+  dist = [[0] * w for i in range(h)]
+
+  def abc_path(u, v):
+    if dist[u][v]:
+      return dist[u][v]
+    max_path = 0
+    for dx, dy in arround:
+      n_u, n_v = u + dx, v + dy
+      if n_u < 0 or n_u >= h or n_v < 0 or n_v >= w or ord(a[n_u][n_v]) != ord(a[u][v]) + 1:
+        continue
+      max_path = max(max_path, abc_path(n_u, n_v))
+    dist[u][v] = max_path + 1
+    return dist[u][v]
+
+  res = 0
+  for x in range(h):
+    for y in range(w):
+      if a[x][y] == 'A':
+        res = max(res, abc_path(x, y))
+  print('Case {}: {}'.format(case, res))
+
+# # The Benefactor
+# def the_benefactor(src):
+#   global leaf, max_length, graph
+#   dist = [-1 for index in range(n + 1)]
+#   stack = []
+#   stack.append(src)
+#   dist[src] = 0
+#   while len(stack):
+#     u = stack.pop()
+#     for (b, l) in graph[u]:
+#       if dist[b] == -1:
+#         dist[b] = dist[u] + l
+#         max_length = max(max_length, dist[b])
+#         stack.append(b)
+#   leaf = dist.index(max(dist))
+# # Input
+# t = int(input())
+
+# for _ in range(t):
+#   n = int(input())
+#   e = n - 1
+#   graph = [[] for index in range(n + 1)]
+  
+#   for i in range(e):
+#     a, b, l = list(map(int, input().split()))
+#     graph[a].append((b, l))
+#     graph[b].append((a, l))
+# # Run and output
+#   max_length = 0
+#   leaf = 0
+#   the_benefactor(1)
+#   the_benefactor(leaf)
+#   print(max_length)
