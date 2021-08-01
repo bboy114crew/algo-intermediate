@@ -366,3 +366,37 @@
 #   else:
 #     print('NO')
 #   input()
+
+# The Benefactor
+def the_benefactor(src):
+  global leaf, max_length, graph
+  dist = [-1 for index in range(n + 1)]
+  stack = []
+  stack.append(src)
+  dist[src] = 0
+  while len(stack):
+    u = stack.pop()
+    for (b, l) in graph[u]:
+      if dist[b] == -1:
+        dist[b] = dist[u] + l
+        max_length = max(max_length, dist[b])
+        stack.append(b)
+  leaf = dist.index(max(dist))
+# Input
+t = int(input())
+
+for _ in range(t):
+  n = int(input())
+  e = n - 1
+  graph = [[] for index in range(n + 1)]
+  
+  for i in range(e):
+    a, b, l = list(map(int, input().split()))
+    graph[a].append((b, l))
+    graph[b].append((a, l))
+# Run and output
+  max_length = 0
+  leaf = 0
+  the_benefactor(1)
+  the_benefactor(leaf)
+  print(max_length)
