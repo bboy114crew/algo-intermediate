@@ -273,44 +273,96 @@
      
 #     print("YES" if isCyclic else "NO")
 
-# THE LAST SHOT
-def the_last_shot(start, graph, n):
-  visited = [False for i in range(n + 1)]
-  stack = []
-  stack.append(start)
-  visited[start] = True
-  bombs = 0
+# # The last shot
+# def the_last_shot(start, graph, n):
+#   visited = [False for i in range(n + 1)]
+#   stack = []
+#   stack.append(start)
+#   visited[start] = True
+#   bombs = 0
 
-  while len(stack) != 0:
-    u = stack.pop()
-    bombs += 1
+#   while len(stack) != 0:
+#     u = stack.pop()
+#     bombs += 1
 
-    for v in graph[u]:
-      if not visited[v]:
-        visited[v] = True
-        stack.append(v)
+#     for v in graph[u]:
+#       if not visited[v]:
+#         visited[v] = True
+#         stack.append(v)
 
-  return bombs
+#   return bombs
 
 
-# Input
-n, m = map(int, input().split())
-list_dependencies = []
-for i in range(m):
-  a, b = map(int, input().split())
-  list_dependencies.append((a,b))
-graph = [[] for i in range(n + 1)]
+# # Input
+# n, m = map(int, input().split())
+# list_dependencies = []
+# for i in range(m):
+#   a, b = map(int, input().split())
+#   list_dependencies.append((a,b))
+# graph = [[] for i in range(n + 1)]
 
-for dependency in list_dependencies:
-  a, b = dependency
-  graph[a].append(b)
+# for dependency in list_dependencies:
+#   a, b = dependency
+#   graph[a].append(b)
 
-max_bom = 0
+# max_bom = 0
 
-# Run
-for i in range(1, n + 1):
-  max_bom = max(max_bom, the_last_shot(i, graph, n))
+# # Run
+# for i in range(1, n + 1):
+#   max_bom = max(max_bom, the_last_shot(i, graph, n))
 
-# Output
-print(max_bom)
+# # Output
+# print(max_bom)
 
+# # All izz well
+# import sys
+# sys.setrecursionlimit(100000)
+# dr = [0, 0, 1, 1, 1, -1, -1, -1]
+# dc = [1, -1, 0, 1, -1, 0, 1, -1]
+
+# def all_izz_well(start_i, start_j, r, c, matrix, visited, count):
+#   global found_path, target, dr, dc
+
+#   if (count == len(target)):
+#     found_path = True
+#     return
+
+#   # points right arround current point
+#   for i in range(8):
+#     a_x = start_i + dr[i]
+#     a_y = start_j + dc[i]
+#     # check if point inside matrix
+#     if (a_x >= 0 and a_y >= 0 and a_x < r and a_y < c):
+#       if not visited[a_x][a_y]:
+#         if matrix[a_x][a_y] == target[count]:
+#           visited[a_x][a_y] = True
+#           all_izz_well(a_x, a_y, r, c, matrix, visited, count + 1)
+#           visited[a_x][a_y] = False
+          
+# # Input
+# t = int(input())
+
+# for _ in range(t):
+#   r, c = map(int, input().split())
+#   matrix = [[] for index in range(r)]
+#   for i in range(r):
+#     row = input()
+#     row = [x for x in row]
+#     matrix[i] = row
+#   found_path = False
+#   target = 'ALLIZZWELL'
+#   visited = [[False for i in range(c)] for i in range(r)]
+#   count = 1
+
+#   # Run and Output
+#   for i in range(r):
+#     for j in range(c):
+#       if matrix[i][j] == target[0] and not found_path:
+#         visited[i][j] = True
+#         all_izz_well(i, j, r, c, matrix, visited, count)
+
+#   if found_path:
+#     print('YES')
+#   else:
+#     print('NO')
+#   input()
