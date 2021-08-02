@@ -1,4 +1,4 @@
-import heapq
+# import heapq
 
 class PQEntry:
   def __init__(self, value):
@@ -33,30 +33,52 @@ class PQEntry:
 # # Run and output
 # monk_and_multiplication(n , a)
 
-# Qheap 1
-heap = []
-item_lookup = set()
+# # Qheap 1
+# heap = []
+# item_lookup = set()
 
-def push(v):
-  heapq.heappush(heap, v)
-  item_lookup.add(v)
+# def push(v):
+#   heapq.heappush(heap, v)
+#   item_lookup.add(v)
 
-def discard(v):
-  item_lookup.discard(v)
+# def discard(v):
+#   item_lookup.discard(v)
 
-def print_min():
-  while heap[0] not in item_lookup:
-    heapq.heappop(heap)
+# def print_min():
+#   while heap[0] not in item_lookup:
+#     heapq.heappop(heap)
 
-  print(heap[0])
+#   print(heap[0])
 
-cmds = {
-  1: push,
-  2: discard,
-  3: print_min
-}
+# cmds = {
+#   1: push,
+#   2: discard,
+#   3: print_min
+# }
 
-n = int(input())
-for _ in range(n):
-  data = list(map(int, input().split()))
-  cmds[data[0]](*data[1:])
+# n = int(input())
+# for _ in range(n):
+#   data = list(map(int, input().split()))
+#   cmds[data[0]](*data[1:])
+
+# Add All
+from heapq import heappush, heappop, heapify
+
+while True:
+  num_numbers = int(input())
+
+  if num_numbers == 0:
+    break
+  
+  numbers = list(map(int, input().split()))
+  
+  sol = 0
+  if num_numbers >= 2:
+    heapify(numbers)
+    sol = partial_sum = heappop(numbers) + heappop(numbers)
+    for j in range(num_numbers - 2) :
+      heappush(numbers, partial_sum)
+      partial_sum = heappop(numbers) + heappop(numbers)
+      sol += partial_sum
+  
+  print(sol)
