@@ -2,8 +2,6 @@
 from heapq import heappush, heappop
 def travelling_cost(s):
   global graph, destinies, u, dist
-  INF = int(1e9)
-
 
   h = []
 
@@ -17,13 +15,14 @@ def travelling_cost(s):
 
     for neighbor in graph[b]:
       b_n, w_n = neighbor
-      if w_n + w < b_n:
+      if w_n + w < dist[b_n]:
         dist[b_n] = w_n + w
         heappush(h, (b_n, dist[b_n]))
 
 n = int(input())
+INF = int(1e9)
 
-graph = [[] for index in range(n + 1)]
+graph = [[] for index in range(100005)]
 for _ in range(n):
   a, b, w = list(map(int, input().split()))
   graph[a].append((b, w))
@@ -33,8 +32,7 @@ u = int(input())
 q = int(input())
 
 destinies = []
-INF = int(1e9)
-dist = [INF for index in range(n + 1)]
+dist = [INF for index in range(100005)]
 for _ in range(q):
   d = int(input())
   destinies.append(d)
