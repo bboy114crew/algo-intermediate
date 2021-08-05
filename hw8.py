@@ -5,34 +5,37 @@ def travelling_cost(s):
 
   h = []
 
-  heappush(h, (s, 0))
+  heappush(h, (0, s))
 
-  dist[0] = 0
+  dist[s] = 0
 
   while len(h):
     top = heappop(h)
-    b, w = top
+    w, b = top
+
+    if dist[b] < w:
+      continue
 
     for neighbor in graph[b]:
-      b_n, w_n = neighbor
-      if w_n + w < dist[b_n]:
+      w_n, b_n = neighbor
+      if w_n + dist[b] < dist[b_n]:
         dist[b_n] = w_n + w
-        heappush(h, (b_n, dist[b_n]))
+        heappush(h, (dist[b_n],  b_n))
 
 n = int(input())
 INF = int(1e9)
 
-graph = [[] for index in range(100005)]
+graph = [[] for index in range(505)]
 for _ in range(n):
   a, b, w = list(map(int, input().split()))
-  graph[a].append((b, w))
-  graph[b].append((a, w))
+  graph[a].append((w, b))
+  graph[b].append((w, a))
 
 u = int(input())
 q = int(input())
 
 destinies = []
-dist = [INF for index in range(100005)]
+dist = [INF for index in range(505)]
 for _ in range(q):
   d = int(input())
   destinies.append(d)
