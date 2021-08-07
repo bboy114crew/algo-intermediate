@@ -140,35 +140,35 @@ class PQEntry:
 
 # print(money)
 
-# Restaurant Rating
-from heapq import heappush, heappop
-top3 = []
-rest = []
-nreviews = 0
+# # Restaurant Rating
+# from heapq import heappush, heappop
+# top3 = []
+# rest = []
+# nreviews = 0
 
-n = int(input())
+# n = int(input())
 
-for _ in range(n):
-  line = list(map(int, input().split()))
-  type = line[0]
+# for _ in range(n):
+#   line = list(map(int, input().split()))
+#   type = line[0]
 
-  if type == 1:
-    x = line[1]
-    nreviews += 1
-    if len(top3) != 0 and top3[0] < x:
-      heappush(rest, -heappop(top3))
-      heappush(top3, x)
-    else:
-      heappush(rest, -x)
+#   if type == 1:
+#     x = line[1]
+#     nreviews += 1
+#     if len(top3) != 0 and top3[0] < x:
+#       heappush(rest, -heappop(top3))
+#       heappush(top3, x)
+#     else:
+#       heappush(rest, -x)
     
-    if nreviews % 3 == 0:
-      heappush(top3, -heappop(rest))
+#     if nreviews % 3 == 0:
+#       heappush(top3, -heappop(rest))
 
-  else:
-    if len(top3) == 0:
-      print("No reviews yet")
-    else:
-      print(top3[0])
+#   else:
+#     if len(top3) == 0:
+#       print("No reviews yet")
+#     else:
+#       print(top3[0])
 
 # I Can Guess the Data Structure!
 # from heapq import heappush, heappop
@@ -217,4 +217,39 @@ for _ in range(n):
 #     print("priority queue")
 
 # The Lazy Programmer
+from heapq import heappush, heappop
+t = int(input())
+
+for _ in range(t):
+  time = 0
+  min_money = 0
+
+  n = int(input())
+
+  h = []
+
+  contracts = []
+
+  for i in range(n):
+    a, b, d = list(map(int, input().split()))
+    contracts.append((d, a, b))
+  contracts.sort()
+
+  for d, a, b in contracts:
+    time += b
+    heappush(h, (-a, b, d))
+    while time > d:
+      c_a, c_b, c_d = heappop(h)
+      if c_b > time - d:
+        c_b -= time - d
+        min_money += (time - d) / -c_a
+        time = d
+        heappush(h, (c_a, c_b, c_d))
+      else:
+        time -= c_b
+        min_money += c_b / -c_a
+
+  print('{:.2f}'.format(min_money))
+      
+
 
