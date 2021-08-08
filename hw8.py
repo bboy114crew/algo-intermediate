@@ -239,13 +239,58 @@
 #     graph[v].append((d, u))
 #   sending_email(graph, s, t, i + 1)
 
-# Commandos
+# # Commandos - Source: LightOJ 
+# from heapq import heappush, heappop
+# INF = int(1e9)  
+# MAX = 10005
+
+# def commandos(graph, source):
+#   dist = [INF for index in range(MAX)]
+#   dist[source] = 0
+
+#   h = []
+#   heappush(h, (0, source))
+
+#   while len(h):
+#     top = heappop(h)
+#     w, b = top
+
+#     if dist[b] < w:
+#       continue
+
+#     for neighbor in graph[b]:
+#       w_n, b_n = neighbor
+#       if w_n + dist[b] < dist[b_n]:
+#         dist[b_n] = w_n + w
+#         heappush(h, (dist[b_n],  b_n))
+#   return dist
+
+# t = int(input())
+# for i in range(t):
+#   n = int(input())
+#   r = int(input())
+#   graph = [[] for _ in range(MAX)]
+#   for j in range(r):
+#     u, v = list(map(int, input().split()))
+#     graph[u].append((1, v))
+#     graph[v].append((1, u))
+#   s, d = list(map(int, input().split()))
+#   dist_s = commandos(graph, s)
+#   dist_d = commandos(graph, d)
+
+#   res = 0
+     
+#   for j in range(n):
+#     res = max(res, dist_s[j] + dist_d[j])
+    
+#   print('Case {}: {}'.format(i + 1, res))
+
+# Chocolate Journey
 from heapq import heappush, heappop
 INF = int(1e9)  
-MAX = 10005
 
-def commandos(graph, source):
-  dist = [INF for index in range(MAX)]
+def chocolate_journey(graph, source, n):
+  dist = [INF for index in range(n + 1)]
   dist[source] = 0
 
   h = []
@@ -265,22 +310,22 @@ def commandos(graph, source):
         heappush(h, (dist[b_n],  b_n))
   return dist
 
-t = int(input())
-for i in range(t):
-  n = int(input())
-  r = int(input())
-  graph = [[] for _ in range(MAX)]
-  for j in range(r):
-    u, v = list(map(int, input().split()))
-    graph[u].append((1, v))
-    graph[v].append((1, u))
-  s, d = list(map(int, input().split()))
-  dist_s = commandos(graph, s)
-  dist_d = commandos(graph, d)
+n, m, k, x = list(map(int, input().split()))
+cities_have_socola = list(map(int, input().split()))
 
-  res = 0
-     
-  for j in range(n):
-    res = max(res, dist_s[j] + dist_d[j])
-    
-  print('Case {}: {}'.format(i + 1, res))
+graph = [[] for _ in range(n + 1)]
+for _ in range(m):
+  u, v, d = list(map(int, input().split()))
+  graph[u].append((d, v))
+  graph[v].append((d, u))
+a, b = list(map(int, input().split()))
+
+dist_a = chocolate_journey(graph, a, n)
+dist_b = chocolate_journey(graph, b, n)
+
+res = INF
+for city in cities_have_socola:
+  if dist_b[city] <= x:
+    res = min(res, dist_a[city] + dist_b[city])
+
+print(res if res != INF else -1)
