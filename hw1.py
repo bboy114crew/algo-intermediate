@@ -77,6 +77,32 @@
 
 # # Run and get output
 # mininum_number_of_rotations(name)
+# Second solution
+"""
+Đặt kim đồng hồ của bạn ngay tại vị trí bắt đầu là ký tự ‘a’.
+
+Bạn sẽ cho vòng lặp lấy từng ký tự ra, ký tự đầu tiên sẽ trừ với ký tự ‘a’. Nếu từ vị trí ‘a’ đến ký tự đó nhỏ hơn 13 thì bạn sẽ đi theo hướng này. Nếu lớn hơn 13 thì bạn sẽ đi ngược hướng lại để đi được gần hơn.
+
+Sau khi chọn bước đi ở trên xong thì bạn sẽ gán ký tự mới này vào thay cho vị trí bắt đầu (vì theo đề bài mỗi bước đi sẽ cập nhật lại vị trí ban đầu của kim đồng hồ).
+
+Chạy lần lượt qua hết các ký tự lấy số bước đi cộng lại là kết quả của bài toán.
+"""
+# wheel = input()
+ 
+# pointer = 'a'
+# count = 0
+ 
+# for c in wheel:
+#     dist = abs(ord(pointer) - ord(c))
+     
+#     if dist < 13:
+#         count = count + dist
+#     else:
+#         count = count + (26 - dist)
+     
+#     pointer = c
+ 
+# print(count)
 
 #Bear and Game
 # Bear Limak likes watching sports on TV. He is going to watch a game today. The game lasts 9090 minutes and there are no breaks.
