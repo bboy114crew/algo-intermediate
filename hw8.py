@@ -285,12 +285,56 @@
     
 #   print('Case {}: {}'.format(i + 1, res))
 
-# Chocolate Journey
+# # Chocolate Journey
+# from heapq import heappush, heappop
+# INF = int(1e9)  
+
+# def chocolate_journey(graph, source, n):
+#   dist = [INF for index in range(n + 1)]
+#   dist[source] = 0
+
+#   h = []
+#   heappush(h, (0, source))
+
+#   while len(h):
+#     top = heappop(h)
+#     w, b = top
+
+#     if dist[b] < w:
+#       continue
+
+#     for neighbor in graph[b]:
+#       w_n, b_n = neighbor
+#       if w_n + dist[b] < dist[b_n]:
+#         dist[b_n] = w_n + w
+#         heappush(h, (dist[b_n],  b_n))
+#   return dist
+
+# n, m, k, x = list(map(int, input().split()))
+# cities_have_socola = list(map(int, input().split()))
+
+# graph = [[] for _ in range(n + 1)]
+# for _ in range(m):
+#   u, v, d = list(map(int, input().split()))
+#   graph[u].append((d, v))
+#   graph[v].append((d, u))
+# a, b = list(map(int, input().split()))
+
+# dist_a = chocolate_journey(graph, a, n)
+# dist_b = chocolate_journey(graph, b, n)
+
+# res = INF
+# for city in cities_have_socola:
+#   if dist_b[city] <= x:
+#     res = min(res, dist_a[city] + dist_b[city])
+
+# print(res if res != INF else -1)
+
+# Almost Shortest Path
 from heapq import heappush, heappop
 INF = int(1e9)  
 
-def chocolate_journey(graph, source, n):
-  dist = [INF for index in range(n + 1)]
+def chocolate_journey(graph, source, dist):
   dist[source] = 0
 
   h = []
@@ -308,24 +352,37 @@ def chocolate_journey(graph, source, n):
       if w_n + dist[b] < dist[b_n]:
         dist[b_n] = w_n + w
         heappush(h, (dist[b_n],  b_n))
-  return dist
 
-n, m, k, x = list(map(int, input().split()))
-cities_have_socola = list(map(int, input().split()))
+while True:
+  n, m = list(map(int, input().split()))
+	
+  if n == 0 and m == 0:
+    break
+  
+  graph = [[] for _ in range(n)]
+  graph_s = [[] for _ in range(n)]
+  graph_d = [[] for _ in range(n)]
 
-graph = [[] for _ in range(n + 1)]
-for _ in range(m):
-  u, v, d = list(map(int, input().split()))
-  graph[u].append((d, v))
-  graph[v].append((d, u))
-a, b = list(map(int, input().split()))
+  dist = [INF] * n
+  dist_s = [INF] * n
+  dist_d = [INF] * n
 
-dist_a = chocolate_journey(graph, a, n)
-dist_b = chocolate_journey(graph, b, n)
+  s, d = list(map(int, input().split()))
 
-res = INF
-for city in cities_have_socola:
-  if dist_b[city] <= x:
-    res = min(res, dist_a[city] + dist_b[city])
+  for _ in range(m):
+    u, v, p = list(map(int, input().split()))
+    graph_s[u].append((p, v))
+    graph_d[v].append((p, u))
+  
+  chocolate_journey(graph_s, s, dist_s)
+  chocolate_journey(graph_d, d, dist_d)
+  shortest = dist_s[d]
+  for i in range(n):
+    for w, v in graph_s[i]:
+      # check s -> i + i -> v + v -> d is euqal shortest mean i -> v belong to shortest path
+      if (dist_s[i] + w + dist_d[v] != shortest):
+        graph[i].append((w, v))
+  
+  chocolate_journey(graph, s, dist)
 
-print(res if res != INF else -1)
+  print(dist[d] if dist[d] != INF else -1)
