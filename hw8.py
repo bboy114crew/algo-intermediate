@@ -194,12 +194,57 @@
     
 #   print(res if res != INF else -1)
 
-# Sending Email
+# # Sending Email
+# from heapq import heappush, heappop
+# INF = int(1e9)  
+# MAX = 10005
+
+# def sending_email(graph, source, destination, case):
+#   dist = [INF for index in range(MAX)]
+#   dist[source] = 0
+
+#   h = []
+#   heappush(h, (0, source))
+
+#   while len(h):
+#     top = heappop(h)
+#     w, b = top
+
+#     if b == destination:
+#       break
+
+#     if dist[b] < w:
+#       continue
+
+#     for neighbor in graph[b]:
+#       w_n, b_n = neighbor
+#       if w_n + dist[b] < dist[b_n]:
+#         dist[b_n] = w_n + w
+#         heappush(h, (dist[b_n],  b_n))
+  
+#   res = dist[destination]
+#   if res != INF:
+#     print('Case #{}: {}'.format(case, res))
+#   else:
+#     print('Case #{}: unreachable'.format(case))
+
+# q = int(input())
+
+# for i in range(q):
+#   n, m, s, t = list(map(int, input().split()))
+#   graph = [[] for _ in range(MAX)]
+#   for _ in range(m):
+#     u, v, d = map(int, input().split())
+#     graph[u].append((d, v))
+#     graph[v].append((d, u))
+#   sending_email(graph, s, t, i + 1)
+
+# Commandos
 from heapq import heappush, heappop
 INF = int(1e9)  
 MAX = 10005
 
-def sending_email(graph, source, destination, case):
+def commandos(graph, source):
   dist = [INF for index in range(MAX)]
   dist[source] = 0
 
@@ -210,9 +255,6 @@ def sending_email(graph, source, destination, case):
     top = heappop(h)
     w, b = top
 
-    if b == destination:
-      break
-
     if dist[b] < w:
       continue
 
@@ -221,21 +263,24 @@ def sending_email(graph, source, destination, case):
       if w_n + dist[b] < dist[b_n]:
         dist[b_n] = w_n + w
         heappush(h, (dist[b_n],  b_n))
-  
-  res = dist[destination]
-  if res != INF:
-    print('Case #{}: {}'.format(case, res))
-  else:
-    print('Case #{}: unreachable'.format(case))
+  return dist
 
-q = int(input())
-
-for i in range(q):
-  n, m, s, t = list(map(int, input().split()))
+t = int(input())
+for i in range(t):
+  n = int(input())
+  r = int(input())
   graph = [[] for _ in range(MAX)]
-  for _ in range(m):
-    u, v, d = map(int, input().split())
-    graph[u].append((d, v))
-    graph[v].append((d, u))
-  sending_email(graph, s, t, i + 1)
+  for j in range(r):
+    u, v = list(map(int, input().split()))
+    graph[u].append((1, v))
+    graph[v].append((1, u))
+  s, d = list(map(int, input().split()))
+  dist_s = commandos(graph, s)
+  dist_d = commandos(graph, d)
 
+  res = 0
+     
+  for j in range(n):
+    res = max(res, dist_s[j] + dist_d[j])
+    
+  print('Case {}: {}'.format(i + 1, res))
