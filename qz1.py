@@ -16,7 +16,7 @@
 #   for i in range(n):
 #     heappush(h, (-jobs_priorities[i], i))
 #     job.append((jobs_priorities[i], i))
-  
+
 #   while len(job):
 #     if (job[0][0] != -h[0][0]):
 #       top = job.pop(0)
@@ -134,3 +134,19 @@
 #   end = (end[0], end[1])
 #   result = 1
 #   bombs(r, c, start, end, matrix)
+
+# CamelCase
+
+english_string = str(input())
+
+number_of_word = 0
+# a -> z 97 -> 122
+for i in range(len(english_string)):
+  if i == 0:
+    if ord(english_string[i]) >= 97 and ord(english_string[i]) <= 122:
+      number_of_word += 1
+  else:
+    if ord(english_string[i]) >= 65 and ord(english_string[i]) <= 90:
+      number_of_word += 1
+
+print(number_of_word)
