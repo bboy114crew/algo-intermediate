@@ -135,18 +135,82 @@
 #   result = 1
 #   bombs(r, c, start, end, matrix)
 
-# CamelCase
+# # CamelCase
+# english_string = str(input())
 
-english_string = str(input())
+# number_of_word = 0
+# # a -> z 97 -> 122
+# for i in range(len(english_string)):
+#   if i == 0:
+#     if ord(english_string[i]) >= 97 and ord(english_string[i]) <= 122:
+#       number_of_word += 1
+#   else:
+#     if ord(english_string[i]) >= 65 and ord(english_string[i]) <= 90:
+#       number_of_word += 1
 
-number_of_word = 0
-# a -> z 97 -> 122
-for i in range(len(english_string)):
-  if i == 0:
-    if ord(english_string[i]) >= 97 and ord(english_string[i]) <= 122:
-      number_of_word += 1
-  else:
-    if ord(english_string[i]) >= 65 and ord(english_string[i]) <= 90:
-      number_of_word += 1
+# print(number_of_word)
 
-print(number_of_word)
+# Word Transformation
+import queue
+def BFS(s, f):
+  q = queue.Queue()
+  q.put(s)
+  dist[s] = 0
+
+  while not q.empty():
+    u = q.get()
+
+    for v in graph[u]:
+      if dist[v] == -1:
+        dist[v] = dist[u] + 1
+        q.put(v)
+
+        if v == f:
+          return
+
+n = int(input())
+input()
+while n > 0:
+  n -= 1
+  dict = []
+
+  while True:
+    word = input()
+    if word == '*':
+      break
+    dict.append(word)
+
+  len_dict = len(dict)
+
+  graph = [[] for _ in range(len_dict)]
+  '''
+  Lưu lại tất cả các từ có trong từ điển.
+  Ta xem một từ trong từ điển là một đỉnh của đồ thị.
+  Ta sẽ tạo danh sách cạnh từ các đỉnh này.
+  Với hai từ có độ dài bằng nhau và khác nhau đúng một kí tự,
+  ta sẽ thực hiện nối hai đỉnh đại diện cho hai từ này lại.
+  '''
+  for u in range(len_dict - 1):
+    for v in range(u + 1, len_dict):
+      if len(dict[u]) == len(dict[v]):
+        count = 0
+        for i in range(len(dict[u])):
+          if dict[u][i] != dict[v][i]:
+            count += 1
+        if count == 1:
+          graph[u].append(v)
+          graph[v].append(u)
+  while True:
+    try:
+      line = input()
+      if line == '':
+        break
+    except EOFError:
+      break
+
+    sWord, fWord = line.split()
+    s = dict.index(sWord)
+    f = dict.index(fWord)
+    dist = [-1] * len_dict
+    BFS(s, f)
+    print('{} {} {}'.format(sWord, fWord, dist[f]))

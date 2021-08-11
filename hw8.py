@@ -53,7 +53,7 @@
 # def mice_and_maze(source):
 #   global e, t_max, number_of_mice_exited, graph
 
-#   INF = int(1e9)  
+#   INF = int(1e9)
 #   dist = [INF for index in range(10005)]
 #   dist[source] = 0
 
@@ -75,7 +75,7 @@
 #       if w_n + dist[b] < dist[b_n]:
 #         dist[b_n] = w_n + w
 #         heappush(h, (dist[b_n],  b_n))
-  
+
 #   if dist[e] <= t_max:
 #     number_of_mice_exited += 1
 
@@ -102,7 +102,7 @@
 
 # def the_shortest_path(source, destination):
 #   global graph
-#   INF = int(1e9)  
+#   INF = int(1e9)
 #   dist = [INF for index in range(10005)]
 #   dist[source] = 0
 
@@ -151,19 +151,19 @@
 
 # # Traffic Network
 # from heapq import heappush, heappop
-# INF = int(1e9)  
+# INF = int(1e9)
 # MAX = 10005
 
 # def traffic_network(s, dist, graph):
 #   h = [(0, s)]
 #   dist[s] = 0
-    
+
 #   while len(h):
 #     w, u = heappop(h)
-      
+
 #     if w > dist[u]:
 #       continue
-      
+
 #     for weight, v in graph[u]:
 #       if w + weight < dist[v]:
 #         dist[v] = w + weight
@@ -177,26 +177,26 @@
 #   graph_t = [[] for _ in range(MAX)]
 #   dist_t = [INF for index in range(MAX)]
 #   dist_s = [INF for index in range(MAX)]
-  
+
 #   # m is number of one-way roads
 #   for i in range(m):
 #     u, v, d = map(int, input().split())
 #     graph_s[u].append((d, v))
 #     graph_t[v].append((d, u))
-    
+
 #   traffic_network(s, dist_s, graph_s)
 #   traffic_network(t, dist_t, graph_t)
 #   res = dist_s[t]
-#   # k is number of two-way roads   
+#   # k is number of two-way roads
 #   for i in range(k):
 #     u, v, d = map(int, input().split())
 #     res = min(res, dist_s[u] + d + dist_t[v], dist_s[v] + d + dist_t[u])
-    
+
 #   print(res if res != INF else -1)
 
 # # Sending Email
 # from heapq import heappush, heappop
-# INF = int(1e9)  
+# INF = int(1e9)
 # MAX = 10005
 
 # def sending_email(graph, source, destination, case):
@@ -221,7 +221,7 @@
 #       if w_n + dist[b] < dist[b_n]:
 #         dist[b_n] = w_n + w
 #         heappush(h, (dist[b_n],  b_n))
-  
+
 #   res = dist[destination]
 #   if res != INF:
 #     print('Case #{}: {}'.format(case, res))
@@ -239,9 +239,9 @@
 #     graph[v].append((d, u))
 #   sending_email(graph, s, t, i + 1)
 
-# # Commandos - Source: LightOJ 
+# # Commandos - Source: LightOJ
 # from heapq import heappush, heappop
-# INF = int(1e9)  
+# INF = int(1e9)
 # MAX = 10005
 
 # def commandos(graph, source):
@@ -279,15 +279,15 @@
 #   dist_d = commandos(graph, d)
 
 #   res = 0
-     
+
 #   for j in range(n):
 #     res = max(res, dist_s[j] + dist_d[j])
-    
+
 #   print('Case {}: {}'.format(i + 1, res))
 
 # # Chocolate Journey
 # from heapq import heappush, heappop
-# INF = int(1e9)  
+# INF = int(1e9)
 
 # def chocolate_journey(graph, source, n):
 #   dist = [INF for index in range(n + 1)]
@@ -332,7 +332,7 @@
 
 # Almost Shortest Path
 from heapq import heappush, heappop
-INF = int(1e9)  
+INF = int(1e9)
 
 def chocolate_journey(graph, source, dist):
   dist[source] = 0
@@ -355,10 +355,10 @@ def chocolate_journey(graph, source, dist):
 
 while True:
   n, m = list(map(int, input().split()))
-	
+
   if n == 0 and m == 0:
     break
-  
+
   graph = [[] for _ in range(n)]
   graph_s = [[] for _ in range(n)]
   graph_d = [[] for _ in range(n)]
@@ -373,7 +373,7 @@ while True:
     u, v, p = list(map(int, input().split()))
     graph_s[u].append((p, v))
     graph_d[v].append((p, u))
-  
+
   chocolate_journey(graph_s, s, dist_s)
   chocolate_journey(graph_d, d, dist_d)
   shortest = dist_s[d]
@@ -382,7 +382,7 @@ while True:
       # check s -> i + i -> v + v -> d is euqal shortest mean i -> v belong to shortest path
       if (dist_s[i] + w + dist_d[v] != shortest):
         graph[i].append((w, v))
-  
+
   chocolate_journey(graph, s, dist)
 
   print(dist[d] if dist[d] != INF else -1)
