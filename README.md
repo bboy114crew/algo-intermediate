@@ -1,2 +1,2 @@
-Big O Blue Online Judge
-https://bigocoder.com/courses/65
+Big O Online Judge
+
