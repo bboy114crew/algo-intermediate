@@ -1,3 +1,5 @@
+# Tìm đường đi tốt nhất theo 1 tiêu chí nào đó, thì bellman có thể phát hiện chu trình mà làm cho độ "tốt" luôn tăng
+
 # # Wormholes
 # INF = int(1e9)
 
@@ -85,65 +87,105 @@
 #       print('?')
 
 
-# XYZZY
-import queue
-INF = int(1e9)
+# # XYZZY
+# import queue
+# INF = int(1e9)
 
-def hasPathBFS(s, n, edge_list):
-  visited = [False] * (n + 1)
-  q = queue.Queue()
-  q.put(s)
-  visited[s] = True
+# def hasPathBFS(s, n, edge_list):
+#   visited = [False] * (n + 1)
+#   q = queue.Queue()
+#   q.put(s)
+#   visited[s] = True
 
-  while not q.empty():
-    u = q.get()
+#   while not q.empty():
+#     u = q.get()
 
-    for edge in edge_list:
-      s, t = edge
-      if s == u:
-        if not visited[t]:
-          visited[t] = True
-          q.put(t)
+#     for edge in edge_list:
+#       s, t = edge
+#       if s == u:
+#         if not visited[t]:
+#           visited[t] = True
+#           q.put(t)
         
-        if t == n:
-          return True
-  return False
+#         if t == n:
+#           return True
+#   return False
 
 
-def bell_man_ford(s, n, edge_list, rooms_point):
-  dist = [-INF for index in range(n + 1)]
-  dist[s] = 100
-  for i in range(n - 1):
-    for edge in edge_list:
-      cx, cy = edge
-      if dist[cx] > 0:
-        dist[cy] = max(dist[cy], dist[cx] + rooms_point[cy])
-  for edge in edge_list:
-    cx, cy = edge
-    if dist[cx] > 0 and dist[cx] + rooms_point[cy] > dist[cy] and hasPathBFS(cx, n, edge_list):
-      return True
-  return dist[n] > 0
+# def bell_man_ford(s, n, edge_list, rooms_point):
+#   dist = [-INF for index in range(n + 1)]
+#   dist[s] = 100
+#   for i in range(n - 1):
+#     for edge in edge_list:
+#       cx, cy = edge
+#       if dist[cx] > 0:
+#         dist[cy] = max(dist[cy], dist[cx] + rooms_point[cy])
+#   for edge in edge_list:
+#     cx, cy = edge
+#     if dist[cx] > 0 and dist[cx] + rooms_point[cy] > dist[cy] and hasPathBFS(cx, n, edge_list):
+#       return True
+#   return dist[n] > 0
+
+# while True:
+#   n = int(input())
+#   if n == -1:
+#     break
+#   edge_list = []
+#   adj_list = [[] for index in range(n + 1)]
+#   rooms_point = [0 for index in range(n + 1)]
+
+#   for i in range(n):
+#     w, s, *a = list(map(int, input().split()))
+#     current_room = i + 1
+#     rooms_point[current_room] = w
+#     adj_list[current_room] = a
+    
+#   for i in range(len(adj_list)):
+#     if i != 0:
+#       for j in adj_list[i]:
+#         edge_list.append((i, j))
+#   can_win = bell_man_ford(1, n, edge_list, rooms_point)
+#   if can_win:
+#     print('winnable')
+#   else:
+#     print('hopeless')
+
+# 106 Miles To Chicago
+'''
+As they are on a mission from God,
+you should help them find the safest way to Chicago.
+In this problem, the safest way is considered to be the route which maximises the probability that they are not caught.
+'''
+
+'''
+Nếu một công việc nào đó phải hoàn thành qua nn giai đoạn liên tiếp, trong đó:
+Phương án thứ 1 có m_1
+Phương án thứ 2 có m_2
+…
+Phương án thứ n có m_n
+Khi đó sẽ có m_1 * m_2 * ... * m_n cách để hoàn thành công việc được cho.
+'''
+def bell_man_ford(s, n, graph):
+  dist = [-1.0 for index in range(n + 1)]
+  dist[s] = 1.0
+  for _ in range(n - 1): # loop n-1 times
+    for edge in graph:
+      u, v, r = edge
+      dist[u] = max(dist[u], dist[v] * r)
+      dist[v] = max(dist[v], dist[u] * r)
+  return dist[n]
 
 while True:
-  n = int(input())
-  if n == -1:
+  line = list(map(int, input().split()))
+  if len(line) == 1:
     break
-  edge_list = []
-  adj_list = [[] for index in range(n + 1)]
-  rooms_point = [0 for index in range(n + 1)]
+  # n is the number of intersections
+  # m is the number of streets to be considered.
+  n, m = line
+  graph = []
+  for _ in range(m):
+    a, b, p = list(map(int, input().split()))
+    graph.append((a, b, p / 100))
 
-  for i in range(n):
-    w, s, *a = list(map(int, input().split()))
-    current_room = i + 1
-    rooms_point[current_room] = w
-    adj_list[current_room] = a
-    
-  for i in range(len(adj_list)):
-    if i != 0:
-      for j in adj_list[i]:
-        edge_list.append((i, j))
-  can_win = bell_man_ford(1, n, edge_list, rooms_point)
-  if can_win:
-    print('winnable')
-  else:
-    print('hopeless')
+  result = bell_man_ford(1, n, graph)
+  print('{:.6f} percent'.format(result * 100))
