@@ -36,52 +36,114 @@
 #   else:
 #     print('not possible')
 
-# Extended traffic
+# # Extended traffic
+# INF = int(1e9)
+# def bell_man_ford(s, m, n, edge_list):
+#   dist = [INF for index in range(n + 1)]
+#   dist[s] = 0
+#   for i in range(n - 1): # n-1 thôi là đủ
+#     for j in range(m):
+#       cx, cy, ct = edge_list[j]
+#       if dist[cx] != INF and dist[cx] + ct < dist[cy]:
+#         dist[cy] = dist[cx] + ct
+
+#   # đánh dấu nhưng đỉnh bị ảnh hưởng bởi chu trình âm
+#   for i in range(n - 1): 
+#     for j in range(m):
+#       cx, cy, ct = edge_list[j]
+#       # nếu đỉnh cy còn update được dist thì đánh dấu lại
+#       if dist[cx] != INF and dist[cx] + ct < dist[cy]:
+#         dist[cy] = -INF # dist gán bằng âm vô cùng --> bị ảnh hưởng bởi chu trình âm
+
+#   return dist
+ 
+# t = int(input())
+ 
+# for case in range(t):
+#   input()
+#   n = int(input()) # vertices
+#   # n intergers denoting the busyness of the junctions
+#   vertices = [0]
+#   busyness_of_junctions = list(map(int, input().split()))
+#   vertices = [*vertices, *busyness_of_junctions]
+#   edge_list = []
+#   m = int(input()) # edges
+#   for i in range(m):
+#     u, v = list(map(int, input().split()))
+#     edge_list.append((u, v, (vertices[v] - vertices[u]) ** 3))
+#   q = int(input()) # number of queries
+#   queries = []
+#   for i in range(q):
+#     query = int(input())
+#     queries.append(query)
+#   dist = bell_man_ford(1, m, n, edge_list)
+#   print('Case {}:'.format(case + 1))
+#   for query in queries:
+#     if 3 <= dist[query] < INF:
+#       print(dist[query])
+#     else:
+#       print('?')
+
+
+# XYZZY
+import queue
 INF = int(1e9)
-def bell_man_ford(s, m, n, edge_list):
-  dist = [INF for index in range(n + 1)]
-  dist[s] = 0
-  for i in range(1, n):
-    for j in range(m):
-      cx, cy, ct = edge_list[j]
-      if dist[cx] != INF and dist[cx] + ct < dist[cy]:
-        dist[cy] = dist[cx] + ct
 
-  for i in range(m):
-    cx, cy, ct = edge_list[i]
-    if dist[cx] != INF and dist[cx] + ct < dist[cy]:
-      return (False, dist)
-  return (True, dist)
+def hasPathBFS(s, n, edge_list):
+  visited = [False] * (n + 1)
+  q = queue.Queue()
+  q.put(s)
+  visited[s] = True
 
-t = int(input())
+  while not q.empty():
+    u = q.get()
 
-for case in range(t):
-  input()
-  n = int(input()) # vertices
-  # n intergers denoting the busyness of the junctions
-  vertices = [0]
-  busyness_of_junctions = list(map(int, input().split()))
-  vertices = [*vertices, *busyness_of_junctions]
+    for edge in edge_list:
+      s, t = edge
+      if s == u:
+        if not visited[t]:
+          visited[t] = True
+          q.put(t)
+        
+        if t == n:
+          return True
+  return False
+
+
+def bell_man_ford(s, n, edge_list, rooms_point):
+  dist = [-INF for index in range(n + 1)]
+  dist[s] = 100
+  for i in range(n - 1):
+    for edge in edge_list:
+      cx, cy = edge
+      if dist[cx] > 0:
+        dist[cy] = max(dist[cy], dist[cx] + rooms_point[cy])
+  for edge in edge_list:
+    cx, cy = edge
+    if dist[cx] > 0 and dist[cx] + rooms_point[cy] > dist[cy] and hasPathBFS(cx, n, edge_list):
+      return True
+  return dist[n] > 0
+
+while True:
+  n = int(input())
+  if n == -1:
+    break
   edge_list = []
-  m = int(input()) # edges
-  for i in range(m):
-    u, v = list(map(int, input().split()))
-    edge_list.append((u, v, (vertices[v] - vertices[u]) ** 3))
-  q = int(input()) # number of queries
-  queries = []
-  for i in range(q):
-    query = int(input())
-    queries.append(query)
-  result = bell_man_ford(1, m, n, edge_list)
-  print('Case {}:'.format(case + 1))
-  for query in queries:
-    if result[0]:
-      if result[1][query] > 2:
-        if result[1][query] != INF:
-          print(result[1][query])
-        else:
-          print('?')
-      else:
-        print('?')
-    else:
-      print('?')
+  adj_list = [[] for index in range(n + 1)]
+  rooms_point = [0 for index in range(n + 1)]
+
+  for i in range(n):
+    w, s, *a = list(map(int, input().split()))
+    current_room = i + 1
+    rooms_point[current_room] = w
+    adj_list[current_room] = a
+    
+  for i in range(len(adj_list)):
+    if i != 0:
+      for j in adj_list[i]:
+        edge_list.append((i, j))
+  can_win = bell_man_ford(1, n, edge_list, rooms_point)
+  if can_win:
+    print('winnable')
+  else:
+    print('hopeless')
