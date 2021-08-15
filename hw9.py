@@ -192,46 +192,77 @@ Khi đó sẽ có m_1 * m_2 * ... * m_n cách để hoàn thành công việc đ
 
 # Single source shortest path, negative weights
 
+# INF = int(1e9)
+# def bell_man_ford(s, m, n, edge_list):
+#   dist = [INF for index in range(n + 1)]
+#   dist[s] = 0
+#   for i in range(n - 1): # n-1 thôi là đủ
+#     for j in range(m):
+#       cx, cy, ct = edge_list[j]
+#       if dist[cx] != INF and dist[cx] + ct < dist[cy]:
+#         dist[cy] = dist[cx] + ct
+
+#   # đánh dấu nhưng đỉnh bị ảnh hưởng bởi chu trình âm
+#   for i in range(n - 1): 
+#     for j in range(m):
+#       cx, cy, ct = edge_list[j]
+#       # nếu đỉnh cy còn update được dist thì đánh dấu lại
+#       if dist[cx] != INF and dist[cx] + ct < dist[cy]:
+#         dist[cy] = -INF # dist gán bằng âm vô cùng --> bị ảnh hưởng bởi chu trình âm
+
+#   return dist
+
+# while True:
+#   n, m, q, s = list(map(int, input().split()))
+#   if n == 0 and m == 0 and q == 0 and s == 0:
+#     break
+#   edge_list = []
+#   for _ in range(m):
+#     u, v, w = list(map(int, input().split()))
+#     edge_list.append((u, v, w))
+  
+#   queries = []
+#   for _ in range(q):
+#     query = int(input())
+#     queries.append(query)
+
+#   dist = bell_man_ford(s, m, n, edge_list)
+#   for query in queries:
+#     if dist[query] == -INF:
+#       print('-Infinity')
+#     elif dist[query] == INF:
+#       print('Impossible')
+#     else:
+#       print(dist[query])
+#   print()
+
+# Monk's Business Day
 INF = int(1e9)
-def bell_man_ford(s, m, n, edge_list):
+
+def bell_man_ford(s, n, edge_list):
   dist = [INF for index in range(n + 1)]
   dist[s] = 0
-  for i in range(n - 1): # n-1 thôi là đủ
-    for j in range(m):
-      cx, cy, ct = edge_list[j]
-      if dist[cx] != INF and dist[cx] + ct < dist[cy]:
-        dist[cy] = dist[cx] + ct
+  for i in range(n):
+    for edge in edge_list:
+      cx, cy, cw = edge
+      if dist[cx] != INF and dist[cx] + cw < dist[cy]:
+        dist[cy] = dist[cx] + cw
+        if i == n - 1:
+          return True
+  return False
 
-  # đánh dấu nhưng đỉnh bị ảnh hưởng bởi chu trình âm
-  for i in range(n - 1): 
-    for j in range(m):
-      cx, cy, ct = edge_list[j]
-      # nếu đỉnh cy còn update được dist thì đánh dấu lại
-      if dist[cx] != INF and dist[cx] + ct < dist[cy]:
-        dist[cy] = -INF # dist gán bằng âm vô cùng --> bị ảnh hưởng bởi chu trình âm
+t = int(input())
 
-  return dist
-
-while True:
-  n, m, q, s = list(map(int, input().split()))
-  if n == 0 and m == 0 and q == 0 and s == 0:
-    break
+for _ in range(t):
+  n, m = list(map(int, input().split()))
   edge_list = []
-  for _ in range(m):
+  for i in range(m):
     u, v, w = list(map(int, input().split()))
-    edge_list.append((u, v, w))
+    edge_list.append((u, v, -w))
   
-  queries = []
-  for _ in range(q):
-    query = int(input())
-    queries.append(query)
+  result = bell_man_ford(1, n, edge_list)
 
-  dist = bell_man_ford(s, m, n, edge_list)
-  for query in queries:
-    if dist[query] == -INF:
-      print('-Infinity')
-    elif dist[query] == INF:
-      print('Impossible')
-    else:
-      print(dist[query])
-  print()
+  if result:
+    print('Yes')
+  else:
+    print('No')
