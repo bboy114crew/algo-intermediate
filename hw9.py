@@ -165,27 +165,73 @@ Phương án thứ 2 có m_2
 Phương án thứ n có m_n
 Khi đó sẽ có m_1 * m_2 * ... * m_n cách để hoàn thành công việc được cho.
 '''
-def bell_man_ford(s, n, graph):
-  dist = [-1.0 for index in range(n + 1)]
-  dist[s] = 1.0
-  for _ in range(n - 1): # loop n-1 times
-    for edge in graph:
-      u, v, r = edge
-      dist[u] = max(dist[u], dist[v] * r)
-      dist[v] = max(dist[v], dist[u] * r)
-  return dist[n]
+# def bell_man_ford(s, n, graph):
+#   dist = [-1.0 for index in range(n + 1)]
+#   dist[s] = 1.0
+#   for _ in range(n - 1): # loop n-1 times
+#     for edge in graph:
+#       u, v, r = edge
+#       dist[u] = max(dist[u], dist[v] * r)
+#       dist[v] = max(dist[v], dist[u] * r)
+#   return dist[n]
+
+# while True:
+#   line = list(map(int, input().split()))
+#   if len(line) == 1:
+#     break
+#   # n is the number of intersections
+#   # m is the number of streets to be considered.
+#   n, m = line
+#   graph = []
+#   for _ in range(m):
+#     a, b, p = list(map(int, input().split()))
+#     graph.append((a, b, p / 100))
+
+#   result = bell_man_ford(1, n, graph)
+#   print('{:.6f} percent'.format(result * 100))
+
+# Single source shortest path, negative weights
+
+INF = int(1e9)
+def bell_man_ford(s, m, n, edge_list):
+  dist = [INF for index in range(n + 1)]
+  dist[s] = 0
+  for i in range(n - 1): # n-1 thôi là đủ
+    for j in range(m):
+      cx, cy, ct = edge_list[j]
+      if dist[cx] != INF and dist[cx] + ct < dist[cy]:
+        dist[cy] = dist[cx] + ct
+
+  # đánh dấu nhưng đỉnh bị ảnh hưởng bởi chu trình âm
+  for i in range(n - 1): 
+    for j in range(m):
+      cx, cy, ct = edge_list[j]
+      # nếu đỉnh cy còn update được dist thì đánh dấu lại
+      if dist[cx] != INF and dist[cx] + ct < dist[cy]:
+        dist[cy] = -INF # dist gán bằng âm vô cùng --> bị ảnh hưởng bởi chu trình âm
+
+  return dist
 
 while True:
-  line = list(map(int, input().split()))
-  if len(line) == 1:
+  n, m, q, s = list(map(int, input().split()))
+  if n == 0 and m == 0 and q == 0 and s == 0:
     break
-  # n is the number of intersections
-  # m is the number of streets to be considered.
-  n, m = line
-  graph = []
+  edge_list = []
   for _ in range(m):
-    a, b, p = list(map(int, input().split()))
-    graph.append((a, b, p / 100))
+    u, v, w = list(map(int, input().split()))
+    edge_list.append((u, v, w))
+  
+  queries = []
+  for _ in range(q):
+    query = int(input())
+    queries.append(query)
 
-  result = bell_man_ford(1, n, graph)
-  print('{:.6f} percent'.format(result * 100))
+  dist = bell_man_ford(s, m, n, edge_list)
+  for query in queries:
+    if dist[query] == -INF:
+      print('-Infinity')
+    elif dist[query] == INF:
+      print('Impossible')
+    else:
+      print(dist[query])
+  print()
