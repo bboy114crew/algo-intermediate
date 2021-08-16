@@ -236,33 +236,118 @@ Khi đó sẽ có m_1 * m_2 * ... * m_n cách để hoàn thành công việc đ
 #       print(dist[query])
 #   print()
 
-# Monk's Business Day
-INF = int(1e9)
+# # Monk's Business Day
+# INF = int(1e9)
 
-def bell_man_ford(s, n, edge_list):
-  dist = [INF for index in range(n + 1)]
-  dist[s] = 0
-  for i in range(n):
-    for edge in edge_list:
-      cx, cy, cw = edge
-      if dist[cx] != INF and dist[cx] + cw < dist[cy]:
-        dist[cy] = dist[cx] + cw
-        if i == n - 1:
-          return True
-  return False
+# def bell_man_ford(s, n, edge_list):
+#   dist = [INF for index in range(n + 1)]
+#   dist[s] = 0
+#   for i in range(n):
+#     for edge in edge_list:
+#       cx, cy, cw = edge
+#       if dist[cx] != INF and dist[cx] + cw < dist[cy]:
+#         dist[cy] = dist[cx] + cw
+#         if i == n - 1:
+#           return True
+#   return False
 
-t = int(input())
+# t = int(input())
 
-for _ in range(t):
-  n, m = list(map(int, input().split()))
-  edge_list = []
-  for i in range(m):
-    u, v, w = list(map(int, input().split()))
-    edge_list.append((u, v, -w))
+# for _ in range(t):
+#   n, m = list(map(int, input().split()))
+#   edge_list = []
+#   for i in range(m):
+#     u, v, w = list(map(int, input().split()))
+#     edge_list.append((u, v, -w))
   
-  result = bell_man_ford(1, n, edge_list)
+#   result = bell_man_ford(1, n, edge_list)
 
-  if result:
-    print('Yes')
-  else:
-    print('No')
+#   if result:
+#     print('Yes')
+#   else:
+#     print('No')
+
+# Alice in Amsterdam, I mean Wonderland
+
+INF = (2 ** 30) * 100 + 7
+
+def bell_man_ford(s):
+  dist[s][s] = 0
+
+  for i in range(n - 1):
+    for edge in graph:
+      u, v, w = edge
+      if dist[s][u] != INF and dist[s][u] + w < dist[s][v]:
+        dist[s][v] = dist[s][u] + w
+
+  for i in range(n - 1):
+    for edge in graph:
+      u, v, w = edge
+      if dist[s][u] != INF and dist[s][u] + w < dist[s][v]:
+        dist[s][v] = -INF
+
+tc = 1
+while True:
+  n = int(input())
+  if n == 0:
+    break
+
+  monuments = []
+  graph = []
+  dist = [[INF for i in range(n)] for i in range(n)]
+  for i in range(n):
+    name, *weights = input().split()
+    monuments.append(name)
+    for j in range(n):
+      w = int(weights[j])
+      if i != j and w == 0:
+        continue
+      if i == j and w >= 0:
+        w = 0
+      graph.append((i, j, w))
+
+  for i in range(n):
+    bell_man_ford(i)
+
+  print('Case #{}:'.format(tc))
+  tc += 1
+  q = int(input())
+
+  for _ in range(q):
+    u, v = map(int, input().split())
+    if dist[u][v] <= -INF:
+      print('NEGATIVE CYCLE')
+    elif dist[u][v] == INF:
+      print('{}-{} {}'.format(monuments[u], monuments[v], 'NOT REACHABLE'))
+    else:
+      print('{}-{} {}'.format(monuments[u], monuments[v], dist[u][v]))
+
+# # Maelstrom
+# INF = int(1e9)
+# def bell_man_ford(s, n, dist, graph):
+#   dist[s] = 0
+
+#   for i in range(n - 1):
+#     for edge in graph:
+#       u, v, w = edge
+#       dist[v] = min(dist[v], dist[u] + w)
+
+# n = int(input())
+# dist = [INF for index in range(n + 1)]
+# graph = []
+ 
+# for i in range(2, n + 1):
+#   line = input().split()
+
+#   for j in range(1, i):
+#     if line[j - 1] != 'x':
+#       w = int(line[j - 1])
+#       graph.append((i, j, w))
+#       graph.append((j, i, w))
+ 
+# bell_man_ford(1, n, dist, graph)
+ 
+# res = 0
+# for i in range(1, n + 1):
+#   res = max(res, dist[i])
+# print(res)
