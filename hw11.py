@@ -157,4 +157,34 @@
 #     print('Case {}: Yes'.format(case))
 #   else:
 #     print('Case {}: No'.format(case))
-  
+
+# Risk
+INF = int(1e9)
+n = 20
+
+def floyd(dist, m):
+  for k in range(m):
+    for i in range(m):
+      if dist[i][k] == INF:
+        continue
+      for j in range(m):
+        if dist[k][j] != INF and dist[i][j] > dist[i][k] + dist[k][j]:
+          dist[i][j] = dist[i][k] + dist[k][j]
+case = 0
+while True:
+  dist = [[INF for i in range(n + 1)] for _ in range(n + 1)]
+  try:
+    for i in range(1, n):
+      for j in list(map(int, input().split()))[1:]:
+        dist[i][j] = dist[j][i] = 1
+    floyd(dist, n +  1)
+    case += 1
+    print('Test Set #{}'.format(case))
+
+    m = int(input())
+    for _ in range(m):
+      s, e = list(map(int, input().split()))
+      print('{:2d} to {:2d}: {}'.format(s, e, dist[s][e]))
+    print()
+  except EOFError:
+    break
