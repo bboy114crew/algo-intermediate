@@ -3,8 +3,8 @@ import bisect
 
 def find_marble(marbles, left, right, query):
   if left <= right:
-    mid = (left + right) // 2
-    if (mid == right or query > marbles[mid - 1]) and marbles[mid] == query:
+    mid = left + (right - left) // 2
+    if marbles[mid] == query and (mid == left or query > marbles[mid - 1]):
       return mid
     elif marbles[mid] < query:
       return find_marble(marbles, mid + 1, right, query)
