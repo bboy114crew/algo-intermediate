@@ -158,33 +158,79 @@
 #   else:
 #     print('Case {}: No'.format(case))
 
-# Risk
+# # Risk
+# INF = int(1e9)
+# n = 20
+
+# def floyd(dist, m):
+#   for k in range(m):
+#     for i in range(m):
+#       if dist[i][k] == INF:
+#         continue
+#       for j in range(m):
+#         if dist[k][j] != INF and dist[i][j] > dist[i][k] + dist[k][j]:
+#           dist[i][j] = dist[i][k] + dist[k][j]
+# case = 0
+# while True:
+#   dist = [[INF for i in range(n + 1)] for _ in range(n + 1)]
+#   try:
+#     for i in range(1, n):
+#       for j in list(map(int, input().split()))[1:]:
+#         dist[i][j] = dist[j][i] = 1
+#     floyd(dist, n +  1)
+#     case += 1
+#     print('Test Set #{}'.format(case))
+
+#     m = int(input())
+#     for _ in range(m):
+#       s, e = list(map(int, input().split()))
+#       print('{:2d} to {:2d}: {}'.format(s, e, dist[s][e]))
+#     print()
+#   except EOFError:
+#     break
+
+# Asterix and Obelix
 INF = int(1e9)
-n = 20
-
-def floyd(dist, m):
-  for k in range(m):
-    for i in range(m):
-      if dist[i][k] == INF:
-        continue
-      for j in range(m):
-        if dist[k][j] != INF and dist[i][j] > dist[i][k] + dist[k][j]:
-          dist[i][j] = dist[i][k] + dist[k][j]
 case = 0
-while True:
-  dist = [[INF for i in range(n + 1)] for _ in range(n + 1)]
-  try:
-    for i in range(1, n):
-      for j in list(map(int, input().split()))[1:]:
-        dist[i][j] = dist[j][i] = 1
-    floyd(dist, n +  1)
-    case += 1
-    print('Test Set #{}'.format(case))
 
-    m = int(input())
-    for _ in range(m):
-      s, e = list(map(int, input().split()))
-      print('{:2d} to {:2d}: {}'.format(s, e, dist[s][e]))
-    print()
-  except EOFError:
+max_cost = [[None] * 85 for _ in range(85)]
+def floyd(dist, max_cost, C):
+  for _ in range(2):
+    for k in range(1, C + 1):
+      for i in range(1, C + 1):
+        for j in range(1, C + 1):
+          max_c = max(max_cost[i][k], max_cost[k][j])
+          if dist[i][j] + max_cost[i][j] > dist[i][k] + dist[k][j] + max_c:
+            dist[i][j] = dist[i][k] + dist[k][j]
+            max_cost[i][j] = max_c
+
+while True:
+  C, R, Q = map(int, input().split())
+
+  if C == 0:
     break
+
+  case += 1
+  
+  f = [0] + list(map(int, input().split()))
+  
+  for i in range(1, C + 1):
+    for j in range(1, C + 1):
+      max_cost[i][j] = max(f[i], f[j])
+
+  dist = [[INF] * (C + 1) for _ in range(C + 1)]
+
+  for _ in range(R):
+    u, v, w = map(int, input().split())
+    dist[u][v] = dist[v][u] = w
+  
+  floyd(dist, max_cost, C)
+
+  if case > 1:
+    print()
+  
+  print('Case #{}'.format(case))
+
+  for _ in range(Q):
+    u, v = map(int, input().split())
+    print(-1 if dist[u][v] == INF else dist[u][v] + max_cost[u][v])
