@@ -136,7 +136,7 @@
 #     currencies.append(currency)
 
 #   dist = [[1 if i == j else 0 for j in range(n)] for i in range(n)]
-  
+
 #   m = int(input())
 
 #   for _ in range(m):
@@ -152,7 +152,7 @@
 #     if dist[i][i] > 1:
 #       arbitrage = True
 #       break
-  
+
 #   if arbitrage:
 #     print('Case {}: Yes'.format(case))
 #   else:
@@ -189,48 +189,92 @@
 #   except EOFError:
 #     break
 
-# Asterix and Obelix
+# # Asterix and Obelix
+# INF = int(1e9)
+# case = 0
+
+# max_cost = [[None] * 85 for _ in range(85)]
+# def floyd(dist, max_cost, C):
+#   for _ in range(2):
+#     for k in range(1, C + 1):
+#       for i in range(1, C + 1):
+#         for j in range(1, C + 1):
+#           max_c = max(max_cost[i][k], max_cost[k][j])
+#           if dist[i][j] + max_cost[i][j] > dist[i][k] + dist[k][j] + max_c:
+#             dist[i][j] = dist[i][k] + dist[k][j]
+#             max_cost[i][j] = max_c
+
+# while True:
+#   C, R, Q = map(int, input().split())
+
+#   if C == 0:
+#     break
+
+#   case += 1
+
+#   f = [0] + list(map(int, input().split()))
+
+#   for i in range(1, C + 1):
+#     for j in range(1, C + 1):
+#       max_cost[i][j] = max(f[i], f[j])
+
+#   dist = [[INF] * (C + 1) for _ in range(C + 1)]
+
+#   for _ in range(R):
+#     u, v, w = map(int, input().split())
+#     dist[u][v] = dist[v][u] = w
+
+#   floyd(dist, max_cost, C)
+
+#   if case > 1:
+#     print()
+
+#   print('Case #{}'.format(case))
+
+#   for _ in range(Q):
+#     u, v = map(int, input().split())
+#     print(-1 if dist[u][v] == INF else dist[u][v] + max_cost[u][v])
+
+# Thunder Mountain
+
 INF = int(1e9)
-case = 0
 
-max_cost = [[None] * 85 for _ in range(85)]
-def floyd(dist, max_cost, C):
-  for _ in range(2):
-    for k in range(1, C + 1):
-      for i in range(1, C + 1):
-        for j in range(1, C + 1):
-          max_c = max(max_cost[i][k], max_cost[k][j])
-          if dist[i][j] + max_cost[i][j] > dist[i][k] + dist[k][j] + max_c:
-            dist[i][j] = dist[i][k] + dist[k][j]
-            max_cost[i][j] = max_c
+def distance(a,b):
+  return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
 
-while True:
-  C, R, Q = map(int, input().split())
+def floyd(dist, m):
+  for k in range(m):
+    for i in range(m):
+      for j in range(m):
+        dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
 
-  if C == 0:
-    break
+N = int(input())
 
-  case += 1
-  
-  f = [0] + list(map(int, input().split()))
-  
-  for i in range(1, C + 1):
-    for j in range(1, C + 1):
-      max_cost[i][j] = max(f[i], f[j])
+for case in range(N):
+  n = int(input())
+  dist = [[0 if i == j else INF for j in range(n)] for i in range(n)]
 
-  dist = [[INF] * (C + 1) for _ in range(C + 1)]
+  x = [None for i in range(n)]
+  y = [None for i in range(n)]
 
-  for _ in range(R):
-    u, v, w = map(int, input().split())
-    dist[u][v] = dist[v][u] = w
-  
-  floyd(dist, max_cost, C)
+  for i in range(n):
+    point = list(map(int, input().split()))
+    x[i] = point[0]
+    y[i] = point[1]
 
-  if case > 1:
-    print()
-  
-  print('Case #{}'.format(case))
+  for i in range(n):
+    for j in range(n):
+      dis = distance((x[i], y[i]), (x[j], y[j]))
+      if dis <= 10:
+        dist[i][j] = dis
 
-  for _ in range(Q):
-    u, v = map(int, input().split())
-    print(-1 if dist[u][v] == INF else dist[u][v] + max_cost[u][v])
+  floyd(dist, n)
+
+  print('Case #{}:'.format(case + 1))
+
+  res = 0
+  for i in range(n):
+    for j in range(n):
+      res = max(res, dist[i][j])
+  print("{:.4f}".format(res) if res != INF else 'Send Kurdy')
+  print()
