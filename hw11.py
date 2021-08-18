@@ -278,26 +278,53 @@
 #   print("{:.4f}".format(res) if res != INF else 'Send Kurdy')
 #   print()
 
-# Event Organizer
-INF = int(1e9)
-MAX = 49
+# # Event Organizer
+# INF = int(1e9)
+# MAX = 49
 
-def floyd(dist, m):
-  for k in range(m):
-    for i in range(m):
-      for j in range(m):
-        if i <= k <= j:
-          dist[i][j] = max(dist[i][j], dist[i][k] + dist[k][j])
+# def floyd(dist, m):
+#   for k in range(m):
+#     for i in range(m):
+#       for j in range(m):
+#         if i <= k <= j:
+#           dist[i][j] = max(dist[i][j], dist[i][k] + dist[k][j])
 
-T = int(input())
+# T = int(input())
 
-for _ in range(T):
-  dist = [[0 for j in range(MAX)] for i in range(MAX)]
-  N = int(input())
-  for i in range(N):
-    S, E, C = list(map(int, input().split()))
-    dist[S][E] = max(dist[S][E], C)
+# for _ in range(T):
+#   dist = [[0 for j in range(MAX)] for i in range(MAX)]
+#   N = int(input())
+#   for i in range(N):
+#     S, E, C = list(map(int, input().split()))
+#     dist[S][E] = max(dist[S][E], C)
 
-  floyd(dist, MAX)
+#   floyd(dist, MAX)
 
-  print(dist[0][MAX - 1])
+#   print(dist[0][MAX - 1])
+
+# Greg and Graph
+n = int(input())
+dist = [[0] * (n + 1)]
+
+for i in range(1, n + 1):
+  dist.append([0] + list(map(int, input().split())))
+
+deleted_vertices = list(map(int, input().split()))
+res = [0] * n
+
+for index in range(n - 1, -1, -1):
+  k = deleted_vertices[index]
+
+  for i in range(1, n + 1):
+    for j in range(1, n + 1):
+      dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+  for u in deleted_vertices[index:]:
+    for v in deleted_vertices[index:]:
+      res[index] += dist[u][v]
+
+print(*res)
+
+
+
+
