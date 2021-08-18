@@ -235,46 +235,69 @@
 #     u, v = map(int, input().split())
 #     print(-1 if dist[u][v] == INF else dist[u][v] + max_cost[u][v])
 
-# Thunder Mountain
+# # Thunder Mountain
+# INF = int(1e9)
 
+# def distance(a,b):
+#   return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+
+# def floyd(dist, m):
+#   for k in range(m):
+#     for i in range(m):
+#       for j in range(m):
+#         dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+# N = int(input())
+
+# for case in range(N):
+#   n = int(input())
+#   dist = [[0 if i == j else INF for j in range(n)] for i in range(n)]
+
+#   x = [None for i in range(n)]
+#   y = [None for i in range(n)]
+
+#   for i in range(n):
+#     point = list(map(int, input().split()))
+#     x[i] = point[0]
+#     y[i] = point[1]
+
+#   for i in range(n):
+#     for j in range(n):
+#       dis = distance((x[i], y[i]), (x[j], y[j]))
+#       if dis <= 10:
+#         dist[i][j] = dis
+
+#   floyd(dist, n)
+
+#   print('Case #{}:'.format(case + 1))
+
+#   res = 0
+#   for i in range(n):
+#     for j in range(n):
+#       res = max(res, dist[i][j])
+#   print("{:.4f}".format(res) if res != INF else 'Send Kurdy')
+#   print()
+
+# Event Organizer
 INF = int(1e9)
-
-def distance(a,b):
-  return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+MAX = 49
 
 def floyd(dist, m):
   for k in range(m):
     for i in range(m):
       for j in range(m):
-        dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+        if i <= k <= j:
+          dist[i][j] = max(dist[i][j], dist[i][k] + dist[k][j])
 
-N = int(input())
+T = int(input())
 
-for case in range(N):
-  n = int(input())
-  dist = [[0 if i == j else INF for j in range(n)] for i in range(n)]
+for _ in range(T):
+  dist = [[0 for j in range(MAX)] for i in range(MAX)]
+  N = int(input())
+  for i in range(N):
+    S, E, C = list(map(int, input().split()))
+    dist[S][E] = max(dist[S][E], C)
 
-  x = [None for i in range(n)]
-  y = [None for i in range(n)]
+  floyd(dist, MAX)
 
-  for i in range(n):
-    point = list(map(int, input().split()))
-    x[i] = point[0]
-    y[i] = point[1]
-
-  for i in range(n):
-    for j in range(n):
-      dis = distance((x[i], y[i]), (x[j], y[j]))
-      if dis <= 10:
-        dist[i][j] = dis
-
-  floyd(dist, n)
-
-  print('Case #{}:'.format(case + 1))
-
-  res = 0
-  for i in range(n):
-    for j in range(n):
-      res = max(res, dist[i][j])
-  print("{:.4f}".format(res) if res != INF else 'Send Kurdy')
-  print()
+  print(dist[0][MAX - 1])
