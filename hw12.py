@@ -130,64 +130,96 @@
   
 #   print('{} {}'.format(r1, r2))
 
-# The Monkey and the Oiled Bamboo - https://onlinejudge.org/external/120/12032.pdf
+# # The Monkey and the Oiled Bamboo - https://onlinejudge.org/external/120/12032.pdf
 
-T = int(input())
+# T = int(input())
 
-for t in range(T):
+# for t in range(T):
   
-  n = int(input())
-  r = list(map(int, input().split()))
-  if len(r) == 1:
-    print('Case {}: {}'.format(t + 1, r[0]))
-    continue
-  steps = []
-  for j in range(len(r)):
-    if j != len(r) - 1:
-      steps.append(r[j + 1] - r[j])
-  steps.append(r[0])
-  steps.sort()
-  result = steps[-1]
+#   n = int(input())
+#   r = list(map(int, input().split()))
+#   if len(r) == 1:
+#     print('Case {}: {}'.format(t + 1, r[0]))
+#     continue
+#   steps = []
+#   for j in range(len(r)):
+#     if j != len(r) - 1:
+#       steps.append(r[j + 1] - r[j])
+#   steps.append(r[0])
+#   steps.sort()
+#   result = steps[-1]
 
-  for i in range(len(steps) - 1, -1, -1):
-    if result == steps[i]:
-      result -= 1
+#   for i in range(len(steps) - 1, -1, -1):
+#     if result == steps[i]:
+#       result -= 1
   
-  if result > 0:
-    result = steps[-1]
-  elif result == 0:
-    result = steps[-1] + 1
-  else:
-    result = steps[-1] - result
-  print('Case {}: {}'.format(t + 1, result))
+#   if result > 0:
+#     result = steps[-1]
+#   elif result == 0:
+#     result = steps[-1] + 1
+#   else:
+#     result = steps[-1] - result
+#   print('Case {}: {}'.format(t + 1, result))
 
-# Other solution:
-T = int(input())
-for tc in range(1, T + 1):
-  print('Case %d: ' % tc, end = '')
-  n = int(input())
-  a = [0] + list(map(int, input().split()))
-  l = 1
-  r = a[-1] + 1
-  res = 0
+# # Other solution:
+# T = int(input())
+# for tc in range(1, T + 1):
+#   print('Case %d: ' % tc, end = '')
+#   n = int(input())
+#   a = [0] + list(map(int, input().split()))
+#   l = 1
+#   r = a[-1] + 1
+#   res = 0
   
+#   while l <= r:
+#     mid = (l + r) // 2
+#     k = mid
+#     check = True
+    
+#     for i in range(n + 1):
+#       if a[i] - a[i - 1] > k:
+#         check = False
+#         break
+#       else:
+#         if a[i] - a[i - 1] == k:
+#           k -= 1
+    
+#     if check:
+#       res = mid
+#       r = mid - 1
+#     else:
+#       l = mid + 1
+
+#   print(res)
+
+# Hacking the random number generator
+n, k = list(map(int, input().split()))
+
+a = list(map(int, input().split()))
+
+a.sort()
+
+res = 0
+j = 0
+
+def bs_search(a, l, r, value):
   while l <= r:
-    mid = (l + r) // 2
-    k = mid
-    check = True
-    
-    for i in range(n + 1):
-      if a[i] - a[i - 1] > k:
-        check = False
-        break
-      else:
-        if a[i] - a[i - 1] == k:
-          k -= 1
-    
-    if check:
-      res = mid
+    mid = int( (l + r) / 2 )
+    if a[mid] == value:
+      return True
+    if a[mid] > value:
       r = mid - 1
     else:
       l = mid + 1
+  return False
 
-  print(res)
+for i in range(n):
+  # while j < i and a[i] - a[j] > k:
+  #   j += 1
+  # if a[i] - a[j] == k:
+  #   res += 1
+  if bs_search(a, i + 1, n - 1, a[i] + k):
+    res += 1
+
+print(res)
+
