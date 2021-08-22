@@ -160,3 +160,34 @@ for t in range(T):
   else:
     result = steps[-1] - result
   print('Case {}: {}'.format(t + 1, result))
+
+# Other solution:
+T = int(input())
+for tc in range(1, T + 1):
+  print('Case %d: ' % tc, end = '')
+  n = int(input())
+  a = [0] + list(map(int, input().split()))
+  l = 1
+  r = a[-1] + 1
+  res = 0
+  
+  while l <= r:
+    mid = (l + r) // 2
+    k = mid
+    check = True
+    
+    for i in range(n + 1):
+      if a[i] - a[i - 1] > k:
+        check = False
+        break
+      else:
+        if a[i] - a[i - 1] == k:
+          k -= 1
+    
+    if check:
+      res = mid
+      r = mid - 1
+    else:
+      l = mid + 1
+
+  print(res)
