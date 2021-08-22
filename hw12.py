@@ -1,6 +1,4 @@
 # # Where is the Marble
-# import bisect
-
 # def find_marble(marbles, left, right, query):
 #   if left <= right:
 #     mid = left + (right - left) // 2
@@ -58,30 +56,107 @@
   
 #   print(count)
 
-# Eko
-import math
-N, M = list(map(int, input().split()))
+# # Eko
+# import math
+# N, M = list(map(int, input().split()))
 
-heights_of_tree = list(map(int, input().split()))
-heights_of_tree.append(0)
-N += 1
-heights_of_tree.sort()
+# heights_of_tree = list(map(int, input().split()))
+# heights_of_tree.append(0)
+# N += 1
+# heights_of_tree.sort()
 
-t = 0
-sum = 0
+# t = 0
+# sum = 0
 
-result = 0
+# result = 0
 
-for i in range(N - 1, -1, -1):
-  t += 1
-  sum += heights_of_tree[i]
-  if sum - heights_of_tree[i] * t < M:
+# for i in range(N - 1, -1, -1):
+#   t += 1
+#   sum += heights_of_tree[i]
+#   if sum - heights_of_tree[i] * t < M:
+#     continue
+#   elif sum - heights_of_tree[i] * t == M:
+#     result = (sum - M) / t  
+#     break
+#   else:
+#     result = (sum - heights_of_tree[i] - M) // (t - 1)
+#     break
+
+# print(math.floor(result))
+
+# # The Playboy Chimp
+# # https://onlinejudge.org/external/106/10611.pdf
+# import bisect
+# def bs_first(a, left, right, x):
+#   if left < right:
+#     mid = (left + right) // 2
+#     if (mid == left or x > a[mid - 1]) and a[mid] == x:
+#       return mid
+#     elif x > a[mid]:
+#       return bs_first(a, mid + 1, right, x)
+#     else:
+#       return bs_first(a, left, mid - 1, x)
+#   return -1
+
+# def bs_last(a, left, right, x):
+#   if left < right:
+#     mid = (left + right) // 2
+#     if (mid == right or x < a[mid + 1]) and a[mid] == x:
+#       return mid
+#     elif x < a[mid]:
+#       return bs_first(a, left, mid - 1, x)
+#     else:
+#       return bs_first(a, mid + 1, right, x)
+#   return -1
+
+# N = int(input())
+
+# heights_of_chimps = list(map(int, input().split()))
+
+# Q = int(input())
+
+# queries = list(map(int, input().split()))
+
+# for query in queries:
+#   r1 = 'X'
+#   r2 = 'X'
+#   left = bisect.bisect_left(heights_of_chimps, query)
+#   right = bisect.bisect_right(heights_of_chimps, query)
+#   if right != N:
+#     r2 = heights_of_chimps[right]
+
+#   if left > 0:
+#     r1 = heights_of_chimps[left - 1]
+  
+#   print('{} {}'.format(r1, r2))
+
+# The Monkey and the Oiled Bamboo - https://onlinejudge.org/external/120/12032.pdf
+
+T = int(input())
+
+for t in range(T):
+  
+  n = int(input())
+  r = list(map(int, input().split()))
+  if len(r) == 1:
+    print('Case {}: {}'.format(t + 1, r[0]))
     continue
-  elif sum - heights_of_tree[i] * t == M:
-    result = (sum - M) / t  
-    break
-  else:
-    result = (sum - heights_of_tree[i] - M) // (t - 1)
-    break
+  steps = []
+  for j in range(len(r)):
+    if j != len(r) - 1:
+      steps.append(r[j + 1] - r[j])
+  steps.append(r[0])
+  steps.sort()
+  result = steps[-1]
 
-print(math.floor(result))
+  for i in range(len(steps) - 1, -1, -1):
+    if result == steps[i]:
+      result -= 1
+  
+  if result > 0:
+    result = steps[-1]
+  elif result == 0:
+    result = steps[-1] + 1
+  else:
+    result = steps[-1] - result
+  print('Case {}: {}'.format(t + 1, result))
