@@ -192,34 +192,59 @@
 
 #   print(res)
 
-# Hacking the random number generator
+# # Hacking the random number generator
+# n, k = list(map(int, input().split()))
+
+# a = list(map(int, input().split()))
+
+# a.sort()
+
+# res = 0
+# j = 0
+
+# def bs_search(a, l, r, value):
+#   while l <= r:
+#     mid = int( (l + r) / 2 )
+#     if a[mid] == value:
+#       return True
+#     if a[mid] > value:
+#       r = mid - 1
+#     else:
+#       l = mid + 1
+#   return False
+
+# for i in range(n):
+#   # while j < i and a[i] - a[j] > k:
+#   #   j += 1
+#   # if a[i] - a[j] == k:
+#   #   res += 1
+#   if bs_search(a, i + 1, n - 1, a[i] + k):
+#     res += 1
+
+# print(res)
+
+# Energy Exchange
 n, k = list(map(int, input().split()))
 
 a = list(map(int, input().split()))
 
-a.sort()
+sum_energy = sum(a)
 
-res = 0
-j = 0
+left = 0
 
-def bs_search(a, l, r, value):
-  while l <= r:
-    mid = int( (l + r) / 2 )
-    if a[mid] == value:
-      return True
-    if a[mid] > value:
-      r = mid - 1
-    else:
-      l = mid + 1
-  return False
+right = 1000
 
-for i in range(n):
-  # while j < i and a[i] - a[j] > k:
-  #   j += 1
-  # if a[i] - a[j] == k:
-  #   res += 1
-  if bs_search(a, i + 1, n - 1, a[i] + k):
-    res += 1
+while right - left > 1e-7:
+  mid = (left + right) / 2
+  sum_tranfer = 0
 
-print(res)
+  for x in a:
+    if x > mid:
+      sum_tranfer += x - mid
 
+  if mid * n < sum_energy - sum_tranfer * k / 100:
+    left = mid
+  else:
+    right = mid
+
+print('%.9f' % left)
