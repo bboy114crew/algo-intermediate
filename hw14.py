@@ -1,7 +1,8 @@
 # Search Engine
 class Node:
-  max_value = -1
-  child = dict()
+  def __init__(self):
+    self.max_value = -1
+    self.child = dict()
 
 def add_word(root, s, value):
   tmp = root
