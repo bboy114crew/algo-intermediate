@@ -178,21 +178,38 @@ ub = upper_bound(root, 15)
 # if s < 1000000:
 #   print('-1')
 
-# Monk and his Friends
-T = int(input())
-for _ in range(T):
-  N, M = list(map(int, input().split()))
+# # Monk and his Friends
+# T = int(input())
+# for _ in range(T):
+#   N, M = list(map(int, input().split()))
 
-  candy = list(map(int, input().split()))
+#   candy = list(map(int, input().split()))
 
-  s = set()
+#   s = set()
 
-  for i in range(N):
-    s.add(candy[i])
+#   for i in range(N):
+#     s.add(candy[i])
 
-  for c in candy[N:]:
-    if c in s:
-      print('YES')
-    else:
-      print('NO')
-    s.add(c)
+#   for c in candy[N:]:
+#     if c in s:
+#       print('YES')
+#     else:
+#       print('NO')
+#     s.add(c)
+
+# # Penguins
+# n = int(input())
+# s = dict()
+# for i in range(n):
+#   name = input()
+#   if name in s:
+#     s[name] = s[name] + 1
+#   else:
+#     s[name] = 1
+# result = ''
+# max_penguin = 0
+# for item in s:
+#   if s[item] > max_penguin:
+#     max_penguin = s[item]
+#     result = item
+# print(result)
