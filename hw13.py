@@ -17,6 +17,32 @@ def insert_node(root, x):
   elif x > root.key:
     root.right = insert_node(root.right, x)
   return root
+
+def upper_bound(root, x):
+  if root == None:
+    return root
+  if x >= root.key:
+    return upper_bound(root.right, x)
+  ub_left = upper_bound(root.left, x)
+  if ub_left != None:
+    return ub_left
+  else:
+    return root
+
+# Example
+root = None
+
+root = insert_node(root, 30)
+root = insert_node(root, 20)
+root = insert_node(root, 40)
+root = insert_node(root, 15)
+root = insert_node(root, 37)
+root = insert_node(root, 45)
+root = insert_node(root, 25)
+
+ub = upper_bound(root, 15)
+
+
 # # Distinct Count
 # T = int(input())
 
@@ -92,44 +118,34 @@ def insert_node(root, x):
 # for name in a:
 #   print(name + ' ' + str(rank[S[name]]))
 
-# Minimum Loss
-'''
-Ý tưởng
-Giả sử ta bán nhà vào năm thứ 𝑖, khi đó cần chọn năm thứ 𝑥 1 ≤ 𝑥 < 𝑖 để
-mua nhà sao cho 𝑝𝑥 > 𝑝𝑖 và 𝑝𝑥 nhỏ nhất có thể.
-Sau đó cập nhật lại kết quả: 𝑎𝑛𝑠 = min 𝑎𝑛𝑠, 𝑝𝑥 − 𝑝𝑖
-.
-Để tìm 𝑝𝑥 một cách hiệu quả:
-• Ta đưa các giá trị 𝑝1, 𝑝2, … , 𝑝𝑖−1 vào một Binary Search Tree.
-• Dùng hàm “upper_bound” để tìm giá trị nhỏ nhất lớn hơn 𝑝𝑖
-.
-Python không có sẵn BST trong thư viện, nên ta phải tự cài self-balancing
-BST để tối ưu thời gian chạy.
-'''
-INF = int(1e20)
-def upper_bound(root, x):
-  if root == None:
-    return root
-  if x >= root.key:
-    return upper_bound(root.right, x)
-  ub_left = upper_bound(root.left, x)
-  if ub_left != None:
-    return ub_left
-  else:
-    return root
+# # Minimum Loss
+# '''
+# Ý tưởng
+# Giả sử ta bán nhà vào năm thứ 𝑖, khi đó cần chọn năm thứ 𝑥 1 ≤ 𝑥 < 𝑖 để
+# mua nhà sao cho 𝑝𝑥 > 𝑝𝑖 và 𝑝𝑥 nhỏ nhất có thể.
+# Sau đó cập nhật lại kết quả: 𝑎𝑛𝑠 = min 𝑎𝑛𝑠, 𝑝𝑥 − 𝑝𝑖
+# .
+# Để tìm 𝑝𝑥 một cách hiệu quả:
+# • Ta đưa các giá trị 𝑝1, 𝑝2, … , 𝑝𝑖−1 vào một Binary Search Tree.
+# • Dùng hàm “upper_bound” để tìm giá trị nhỏ nhất lớn hơn 𝑝𝑖
+# .
+# Python không có sẵn BST trong thư viện, nên ta phải tự cài self-balancing
+# BST để tối ưu thời gian chạy.
+# '''
+# INF = int(1e20)
 
-n = int(input())
-prices = list(map(int, input().split()))
+# n = int(input())
+# prices = list(map(int, input().split()))
 
-root = None
-ans = INF
+# root = None
+# ans = INF
 
-for i in range(n):
-  ub_node = upper_bound(root, prices[i])
-  if ub_node != None:
-    ans = min(ans, ub_node.key - prices[i])
-  root = insert_node(root, prices[i])
-print(ans)
+# for i in range(n):
+#   ub_node = upper_bound(root, prices[i])
+#   if ub_node != None:
+#     ans = min(ans, ub_node.key - prices[i])
+#   root = insert_node(root, prices[i])
+# print(ans)
 
 
 
