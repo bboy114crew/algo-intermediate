@@ -147,5 +147,35 @@ ub = upper_bound(root, 15)
 #   root = insert_node(root, prices[i])
 # print(ans)
 
+# # Megacity
+# import math
+# n, s = list(map(int, input().split()))
+# location = dict()
+# for i in range(n):
+#   x, y, k = list(map(int, input().split()))
+
+#   r = x * x + y * y 
+
+#   # We can use BTS to store location
+#   # traverse the tree in order of increasing radius (ascending key) 
+#   # add to total population until reach 1000000.
+
+#   if r in location:
+#     location[r] += k
+#   else:
+#     location[r] = k
+
+# radius = []
+# for r in location:
+#     radius.append(r)
+# radius.sort()
+
+# for r in radius:
+#   s += location[r]
+#   if s >= 1000000:
+#     print(round(math.sqrt(r), 7))
+#     break
+# if s < 1000000:
+#   print('-1')
 
 
