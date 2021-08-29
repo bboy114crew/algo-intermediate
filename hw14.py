@@ -208,80 +208,100 @@
 #     print(result)
 
 # # Diccionario Portunol
+# import string
+# import sys
+# sys.setrecursionlimit(10000000)
+
+# class TrieNode:
+#   def __init__(self):
+#     self.count_leaf = 0
+#     self.child = dict()
+
+# class Trie:
+#   def __init__(self):
+#     self.root = TrieNode()
+
+#   def add_word(self, word):
+#     cur = self.root
+#     for c in word:
+#       if c not in cur.child:
+#         cur.child[c] = TrieNode()
+#       cur = cur.child[c]
+#     cur.count_leaf += 1
+
+# def suffix_traversal(root, level, start_with):
+#   cnt = 1
+#   for c in root.child:
+#     if level > 0:
+#       start_with[c] += 1
+#     cnt += suffix_traversal(root.child[c], level + 1, start_with)
+      
+#   return cnt
+
+# def prefix_traversal(root, level, suffix_state_count, start_with):
+#   res = 0
+#   if level > 0:
+#     res = suffix_state_count
+#   for c in root.child:
+#     if level > 0:
+#       res -= start_with[c]
+#     res += prefix_traversal(root.child[c], level + 1, suffix_state_count, start_with)
+
+#   return res
 
 # while True:
-#   P, S = list(map(int, input().split()))
-#   if P == 0 and S == 0:
+#   p, s = map(int, input().split())
+#   if p == s == 0:
 #     break
 
-#   p_words = []
-#   s_words = []
+#   suffix_trie = Trie()
+#   prefix_trie = Trie()
 
-#   for _ in range(P):
-#     p_word = input()
-#     p_words.append(p_word)
-  
-#   for _ in range(P):
-#     s_word = input()
-#     s_words.append(s_word)
+#   for i in range(p):
+#     prefix_trie.add_word(input())
 
-# Diccionário Portuñol
-import string
-import sys
-sys.setrecursionlimit(10000000)
+#   for i in range(s):
+#     suffix_trie.add_word(input()[::-1])
 
-class TrieNode:
+#   start_with = {c: 0 for c in string.ascii_lowercase}
+#   suffix_state_count = suffix_traversal(suffix_trie.root, 0, start_with) - 1
+#   result = prefix_traversal(prefix_trie.root, 0, suffix_state_count, start_with)
+#   print(result)
+
+# No Prefix Set
+class Node:
   def __init__(self):
-    self.count_leaf = 0
+    self.count_word = 0
     self.child = dict()
 
-class Trie:
-  def __init__(self):
-    self.root = TrieNode()
+def add_word(root, s):
+  tmp = root
+  for i in range(len(s)):
+    ch = s[i]
+    if ch not in tmp.child:
+      tmp.child[ch] = Node()
+    else:
+      if tmp.child[ch].count_word >= 1:
+        return False
+    tmp = tmp.child[ch]
+  tmp.count_word += 1
+  return len(tmp.child) == 0
 
-  def add_word(self, word):
-    cur = self.root
-    for c in word:
-      if c not in cur.child:
-        cur.child[c] = TrieNode()
-      cur = cur.child[c]
-    cur.count_leaf += 1
 
-def suffix_traversal(root, level, start_with):
-  cnt = 1
-  for c in root.child:
-    if level > 0:
-      start_with[c] += 1
-    cnt += suffix_traversal(root.child[c], level + 1, start_with)
-      
-  return cnt
+N = int(input())
+root = Node()
 
-def prefix_traversal(root, level, suffix_state_count, start_with):
-  res = 0
-  if level > 0:
-    res = suffix_state_count
-  for c in root.child:
-    if level > 0:
-      res -= start_with[c]
-    res += prefix_traversal(root.child[c], level + 1, suffix_state_count, start_with)
+words = []
 
-  return res
+for i in range(N):
+  word = input()
+  words.append(word)
 
-while True:
-  p, s = map(int, input().split())
-  if p == s == 0:
-    break
+for word in words:
+  result = add_word(root, word)
+  if result == False:
+    print('BAD SET')
+    print(word)
+    exit()
 
-  suffix_trie = Trie()
-  prefix_trie = Trie()
-
-  for i in range(p):
-    prefix_trie.add_word(input())
-
-  for i in range(s):
-    suffix_trie.add_word(input()[::-1])
-
-  start_with = {c: 0 for c in string.ascii_lowercase}
-  suffix_state_count = suffix_traversal(suffix_trie.root, 0, start_with) - 1
-  result = prefix_traversal(prefix_trie.root, 0, suffix_state_count, start_with)
-  print(result)
+print('GOOD SET')
