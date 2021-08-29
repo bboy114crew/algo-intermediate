@@ -9,7 +9,7 @@
 #     if ch not in tmp.child:
 #       tmp.child[ch] = Node()
 #     tmp = tmp.child[ch]
-#     tmp.count_word += 1
+#   tmp.count_word += 1
 
 # def find_word(root, s):
 #   temp = root
@@ -97,38 +97,78 @@
 #   word = str(input())
 #   print(get_max_value(root, word))
 
-# DNA Prefix
+# # DNA Prefix
+# class Node:
+#   def __init__(self):
+#     self.th_word = 1
+#     self.max_value = -1
+#     self.child = dict()
 
+# def add_word(root, s):
+#   global result
+#   tmp = root
+#   for i in range(len(s)):
+#     ch = s[i]
+#     if ch not in tmp.child:
+#       tmp.child[ch] = Node()
+#     else:
+#       tmp.child[ch].th_word += 1
+#     tmp = tmp.child[ch]
+    
+#     tmp.max_value = i + 1
+#     if tmp.th_word != 0:
+#       result = max(result, tmp.max_value * tmp.th_word)
+
+# T = int(input())
+
+# for case in range(T):
+#   N = int(input())
+#   root = Node()
+#   result = 0
+#   for i in range(N):
+#     word = input()
+#     add_word(root, word)
+  
+#   print('Case {}: {}'.format(case +1, result))
+  
+# Consistency Checker
 class Node:
   def __init__(self):
-    self.th_word = 1
-    self.max_value = -1
+    self.count_word = 0
     self.child = dict()
 
 def add_word(root, s):
-  global result
   tmp = root
   for i in range(len(s)):
     ch = s[i]
     if ch not in tmp.child:
       tmp.child[ch] = Node()
     else:
-      tmp.child[ch].th_word += 1
+      if tmp.child[ch].count_word >= 1 and i <= len(s) - 1:
+        return False
     tmp = tmp.child[ch]
-    
-    tmp.max_value = i + 1
-    if tmp.th_word != 0:
-      result = max(result, tmp.max_value * tmp.th_word)
+  tmp.count_word += 1
+  if len(tmp.child) > 0:
+    return False
+  return True
 
 T = int(input())
 
 for case in range(T):
   N = int(input())
   root = Node()
-  result = 0
+  result = True
+
+  words = []
+  
   for i in range(N):
     word = input()
-    add_word(root, word)
+    words.append(word)
+
+  for word in words:
+    result = add_word(root, word)
+    if result == False:
+      break
   
-  print('Case {}: {}'.format(case +1, result))
-  
+  final_res = 'YES' if result == True else 'NO'
+  print('Case {}: {}'.format(case +1, final_res))
