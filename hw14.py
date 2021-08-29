@@ -268,7 +268,45 @@
 #   result = prefix_traversal(prefix_trie.root, 0, suffix_state_count, start_with)
 #   print(result)
 
-# No Prefix Set
+# # No Prefix Set
+# class Node:
+#   def __init__(self):
+#     self.count_word = 0
+#     self.child = dict()
+
+# def add_word(root, s):
+#   tmp = root
+#   for i in range(len(s)):
+#     ch = s[i]
+#     if ch not in tmp.child:
+#       tmp.child[ch] = Node()
+#     else:
+#       if tmp.child[ch].count_word >= 1:
+#         return False
+#     tmp = tmp.child[ch]
+#   tmp.count_word += 1
+#   return len(tmp.child) == 0
+
+
+# N = int(input())
+# root = Node()
+
+# words = []
+
+# for i in range(N):
+#   word = input()
+#   words.append(word)
+
+# for word in words:
+#   result = add_word(root, word)
+#   if result == False:
+#     print('BAD SET')
+#     print(word)
+#     exit()
+
+# print('GOOD SET')
+
+# Bank and Vulnerable Passwords
 class Node:
   def __init__(self):
     self.count_word = 0
@@ -300,8 +338,7 @@ for i in range(N):
 for word in words:
   result = add_word(root, word)
   if result == False:
-    print('BAD SET')
-    print(word)
+    print('vulnerable')
     exit()
 
-print('GOOD SET')
+print('non vulnerable')
