@@ -224,6 +224,8 @@
 #   for _ in range(P):
 #     s_word = input()
 #     s_words.append(s_word)
+
+# Diccionário Portuñol
 import string
 import sys
 sys.setrecursionlimit(10000000)
