@@ -131,7 +131,49 @@
   
 #   print('Case {}: {}'.format(case +1, result))
   
-# Consistency Checker
+# # Consistency Checker
+# class Node:
+#   def __init__(self):
+#     self.count_word = 0
+#     self.child = dict()
+
+# def add_word(root, s):
+#   tmp = root
+#   for i in range(len(s)):
+#     ch = s[i]
+#     if ch not in tmp.child:
+#       tmp.child[ch] = Node()
+#     else:
+#       if tmp.child[ch].count_word >= 1 and i <= len(s) - 1:
+#         return False
+#     tmp = tmp.child[ch]
+#   tmp.count_word += 1
+#   if len(tmp.child) > 0:
+#     return False
+#   return True
+
+# T = int(input())
+
+# for case in range(T):
+#   N = int(input())
+#   root = Node()
+#   result = True
+
+#   words = []
+  
+#   for i in range(N):
+#     word = input()
+#     words.append(word)
+
+#   for word in words:
+#     result = add_word(root, word)
+#     if result == False:
+#       break
+  
+#   final_res = 'YES' if result == True else 'NO'
+#   print('Case {}: {}'.format(case +1, final_res))
+
+# Contacts
 class Node:
   def __init__(self):
     self.count_word = 0
@@ -139,36 +181,28 @@ class Node:
 
 def add_word(root, s):
   tmp = root
-  for i in range(len(s)):
-    ch = s[i]
+  for ch in s:
     if ch not in tmp.child:
       tmp.child[ch] = Node()
-    else:
-      if tmp.child[ch].count_word >= 1 and i <= len(s) - 1:
-        return False
     tmp = tmp.child[ch]
-  tmp.count_word += 1
-  if len(tmp.child) > 0:
-    return False
-  return True
+    tmp.count_word += 1
 
-T = int(input())
+def count_word(root, s):
+  temp = root
+  for ch in s:
+    if ch not in temp.child:
+      return 0
+    else:
+      temp = temp.child[ch]
+  return temp.count_word
 
-for case in range(T):
-  N = int(input())
-  root = Node()
-  result = True
 
-  words = []
-  
-  for i in range(N):
-    word = input()
-    words.append(word)
-
-  for word in words:
-    result = add_word(root, word)
-    if result == False:
-      break
-  
-  final_res = 'YES' if result == True else 'NO'
-  print('Case {}: {}'.format(case +1, final_res))
+n = int(input())
+root = Node()
+for _ in range(n):
+  op, word = list( input().split())
+  if op == 'add':
+    add_word(root, word)
+  else:
+    result = count_word(root, word)
+    print(result)
