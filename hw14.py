@@ -306,39 +306,104 @@
 
 # print('GOOD SET')
 
-# Bank and Vulnerable Passwords
+# # Bank and Vulnerable Passwords
+# class Node:
+#   def __init__(self):
+#     self.count_word = 0
+#     self.child = dict()
+
+# def add_word(root, s):
+#   tmp = root
+#   for i in range(len(s)):
+#     ch = s[i]
+#     if ch not in tmp.child:
+#       tmp.child[ch] = Node()
+#     else:
+#       if tmp.child[ch].count_word >= 1:
+#         return False
+#     tmp = tmp.child[ch]
+#   tmp.count_word += 1
+#   return len(tmp.child) == 0
+
+
+# N = int(input())
+# root = Node()
+
+# words = []
+
+# for i in range(N):
+#   word = input()
+#   words.append(word)
+
+# for word in words:
+#   result = add_word(root, word)
+#   if result == False:
+#     print('vulnerable')
+#     exit()
+
+# print('non vulnerable')
+
+# Old Berland Language
 class Node:
   def __init__(self):
-    self.count_word = 0
-    self.child = dict()
+    self.child = [None, None]
+    self.parent = None
+    self.is_blocked = False
 
-def add_word(root, s):
-  tmp = root
-  for i in range(len(s)):
-    ch = s[i]
-    if ch not in tmp.child:
-      tmp.child[ch] = Node()
-    else:
-      if tmp.child[ch].count_word >= 1:
-        return False
-    tmp = tmp.child[ch]
-  tmp.count_word += 1
-  return len(tmp.child) == 0
+def add_word(root, leng):
+  if root.is_blocked:
+    return ''
+  temp = root
+  s = ""
+  for i in range(leng):
+    next = -1
+    l = temp.child[0]
+    r = temp.child[1]
+    # Check if node 0 or 1 is blocked
+    if l == None or l.is_blocked == False:
+      next = 0
+    elif r == None or r.is_blocked == False:
+      next = 1
+    if next == -1:
+      return ''
+    # If not create new node and assign parent for new node
+    if temp.child[next] == None:
+      temp.child[next] = Node()
+      temp.child[next].parent = temp
+    temp = temp.child[next]
+    # Add new node for building string
+    s = s + str(next)
 
+  temp.is_blocked = True
+  # Update parent to blocked node if it can be
+  while temp.parent != None:
+    temp = temp.parent
+    l = temp.child[0]
+    r = temp.child[1]
+    if l != None and r != None:
+      if l.is_blocked == True and r.is_blocked == True:
+        temp.is_blocked = True
+  return s
 
-N = int(input())
 root = Node()
 
-words = []
+N = int(input())
 
-for i in range(N):
-  word = input()
-  words.append(word)
+len_words = list(map(int, input().split()))
+word_positions = []
+for i in range(len(len_words)):
+  word_positions.append((len_words[i], i))
 
-for word in words:
-  result = add_word(root, word)
-  if result == False:
-    print('vulnerable')
+word_positions = sorted(word_positions)
+ans = ['' for i in range(N)]
+for (leng, id) in word_positions:
+  s = add_word(root, leng)
+  if s == '':
+    print('NO')
     exit()
+  ans[id] = s
+print('YES')
+for w in ans:
+  print(w)
 
-print('non vulnerable')
+  
