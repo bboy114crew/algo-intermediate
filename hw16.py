@@ -5,7 +5,6 @@ uniset(u, v) Hợp tập hợp chứa u và tập hợp chứa v thành 1 tập 
 '''
 
 # Friends
-MAX = 3000
 parent = []
 ranks = []
 num = []
