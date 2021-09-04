@@ -1,3 +1,20 @@
+# BFS not use Queue
+def BFS (V,Adj,s):
+  level = {s: 0}
+  parent = {s : None}
+  i = 1
+  frontier = [s] # previous level, i 􀀀 1
+  while frontier:
+    next = [ ] # next level, i
+    for u in frontier:
+      for v in Adj [u]:
+        if v not in level: # not yet seen
+          level[v] = i # level[u] + 1
+          parent[v] = u
+          next.append(v)
+    frontier = next
+    i += 1
+
 import queue
 
 # # Breadth First Search: Shortest Reach

@@ -1,3 +1,20 @@
+# Search from start vertex s (only see stuff reachable from s)
+parent = {'s': None}
+def DFS_visit (Adj, s):
+  for v in Adj[s]:
+    if v not in parent:
+      parent[v] = s
+      DFS_visit (Adj, v) 
+
+# Explore entire graph
+def DFS_visit (v, Adj):
+  parent = {}
+  for s in v:
+    if s not in parent:
+      parent[s] = None
+      DFS_visit (Adj, s)
+
+
 # # Bishu and his Girlfriend
 # def bishu_and_his_girlfriend(s, visited, dist, graph):
 #   visited[s] = True
