@@ -194,7 +194,70 @@ uniset(u, v) Hợp tập hợp chứa u và tập hợp chứa v thành 1 tập 
 #   if Q > 0:
 #     print()
 
-# Ice Skating
+# # Ice Skating
+# parent = []
+# ranks = []
+
+# def make_set(n):
+#   global parent, ranks
+#   parent = [i for i in range(n)]
+#   ranks = [i for i in range(n)]
+
+# def find_set(u):
+#   global parent
+#   if parent[u] != u:
+#     parent[u] = find_set(parent[u])
+#   return parent[u]
+
+# def union_set(u, v):
+#   global parent, ranks
+#   up = find_set(u)
+#   vp = find_set(v)
+
+#   if up == vp:
+#     return
+
+#   if ranks[up] > ranks[vp]:
+#     parent[vp] = up
+#   elif ranks[up] < ranks[vp]:
+#     parent[up] = vp
+#   else:
+#     parent[up] = vp
+#     ranks[vp] += 1
+
+# n = int(input())
+
+# x = [0 for _ in range(n)]
+# y = [0 for _ in range(n)]
+
+# for i in range(n):
+#   px, py = list(map(int, input().split()))
+#   x[i] = px
+#   y[i] = py
+
+# make_set(n)
+
+# for i in range(n):
+#   for j in range(i + 1, n):
+#     if x[i] == x[j] or y[i] == y[j]:
+#       u = find_set(i)
+#       v = find_set(j)
+
+#       if u != v:
+#         union_set(u, v)
+
+# ans = 0
+
+# for i in range(n):
+#   if parent[i] == i:
+#     ans += 1
+
+# ans -= 1
+# print(ans)
+
+# Lost And Survived
+import sys
+sys.setrecursionlimit(10000000)
 parent = []
 ranks = []
 
@@ -217,40 +280,34 @@ def union_set(u, v):
   if up == vp:
     return
 
-  if ranks[up] > ranks[vp]:
-    parent[vp] = up
-  elif ranks[up] < ranks[vp]:
-    parent[up] = vp
+  parent[vp] = up
+
+n, a, b = list(map(int, input().split()))
+p = list(map(int, input().split()))
+
+p_dict = dict()
+
+for i in range(1, n + 1):
+  p_dict[p[i - 1]] = i
+
+make_set(n + 2)
+
+for i in range(1, n + 1):
+  union_set(i, p_dict.get(a - p[i - 1], n + 1))
+  union_set(i, p_dict.get(b - p[i - 1], 0))
+result = []
+
+A = find_set(0)
+B = find_set(n + 1)
+
+for i in range(1, n + 1):
+  if find_set(i) == A:
+    result.append(0)
   else:
-    parent[up] = vp
-    ranks[vp] += 1
+    result.append(1)
 
-n = int(input())
-
-x = [0 for _ in range(n)]
-y = [0 for _ in range(n)]
-
-for i in range(n):
-  px, py = list(map(int, input().split()))
-  x[i] = px
-  y[i] = py
-
-make_set(n)
-
-for i in range(n):
-  for j in range(i + 1, n):
-    if x[i] == x[j] or y[i] == y[j]:
-      u = find_set(i)
-      v = find_set(j)
-
-      if u != v:
-        union_set(u, v)
-
-ans = 0
-
-for i in range(n):
-  if parent[i] == i:
-    ans += 1
-
-ans -= 1
-print(ans)
+if A == B:
+  print('NO')
+else:
+  print('YES')
+  print(' '.join([str(x) for x in result]))
