@@ -99,54 +99,97 @@
 #   print('Case {}: {} {}'.format(case + 1, x, y))
 
 # Ubiquitous Religions
-parent = []
-ranks = []
+# parent = []
+# ranks = []
 
-def make_set(n):
-  global parent, ranks
-  parent = [i for i in range(n + 1)]
-  ranks = [i for i in range(n + 1)]
+# def make_set(n):
+#   global parent, ranks
+#   parent = [i for i in range(n + 1)]
+#   ranks = [i for i in range(n + 1)]
 
-def find_set(u):
-  global parent
-  if parent[u] != u:
-    parent[u] = find_set(parent[u])
-  return parent[u]
+# def find_set(u):
+#   global parent
+#   if parent[u] != u:
+#     parent[u] = find_set(parent[u])
+#   return parent[u]
 
-def union_set(u, v):
-  global parent, ranks
-  up = find_set(u)
-  vp = find_set(v)
+# def union_set(u, v):
+#   global parent, ranks
+#   up = find_set(u)
+#   vp = find_set(v)
 
-  if up == vp:
-    return
+#   if up == vp:
+#     return
 
-  if ranks[up] > ranks[vp]:
-    parent[vp] = up
-  elif ranks[up] < ranks[vp]:
-    parent[up] = vp
-  else:
-    parent[up] = vp
-    ranks[vp] += 1
+#   if ranks[up] > ranks[vp]:
+#     parent[vp] = up
+#   elif ranks[up] < ranks[vp]:
+#     parent[up] = vp
+#   else:
+#     parent[up] = vp
+#     ranks[vp] += 1
 
-case = 0
+# case = 0
 
-while True:
-  N, M = list(map(int, input().split()))
+# while True:
+#   N, M = list(map(int, input().split()))
 
-  if N == 0 and M == 0:
-    break
+#   if N == 0 and M == 0:
+#     break
   
-  case += 1
-  result = N
+#   case += 1
+#   result = N
 
-  make_set(N)
-  for _ in range(M):
-    i, j = list(map(int, input().split()))
-    u = find_set(i)
-    v = find_set(j)
-    if u != v:
-      result -= 1
-      union_set(i, j)
+#   make_set(N)
+#   for _ in range(M):
+#     i, j = list(map(int, input().split()))
+#     u = find_set(i)
+#     v = find_set(j)
+#     if u != v:
+#       result -= 1
+#       union_set(i, j)
 
-  print('Case {}: {}'.format(case, result))
+#   print('Case {}: {}'.format(case, result))
+
+# Phone List
+
+class Node:
+  def __init__(self):
+    self.count_word = 0
+    self.child = dict()
+
+def add_word(root, s):
+  tmp = root
+  for i in range(len(s)):
+    ch = s[i]
+    if ch not in tmp.child:
+      tmp.child[ch] = Node()
+    else:
+      if tmp.child[ch].count_word >= 1 and i <= len(s) - 1:
+        return False
+    tmp = tmp.child[ch]
+  tmp.count_word += 1
+  if len(tmp.child) > 0:
+    return False
+  return True
+
+T = int(input())
+
+for case in range(T):
+  N = int(input())
+  root = Node()
+  result = True
+
+  phone_numbers = []
+  
+  for i in range(N):
+    number = input()
+    phone_numbers.append(number)
+
+  for number in phone_numbers:
+    result = add_word(root, number)
+    if result == False:
+      break
+  
+  final_res = 'YES' if result == True else 'NO'
+  print(final_res)
