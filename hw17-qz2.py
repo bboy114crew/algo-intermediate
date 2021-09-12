@@ -152,44 +152,101 @@
 #   print('Case {}: {}'.format(case, result))
 
 # Phone List
+# class Node:
+#   def __init__(self):
+#     self.count_word = 0
+#     self.child = dict()
 
-class Node:
-  def __init__(self):
-    self.count_word = 0
-    self.child = dict()
+# def add_word(root, s):
+#   tmp = root
+#   for i in range(len(s)):
+#     ch = s[i]
+#     if ch not in tmp.child:
+#       tmp.child[ch] = Node()
+#     else:
+#       if tmp.child[ch].count_word >= 1 and i <= len(s) - 1:
+#         return False
+#     tmp = tmp.child[ch]
+#   tmp.count_word += 1
+#   if len(tmp.child) > 0:
+#     return False
+#   return True
 
-def add_word(root, s):
-  tmp = root
-  for i in range(len(s)):
-    ch = s[i]
-    if ch not in tmp.child:
-      tmp.child[ch] = Node()
-    else:
-      if tmp.child[ch].count_word >= 1 and i <= len(s) - 1:
-        return False
-    tmp = tmp.child[ch]
-  tmp.count_word += 1
-  if len(tmp.child) > 0:
-    return False
-  return True
+# T = int(input())
+
+# for case in range(T):
+#   N = int(input())
+#   root = Node()
+#   result = True
+
+#   phone_numbers = []
+  
+#   for i in range(N):
+#     number = input()
+#     phone_numbers.append(number)
+
+#   for number in phone_numbers:
+#     result = add_word(root, number)
+#     if result == False:
+#       break
+  
+#   final_res = 'YES' if result == True else 'NO'
+#   print(final_res)
+
+# Freckles
+from heapq import heappush, heappop
+INF = 1e9
+
+def distance(A, B):
+  x, y = A
+  z, t = B
+  return ((x - z) ** 2 + (y - t) ** 2) ** 0.5
+
+def prim(src):
+  global min_heap, graph, dist, path, visited
+  dist[src] = 0
+  heappush(min_heap, (dist[src], src))
+  while len(min_heap) != 0:
+    top = heappop(min_heap)
+    u = top[1]
+    if visited[u]:
+      continue
+    visited[u] = True
+
+    for (w, v) in graph[u]:
+      if visited[v] == False and w < dist[v]:
+        dist[v] = w
+        path[v] = u
+        heappush(min_heap, (w, v))
+
+def print_dist():
+  res = 0
+  for i in range(1, N):
+    if path[i] == -1:
+      continue
+    res += dist[i]
+  print('{:.2f}'.format(res))
 
 T = int(input())
-
-for case in range(T):
+input()
+for _ in range(T):
   N = int(input())
-  root = Node()
-  result = True
+  min_heap = []
+  graph = [[] for i in range(N)]
+  dist = [INF for i in range(N)]
+  path = [-1 for i in range(N)]
+  visited = [False for i in range(N)]
+  points = []
 
-  phone_numbers = []
-  
+  for _ in range(N):
+    x, y = list(map(float, input().split()))
+    points.append((x, y))
   for i in range(N):
-    number = input()
-    phone_numbers.append(number)
+    for j in range(i, N):
+      w = distance(points[i], points[j])
+      if i != j:
+        graph[i].append((w, j))
+        graph[j].append((w, i))
 
-  for number in phone_numbers:
-    result = add_word(root, number)
-    if result == False:
-      break
-  
-  final_res = 'YES' if result == True else 'NO'
-  print(final_res)
+  prim(0)
+  print_dist()
