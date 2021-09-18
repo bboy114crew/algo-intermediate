@@ -58,44 +58,36 @@
 #     print_result_list(h_dict_sorted, can_swap[1])
 
 # Fibsieve Fantabulous
+import math
+
 T = int(input())
 for case in range(T):
   S = int(input())
 
-  i = 0
-
-  total = 0
-
-  N = 1
+  N = 0
 
   x = 0
   y = 0
 
-  while True:
-    i = i + 1
-    total = total + (i + i - 1)
+  ceil_i = math.ceil(S ** 0.5)
 
-    if total < S:
-      continue
+  N = ceil_i
+  number_of_move =  abs(S - (N - 1) ** 2)
+
+  if N % 2 == 1:
+    if number_of_move < N:
+      x = N
+      y = number_of_move
     else:
-      N = i
-      number_of_move = S - (total - (i + i - 1))
-      count = 0
-      if N % 2 == 1:
-        if number_of_move < N:
-          x = N
-          y = number_of_move
-        else:
-          y = N
-          x = N - (number_of_move - N)
-      else:
-        if number_of_move < N:
-          y = N
-          x = number_of_move
-        else:
-          x = N
-          y = N - (number_of_move - N)
-    break
+      y = N
+      x = N - (number_of_move - N)
+  else:
+    if number_of_move < N:
+      y = N
+      x = number_of_move
+    else:
+      x = N
+      y = N - (number_of_move - N)
 
   print('Case {}: {} {}'.format(case + 1, x, y))
 
