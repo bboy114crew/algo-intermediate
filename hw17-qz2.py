@@ -1,60 +1,60 @@
 # MUH and Important Things
 
-# N = int(input())
-# h = list(map(int, input().split()))
+N = int(input())
+h = list(map(int, input().split()))
 
-# h_dict = dict()
+h_dict = dict()
 
-# h_count = dict()
+h_count = dict()
 
-# for i in range(N):
-#   h_dict[i + 1] = h[i]
-# h_dict_sorted = sorted(h_dict.items(), key=lambda kv: kv[1])
+for i in range(N):
+  h_dict[i + 1] = h[i]
+h_dict_sorted = sorted(h_dict.items(), key=lambda kv: kv[1])
 
-# for i in range(N):
-#   if h[i] not in h_count:
-#     h_count[h[i]] = 1
-#   else:
-#     h_count[h[i]] += 1
+for i in range(N):
+  if h[i] not in h_count:
+    h_count[h[i]] = 1
+  else:
+    h_count[h[i]] += 1
 
-# h_count_sorted = sorted(h_count.items(), key=lambda kv: kv[1])
+h_count_sorted = sorted(h_count.items(), key=lambda kv: kv[1])
 
-# total = 0
+total = 0
 
-# can_swap = []
+can_swap = []
 
-# for (key, value) in h_count_sorted:
-#   if total >= 4:
-#     break
-#   if value >= 2:
-#     can_swap.append((key, value))
-#     total += value
+for (key, value) in h_count_sorted:
+  if total >= 4:
+    break
+  if value >= 2:
+    can_swap.append((key, value))
+    total += value
 
-# def print_result_list(current_l, c_swap):
-#   global max_print
-#   new_list = current_l
-#   c_key, c_value = c_swap
-#   count_swap = 0
-#   for i in range(len(current_l)):
-#     current_l_key, current_l_value = current_l[i]
-#     if max_print == 3:
-#       break
-#     if count_swap < c_value - 1 and c_key == current_l_value:
-#       new_list[i], new_list[i + 1] = new_list[i + 1], new_list[i]
-#       count_swap += 1
-#       max_print += 1
-#       print(' '.join([str(key) for (key, value) in new_list]))
+def print_result_list(current_l, c_swap):
+  global max_print
+  new_list = current_l
+  c_key, c_value = c_swap
+  count_swap = 0
+  for i in range(len(current_l)):
+    current_l_key, current_l_value = current_l[i]
+    if max_print == 3:
+      break
+    if count_swap < c_value - 1 and c_key == current_l_value:
+      new_list[i], new_list[i + 1] = new_list[i + 1], new_list[i]
+      count_swap += 1
+      max_print += 1
+      print(' '.join([str(key) for (key, value) in new_list]))
 
-# max_print = 1 
+max_print = 1 
 
-# if total < 3 or len(h_count) < 2:
-#   print('NO')
-# else:
-#   print('YES')
-#   print(' '.join([str(key) for (key, value) in h_dict_sorted]))
+if total < 3 or len(h_count) < 2:
+  print('NO')
+else:
+  print('YES')
+  print(' '.join([str(key) for (key, value) in h_dict_sorted]))
 
-#   print_result_list(h_dict_sorted, can_swap[0])
-#   print_result_list(h_dict_sorted, can_swap[1])
+  print_result_list(h_dict_sorted, can_swap[0])
+  print_result_list(h_dict_sorted, can_swap[1])
 
 # # Fibsieve Fantabulous
 # T = int(input())
@@ -193,63 +193,63 @@
 #   final_res = 'YES' if result == True else 'NO'
 #   print(final_res)
 
-# Freckles
-from heapq import heappush, heappop
-INF = 1e9
+# # Freckles
+# from heapq import heappush, heappop
+# INF = 1e9
 
-def distance(A, B):
-  x, y = A
-  z, t = B
-  return ((x - z) ** 2 + (y - t) ** 2)
+# def distance(A, B):
+#   x, y = A
+#   z, t = B
+#   return ((x - z) ** 2 + (y - t) ** 2)
 
-def prim(src):
-  global min_heap, graph, dist, path, visited
-  dist[src] = 0
-  heappush(min_heap, (dist[src], src))
-  while len(min_heap) != 0:
-    top = heappop(min_heap)
-    u = top[1]
-    if visited[u]:
-      continue
-    visited[u] = True
+# def prim(src):
+#   global min_heap, graph, dist, path, visited
+#   dist[src] = 0
+#   heappush(min_heap, (dist[src], src))
+#   while len(min_heap) != 0:
+#     top = heappop(min_heap)
+#     u = top[1]
+#     if visited[u]:
+#       continue
+#     visited[u] = True
 
-    for (w, v) in graph[u]:
-      if visited[v] == False and w < dist[v]:
-        dist[v] = w
-        path[v] = u
-        heappush(min_heap, (w, v))
+#     for (w, v) in graph[u]:
+#       if visited[v] == False and w < dist[v]:
+#         dist[v] = w
+#         path[v] = u
+#         heappush(min_heap, (w, v))
 
-def print_dist():
-  res = 0
-  for i in range(1, N):
-    if path[i] == -1:
-      continue
-    res = res + dist[i] ** 0.5
-  print('{:.2f}'.format(res))
+# def print_dist():
+#   res = 0
+#   for i in range(1, N):
+#     if path[i] == -1:
+#       continue
+#     res = res + dist[i] ** 0.5
+#   print('{:.2f}'.format(res))
 
-T = int(input())
+# T = int(input())
 
-for case in range(T):
-  input()
-  N = int(input())
-  min_heap = []
-  graph = [[] for i in range(N)]
-  dist = [INF for i in range(N)]
-  path = [-1 for i in range(N)]
-  visited = [False for i in range(N)]
-  points = []
+# for case in range(T):
+#   input()
+#   N = int(input())
+#   min_heap = []
+#   graph = [[] for i in range(N)]
+#   dist = [INF for i in range(N)]
+#   path = [-1 for i in range(N)]
+#   visited = [False for i in range(N)]
+#   points = []
 
-  for _ in range(N):
-    x, y = list(map(float, input().split()))
-    points.append((x, y))
-  for i in range(N):
-    for j in range(i, N):
-      w = distance(points[i], points[j])
-      if i != j:
-        graph[i].append((w, j))
-        graph[j].append((w, i))
+#   for _ in range(N):
+#     x, y = list(map(float, input().split()))
+#     points.append((x, y))
+#   for i in range(N):
+#     for j in range(i, N):
+#       w = distance(points[i], points[j])
+#       if i != j:
+#         graph[i].append((w, j))
+#         graph[j].append((w, i))
 
-  prim(0)
-  print_dist()
-  if case != T - 1:
-    print()
+#   prim(0)
+#   print_dist()
+#   if case != T - 1:
+#     print()
