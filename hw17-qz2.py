@@ -200,7 +200,7 @@ INF = 1e9
 def distance(A, B):
   x, y = A
   z, t = B
-  return ((x - z) ** 2 + (y - t) ** 2) ** 0.5
+  return ((x - z) ** 2 + (y - t) ** 2)
 
 def prim(src):
   global min_heap, graph, dist, path, visited
@@ -224,12 +224,13 @@ def print_dist():
   for i in range(1, N):
     if path[i] == -1:
       continue
-    res += dist[i]
+    res = res + dist[i] ** 0.5
   print('{:.2f}'.format(res))
 
 T = int(input())
-input()
-for _ in range(T):
+
+for case in range(T):
+  input()
   N = int(input())
   min_heap = []
   graph = [[] for i in range(N)]
@@ -250,3 +251,5 @@ for _ in range(T):
 
   prim(0)
   print_dist()
+  if case != T - 1:
+    print()
