@@ -24,7 +24,7 @@ total = 0
 can_swap = []
 
 for (key, value) in h_count_sorted:
-  if total >= 4:
+  if total >= 3:
     break
   if value >= 2:
     can_swap.append((key, value))
@@ -47,14 +47,15 @@ def print_result_list(current_l, c_swap):
 
 max_print = 1 
 
-if total < 3 or len(h_count) < 2:
+if total < 3:
   print('NO')
 else:
   print('YES')
   print(' '.join([str(key) for (key, value) in h_dict_sorted]))
 
   print_result_list(h_dict_sorted, can_swap[0])
-  print_result_list(h_dict_sorted, can_swap[1])
+  if len(can_swap) > 1:
+    print_result_list(h_dict_sorted, can_swap[1])
 
 # # Fibsieve Fantabulous
 # T = int(input())
